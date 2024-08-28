@@ -5,28 +5,30 @@ using System.Text.RegularExpressions;
 try
 {
 
-    Dictionary<string, ArrayList> map = new Dictionary<string, ArrayList>();
+    List<Cheep> cheeps = [];
 
-    using (StreamReader reader = new StreamReader("chirp_cli_db.csv"))
+    using StreamReader reader = new("./chirp_cli_db.csv");
+    string? line;
+
+    reader.ReadLine();
+
+    while ((line = reader.ReadLine()) != null)
     {
-        string line; 
+        Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
 
-        string headers = reader.ReadLine();
-        
-        foreach (var item in headers.Split(','))
-        {
-            map.Add(item, new ArrayList());
-        }
+        //Separating columns to array
+        string[] X = CSVParser.Split(line);
 
-        while ((line = reader.ReadLine()) != null)
-        {            
-            Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+        var offset = DateTimeOffset.FromUnixTimeSeconds(long.Parse(X[2]));
+        var time = offset.LocalDateTime;
+        cheeps.Add(new Cheep {Author = X[0], Message = X[1], Timestamp = time});
 
-            //Separating columns to array
-            string[] X = CSVParser.Split(line);
-            
+    }
 
-        }
+    foreach (var cheep in cheeps)
+    {
+        // Console.WriteLine(cheep.Author + " " + cheep.Message + " " + cheep.Timestamp);
+        Console.WriteLine($"this person \"{cheep.Author}\" sent {cheep.Message} at: {cheep.Timestamp}");
     }
 
 }
@@ -34,4 +36,11 @@ catch (IOException e)
 {
     Console.WriteLine("The file could not be read:");
     Console.WriteLine(e.Message);
+}
+
+class Cheep
+{
+    public string Author;
+    public string Message;
+    public DateTime Timestamp;
 }
