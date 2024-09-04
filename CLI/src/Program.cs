@@ -1,9 +1,50 @@
-﻿using System.Text.RegularExpressions;
+﻿#nullable enable
+using System.Text.RegularExpressions;
+using DocoptNet;
 
-if (args.Length == 0) return;
 
-if (args[0] == "read")
+const string usage = @"chirp.
+
+Usage:
+   chirp read
+   chirp cheep <message>
+   chirp (-h | --help)
+   chirp --version
+Options:
+    -h --help     Show this screen.
+    --version     Show version.
+";
+
+
+var parser = Docopt.CreateParser(usage).WithVersion("chirp 0.1");
+
+static int ShowHelp(string help) { Console.WriteLine(help); return 0; }
+static int ShowVersion(string version) { Console.WriteLine(version); return 0; }
+static int OnError(string usage) { Console.Error.WriteLine(usage); return 1; }
+
+static int Run(IDictionary<string, ArgValue> arguments)
 {
+    if(arguments["read"].IsTrue){
+        ShowCheeps();
+    }
+    if(arguments["cheep"].IsTrue && !string.IsNullOrEmpty(arguments["<message>"].ToString())){
+        CheepCheep(arguments["<message>"].ToString());
+    }
+    return 0;
+}
+
+return parser.Parse(args) switch
+{
+    IArgumentsResult<IDictionary<string, ArgValue>> { Arguments: var arguments } => Run(arguments),
+    IHelpResult => ShowHelp(usage),
+    IVersionResult { Version: var version } => ShowVersion(version),
+    IInputErrorResult { Usage: var use } => OnError(use),
+    _ => throw new InvalidOperationException("Unexpected result type")
+};
+
+
+
+static int ShowCheeps() { 
     try
     {
         List<Cheep> cheeps = [];
@@ -38,30 +79,21 @@ if (args[0] == "read")
         Console.WriteLine("The file could not be read:");
         Console.WriteLine(e.Message);
     }
-}
-else if (args[0] == "cheep")
-{
-    if (args.Length < 2)
-    {
-        Console.WriteLine("You have not written a cheep");
-        return;
-    }
+     return 0; }
 
+
+static int CheepCheep(string message) { 
     try
     {
-        using (StreamWriter file = new("./chirp_cli_db.csv", append: true))
+        using (StreamWriter writer = new("./chirp_cli_db.csv", append: true))
         {
-            file.WriteLine($"{System.Environment.MachineName},\"{args[1].Trim()}\",{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}");
-            Console.WriteLine("Cheep cheeped!");
+            writer.WriteLine($"\"{Environment.UserName}\",\"{message}\",{DateTimeOffset.Now.ToUnixTimeSeconds()}");
         }
     }
     catch (IOException e)
     {
-        Console.WriteLine("The file could not be read:");
+        Console.WriteLine("The file could not be written to:");
         Console.WriteLine(e.Message);
     }
-}
-else
-{
-    Console.WriteLine("No recognized command, use \"cheep\" or \"read\"");
+    return 0; 
 }
