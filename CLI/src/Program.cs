@@ -1,7 +1,6 @@
-﻿using System.Globalization;
-using System.Text.RegularExpressions;
-using CsvHelper;
-using CsvHelper.Configuration;
+﻿using SimpleDB;
+
+var db = new CSVDatabase<Cheep>();
 
 if (args.Length == 0) return;
 
@@ -9,13 +8,9 @@ if (args[0] == "read")
 {
     try
     {
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture);
+        var cheeps = db.Read();
 
-        using var reader = new StreamReader("../chirp_cli_db.csv");
-        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-        var records = csv.GetRecords<Cheep>();
-
-        foreach (var cheep in records)
+        foreach (var cheep in cheeps.ToList())
         {
             var offset = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp);
             var time = offset.LocalDateTime;
@@ -38,24 +33,12 @@ else if (args[0] == "cheep")
 
     try
     {
-        var records = new List<Cheep>
-        {
-            new() {
-                Author = Environment.MachineName,
-                Message = args[1].Trim(),
-                Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
-            }
+        Cheep cheep = new() {
+            Author = Environment.MachineName,
+            Message = args[1].Trim(),
+            Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
         };
-
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            HasHeaderRecord = false,
-        };
-        using var stream = File.Open("../chirp_cli_db.csv", FileMode.Append);
-        using var writer = new StreamWriter(stream);
-        using var csv = new CsvWriter(writer, config);
-
-        csv.WriteRecords(records);
+        db.Store(cheep);
     }
     catch (IOException e)
     {
