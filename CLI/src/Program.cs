@@ -3,10 +3,18 @@ using System.Text.RegularExpressions;
 using DocoptNet;
 
 
-const string usage = @"chirp.
-
+const string help = @"chirp.
 Usage:
-   chirp read
+   read               Read all cheeps
+   cheep <message>    Cheep a message
+Options:
+    -h --help     Show this screen.
+    --version     Show version.
+";
+
+const string usage = @"chirp.
+Usage:
+   chirp read 
    chirp cheep <message>
    chirp (-h | --help)
    chirp --version
@@ -24,10 +32,12 @@ static int OnError(string usage) { Console.Error.WriteLine(usage); return 1; }
 
 static int Run(IDictionary<string, ArgValue> arguments)
 {
-    if(arguments["read"].IsTrue){
+    if (arguments["read"].IsTrue)
+    {
         ShowCheeps();
     }
-    if(arguments["cheep"].IsTrue && !string.IsNullOrEmpty(arguments["<message>"].ToString())){
+    if (arguments["cheep"].IsTrue && !string.IsNullOrEmpty(arguments["<message>"].ToString()))
+    {
         CheepCheep(arguments["<message>"].ToString());
     }
     return 0;
@@ -36,7 +46,7 @@ static int Run(IDictionary<string, ArgValue> arguments)
 return parser.Parse(args) switch
 {
     IArgumentsResult<IDictionary<string, ArgValue>> { Arguments: var arguments } => Run(arguments),
-    IHelpResult => ShowHelp(usage),
+    IHelpResult => ShowHelp(help),
     IVersionResult { Version: var version } => ShowVersion(version),
     IInputErrorResult { Usage: var use } => OnError(use),
     _ => throw new InvalidOperationException("Unexpected result type")
@@ -44,7 +54,8 @@ return parser.Parse(args) switch
 
 
 
-static int ShowCheeps() { 
+static int ShowCheeps()
+{
     try
     {
         List<Cheep> cheeps = [];
@@ -79,10 +90,12 @@ static int ShowCheeps() {
         Console.WriteLine("The file could not be read:");
         Console.WriteLine(e.Message);
     }
-     return 0; }
+    return 0;
+}
 
 
-static int CheepCheep(string message) { 
+static int CheepCheep(string message)
+{
     try
     {
         using (StreamWriter writer = new("./chirp_cli_db.csv", append: true))
@@ -95,5 +108,5 @@ static int CheepCheep(string message) {
         Console.WriteLine("The file could not be written to:");
         Console.WriteLine(e.Message);
     }
-    return 0; 
+    return 0;
 }
