@@ -6,7 +6,7 @@ using CsvHelper.Configuration;
 
 public class CSVDatabase<T> : IDatabaseRepository<T>
 {
-    private readonly string databasePath = "../chirp_cli_db.csv";
+    private readonly string databasePath = "../db.csv";
 
     private void CreateDatabaseFileIfMissing()
     {
