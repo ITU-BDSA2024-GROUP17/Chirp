@@ -1,4 +1,7 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
+using CsvHelper;
+using CsvHelper.Configuration;
 
 if (args.Length == 0) return;
 
@@ -6,31 +9,17 @@ if (args[0] == "read")
 {
     try
     {
-        List<Cheep> cheeps = [];
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture);
 
-        using (StreamReader reader = new("./chirp_cli_db.csv"))
+        using var reader = new StreamReader("../chirp_cli_db.csv");
+        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        var records = csv.GetRecords<Cheep>();
+
+        foreach (var cheep in records)
         {
-            string? line;
-
-            reader.ReadLine(); // Skip first line (headers of the CSV)
-
-            while ((line = reader.ReadLine()) != null)
-            {
-                // Regex to split CSV into columns
-                Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
-
-                // Separating row to separate parts
-                string[] row = CSVParser.Split(line);
-
-                var offset = DateTimeOffset.FromUnixTimeSeconds(long.Parse(row[2]));
-                var time = offset.LocalDateTime;
-                cheeps.Add(new Cheep { Author = row[0], Message = row[1], Timestamp = time });
-            }
-
-            foreach (var cheep in cheeps)
-            {
-                Console.WriteLine($"this person \"{cheep.Author}\" sent {cheep.Message} at: {cheep.Timestamp}");
-            }
+            var offset = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp);
+            var time = offset.LocalDateTime;
+            Console.WriteLine($"this person \"{cheep.Author}\" sent {cheep.Message} at: {time}");
         }
     }
     catch (IOException e)
@@ -49,11 +38,24 @@ else if (args[0] == "cheep")
 
     try
     {
-        using (StreamWriter file = new("./chirp_cli_db.csv", append: true))
+        var records = new List<Cheep>
         {
-            file.WriteLine($"{System.Environment.MachineName},\"{args[1].Trim()}\",{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}");
-            Console.WriteLine("Cheep cheeped!");
-        }
+            new() {
+                Author = Environment.MachineName,
+                Message = args[1].Trim(),
+                Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            }
+        };
+
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            HasHeaderRecord = false,
+        };
+        using var stream = File.Open("../chirp_cli_db.csv", FileMode.Append);
+        using var writer = new StreamWriter(stream);
+        using var csv = new CsvWriter(writer, config);
+
+        csv.WriteRecords(records);
     }
     catch (IOException e)
     {
