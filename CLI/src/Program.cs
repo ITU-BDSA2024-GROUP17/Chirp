@@ -1,10 +1,62 @@
-﻿using SimpleDB;
+﻿using System.Text.RegularExpressions;
+using DocoptNet;
+using SimpleDB;
 
 var db = new CSVDatabase<Cheep>();
 
-if (args.Length == 0) return;
 
-if (args[0] == "read")
+const string help = @"chirp.
+Usage:
+   read               Read all cheeps
+   cheep <message>    Cheep a message
+Options:
+    -h --help     Show this screen.
+    --version     Show version.
+";
+
+const string usage = @"chirp.
+Usage:
+   chirp read 
+   chirp cheep <message>
+   chirp (-h | --help)
+   chirp --version
+Options:
+    -h --help     Show this screen.
+    --version     Show version.
+";
+
+
+var parser = Docopt.CreateParser(usage).WithVersion("chirp 0.1");
+
+int ShowHelp(string help) { Console.WriteLine(help); return 0; }
+int ShowVersion(string version) { Console.WriteLine(version); return 0; }
+int OnError(string usage) { Console.Error.WriteLine(usage); return 1; }
+
+int Run(IDictionary<string, ArgValue> arguments)
+{
+    if (arguments["read"].IsTrue)
+    {
+        ShowCheeps();
+    }
+    if (arguments["cheep"].IsTrue && !string.IsNullOrEmpty(arguments["<message>"].ToString()))
+    {
+        CheepCheep(arguments["<message>"].ToString());
+    }
+    return 0;
+}
+
+return parser.Parse(args) switch
+{
+    IArgumentsResult<IDictionary<string, ArgValue>> { Arguments: var arguments } => Run(arguments),
+    IHelpResult => ShowHelp(help),
+    IVersionResult { Version: var version } => ShowVersion(version),
+    IInputErrorResult { Usage: var use } => OnError(use),
+    _ => throw new InvalidOperationException("Unexpected result type")
+};
+
+
+
+int ShowCheeps()
 {
     try
     {
@@ -22,31 +74,26 @@ if (args[0] == "read")
         Console.WriteLine("The file could not be read:");
         Console.WriteLine(e.Message);
     }
+    return 0;
 }
-else if (args[0] == "cheep")
-{
-    if (args.Length < 2)
-    {
-        Console.WriteLine("You have not written a cheep");
-        return;
-    }
 
+
+int CheepCheep(string message)
+{
     try
     {
-        Cheep cheep = new() {
+        Cheep cheep = new()
+        {
             Author = Environment.MachineName,
-            Message = args[1].Trim(),
+            Message = message,
             Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
         };
         db.Store(cheep);
     }
     catch (IOException e)
     {
-        Console.WriteLine("The file could not be read:");
+        Console.WriteLine("The file could not be written to:");
         Console.WriteLine(e.Message);
     }
-}
-else
-{
-    Console.WriteLine("No recognized command, use \"cheep\" or \"read\"");
+    return 0;
 }
