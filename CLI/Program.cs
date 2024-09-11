@@ -1,5 +1,5 @@
-﻿using System.Text.RegularExpressions;
-using CLI.src;
+﻿using CLI;
+using CLI.Records;
 using DocoptNet;
 using SimpleDB;
 
@@ -37,7 +37,8 @@ int Run(IDictionary<string, ArgValue> arguments)
 {
     if (arguments["read"].IsTrue)
     {
-        ShowCheeps();
+        List<Cheep> cheeps = getCheeps();
+        UserInterFace.PrintCheeps(cheeps);
     }
     if (arguments["cheep"].IsTrue && !string.IsNullOrEmpty(arguments["<message>"].ToString()))
     {
@@ -55,31 +56,13 @@ return parser.Parse(args) switch
     _ => throw new InvalidOperationException("Unexpected result type")
 };
 
-
-
-int ShowCheeps()
+List<Cheep> getCheeps()
 {
-    try
-    {
-        var cheeps = db.Read();
-
-        foreach (var cheep in cheeps.ToList())
-        {
-            var offset = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp);
-            var time = offset.LocalDateTime;
-            Console.WriteLine($"{cheep.Author} @ {time}: {cheep.Message}");
-        }
-    }
-    catch (IOException e)
-    {
-        Console.WriteLine("The file could not be read:");
-        Console.WriteLine(e.Message);
-    }
-    return 0;
+    var cheeps = db.Read();
+    return cheeps.ToList();
 }
 
-
-int CheepCheep(string message)
+void CheepCheep(string message)
 {
     try
     {
@@ -91,5 +74,4 @@ int CheepCheep(string message)
         Console.WriteLine("The file could not be written to:");
         Console.WriteLine(e.Message);
     }
-    return 0;
 }
