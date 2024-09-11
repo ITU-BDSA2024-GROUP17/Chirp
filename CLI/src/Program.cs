@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using CLI.src;
 using DocoptNet;
 using SimpleDB;
 
@@ -16,7 +17,7 @@ Options:
 
 const string usage = @"chirp.
 Usage:
-   chirp read 
+   chirp read
    chirp cheep <message>
    chirp (-h | --help)
    chirp --version
@@ -82,12 +83,7 @@ int CheepCheep(string message)
 {
     try
     {
-        Cheep cheep = new()
-        {
-            Author = Environment.MachineName,
-            Message = message,
-            Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
-        };
+        Cheep cheep = new(Environment.MachineName, message, DateTimeOffset.UtcNow.ToUnixTimeSeconds());
         db.Store(cheep);
     }
     catch (IOException e)
