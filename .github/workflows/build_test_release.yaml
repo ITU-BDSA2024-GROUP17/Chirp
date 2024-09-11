@@ -1,0 +1,68 @@
+# This is made with the help from Patrik Svensson's article: https://patriksvensson.se/posts/2020/03/creating-release-artifacts-with-github-actions
+# And 2023's BDSA-Group10's adaptation of Patrik Svensson's article: https://github.com/ITU-BDSA23-GROUP10/Chirp 
+
+name: .NET
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: Finalizing
+      run: echo "Build and Test Complete! Congratz!"
+    - name: Publish Branch
+      shell: bash
+      run: |
+        #--framework netcoreapp3.1
+
+        tag=$(git describe --tags --abbrev=0)
+
+        #Linux Build
+        linux_build_name="Chirp-$tag-linux-x64"
+
+        dotnet publish CLI/CLI.csproj --framework net8.0 --runtime "linux-x64" --self-contained false -c Release -o "${linux_build_name}"
+        7z a -tzip "${linux_release_name}.zip" "./${linux_release_name}/*"
+
+        rm -r "$linux_build_name" # Delete output directory
+
+        #Windows Build
+        windows_build_name="Chirp-$tag-win-x64"
+
+        dotnet publish CLI/CLI.csproj --framwork net8.0 --runtime "win-x64" --self-contained false -c Release -o "${windows_build_name}"
+        7z a -tzip "${windows_build_name}.zip" "./${windows_release_name}/*"
+
+        rm -r "$windows_build_name" # Delete output directory
+
+        #MacOS Build
+        mac_build_name="Chirp-$tag-MacOS-x64"
+
+        dotnet publish CLI/CLI.csproj --framework net8.0 --runtime "osx-x64" --self-contained false -c Release -o "${mac_build_name}"
+        7z a -tzip "${mac_build_name}.zip" "./${mac_build_name}/*"
+
+    - name: release project
+      uses: softprops/action-gh-release@v1
+      with: 
+        files: "*.zip"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Completed and Published Release
+      run: echo "Done deal! Published Release"
+
