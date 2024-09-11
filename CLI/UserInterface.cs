@@ -1,3 +1,5 @@
+using CLI.Records;
+
 namespace CLI;
 
 static class UserInterFace

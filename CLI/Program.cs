@@ -1,5 +1,5 @@
-﻿using System.Text.RegularExpressions;
-using CLI;
+﻿using CLI;
+using CLI.Records;
 using DocoptNet;
 using SimpleDB;
 
@@ -66,12 +66,7 @@ void CheepCheep(string message)
 {
     try
     {
-        Cheep cheep = new()
-        {
-            Author = Environment.MachineName,
-            Message = message,
-            Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
-        };
+        Cheep cheep = new(Environment.MachineName, message, DateTimeOffset.UtcNow.ToUnixTimeSeconds());
         db.Store(cheep);
     }
     catch (IOException e)
