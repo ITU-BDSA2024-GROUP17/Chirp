@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleDB", "SimpleDB\Simple
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLI", "CLI\CLI.csproj", "{986BBEF5-7D5D-4D5C-B298-6072D03B1EE9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLI.Tests", "CLI.Tests\CLI.Tests.csproj", "{CF95DE34-B0C2-4203-87D0-189EEF3F8D70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDB.Tests", "SimpleDB.Tests\SimpleDB.Tests.csproj", "{63A4C583-8AAE-4323-9137-F927D4DE8132}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{986BBEF5-7D5D-4D5C-B298-6072D03B1EE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{986BBEF5-7D5D-4D5C-B298-6072D03B1EE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{986BBEF5-7D5D-4D5C-B298-6072D03B1EE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF95DE34-B0C2-4203-87D0-189EEF3F8D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF95DE34-B0C2-4203-87D0-189EEF3F8D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF95DE34-B0C2-4203-87D0-189EEF3F8D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF95DE34-B0C2-4203-87D0-189EEF3F8D70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63A4C583-8AAE-4323-9137-F927D4DE8132}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63A4C583-8AAE-4323-9137-F927D4DE8132}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63A4C583-8AAE-4323-9137-F927D4DE8132}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63A4C583-8AAE-4323-9137-F927D4DE8132}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
