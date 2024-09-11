@@ -11,7 +11,7 @@ static class UserInterFace
             var offset = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp);
             var time = offset.LocalDateTime;
 
-            Console.WriteLine($"this person \"{cheep.Author}\" sent {cheep.Message} at: {time}");
+            Console.WriteLine($"{cheep.Author} @ {time}: {cheep.Message}");
         }
     }
 }
