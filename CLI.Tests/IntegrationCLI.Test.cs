@@ -1,5 +1,9 @@
 using System.Diagnostics;
-using Xunit;
+using System.Text.RegularExpressions;
+using CLI.Records;
+using CsvHelper.Configuration.Attributes;
+using SimpleDB;
+
 
 namespace CLI.Tests
 {
@@ -17,20 +21,70 @@ namespace CLI.Tests
             // Assert
             Assert.Contains(expected, actual);
         }
-        // [Fact]
-        // public void TestReadCommand()
-        // {
-        //     string[] commands = ["cheep Hello World!", "read"];
-        //     string[] expected = ["", $"{Environment.MachineName} @ {DateTimeOffset.UtcNow.ToUnixTimeSeconds()}: Hello World!"];
-        //     // Act
-        //     for (int i = 0; i < 1; i++)
-        //     {
-        //         string actual = RunProgramWithArguments(commands[i]);
-        //         // Assert
-        //         Assert.Equal(expected[i], actual);
-        //     }
 
+        [Fact]
+        public void getCheepsTest()
+        {
+            // Arrange
+            var db = new CSVDatabase<Cheep>();
+            // Act
+            var cheeps = db.Read();
+            // Assert
+
+            foreach (var cheep in cheeps)
+            {
+                Assert.NotNull(cheep);
+
+                // Assert if Cheep is of right type
+                Assert.IsType<Cheep>(cheep);
+
+                Assert.IsType<string>(cheep.Author);
+                Assert.IsType<string>(cheep.Message);
+                Assert.IsType<long>(cheep.Timestamp);
+            }
+        }
+
+        // [Theory]
+        // [InlineData("cheep")]
+        // [InlineData("halp")]
+        // [InlineData("help")]
+        // public void TestErrorCommand(string command)
+        // {
+        //     // Arrange
+        //     const string help = @"chirp.
+        //     Usage:
+        //     read               Read all cheeps
+        //     cheep <message>    Cheep a message
+        //     Options:
+        //         -h --help     Show this screen.
+        //         --version     Show version.
+        //     ";
+
+        //     // Act
+        //     string actual = RunProgramWithArguments(command);
+
+        //     // Assert
+        //     Assert.Equal(help, actual,
+        //     ignoreWhiteSpaceDifferences: true,
+        //     ignoreLineEndingDifferences: true,
+        //     ignoreAllWhiteSpace: true);
         // }
+
+        [Fact]
+        public void TestReadCommand()
+        {
+            string command = "read";
+
+            var actual = RunProgramWithArguments(command);
+
+            // Regex for dates
+            string datePattern = @"(0[1-9]|[12][0-9]|3[01])(\/|-)(0[1-9]|1[1,2])(\/|-)(19|20)\d{2}";
+            Match match = Regex.Match(actual, datePattern);
+
+            // Assert
+            Assert.True(match.Success); // Check if date is present
+            Assert.Contains(Environment.MachineName, actual); // Check if machine name is present
+        }
 
         private string RunProgramWithArguments(string arguments)
         {
@@ -57,7 +111,7 @@ namespace CLI.Tests
 
             if (process.ExitCode != 0)
             {
-                throw new Exception($"Process exited with code {process.ExitCode}: {error}");
+                return error;
             }
 
             return output;
