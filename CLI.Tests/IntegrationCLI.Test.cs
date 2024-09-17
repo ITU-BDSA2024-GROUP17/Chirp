@@ -44,31 +44,33 @@ namespace CLI.Tests
             }
         }
 
-        // [Theory]
-        // [InlineData("cheep")]
-        // [InlineData("halp")]
-        // [InlineData("help")]
-        // public void TestErrorCommand(string command)
-        // {
-        //     // Arrange
-        //     const string help = @"chirp.
-        //     Usage:
-        //     read               Read all cheeps
-        //     cheep <message>    Cheep a message
-        //     Options:
-        //         -h --help     Show this screen.
-        //         --version     Show version.
-        //     ";
+        [Theory]
+        [InlineData("cheep")]
+        [InlineData("halp")]
+        [InlineData("help")]
+        [InlineData("")]
+        public void TestErrorCommand(string command)
+        {
+            // Arrange
+            const string help = @"chirp.
+            Usage:
+            read               Read all cheeps
+            cheep <message>    Cheep a message
+            Options:
+                -h --help     Show this screen.
+                --version     Show version.
+            ";
 
-        //     // Act
-        //     string actual = RunProgramWithArguments(command);
+            // Act
+            string actual = RunProgramWithArguments(command);
 
-        //     // Assert
-        //     Assert.Equal(help, actual,
-        //     ignoreWhiteSpaceDifferences: true,
-        //     ignoreLineEndingDifferences: true,
-        //     ignoreAllWhiteSpace: true);
-        // }
+            // Assert
+            // Replace "\r\n" with " " to ignore line endings
+            Assert.Equal(help, actual.Replace("\r\n", " "),
+            ignoreWhiteSpaceDifferences: true,
+            ignoreLineEndingDifferences: true,
+            ignoreAllWhiteSpace: true);
+        }
 
         [Fact]
         public void TestReadCommand()
