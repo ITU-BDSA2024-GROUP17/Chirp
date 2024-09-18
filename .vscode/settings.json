@@ -1,4 +1,8 @@
 {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter":"ms-dotnettools.csharp"
+    "editor.defaultFormatter":"ms-dotnettools.csharp",
+
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-workflow.json": [".github/workflows/*.{yml,yaml}"]
+    }
 }
