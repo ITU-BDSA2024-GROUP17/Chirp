@@ -52,7 +52,7 @@ return parser.Parse(args) switch
     IArgumentsResult<IDictionary<string, ArgValue>> { Arguments: var arguments } => Run(arguments),
     IHelpResult => ShowHelp(help),
     IVersionResult { Version: var version } => ShowVersion(version),
-    IInputErrorResult { Usage: var use } => OnError(use),
+    IInputErrorResult => OnError(help),
     _ => throw new InvalidOperationException("Unexpected result type")
 };
 
