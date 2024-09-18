@@ -1,9 +1,9 @@
-﻿using CLI;
+using CLI;
 using CLI.Records;
 using DocoptNet;
 using SimpleDB;
 
-var db = new CSVDatabase<Cheep>();
+var db = CSVDatabase<Cheep>.Instance;
 
 
 const string help = @"chirp.
