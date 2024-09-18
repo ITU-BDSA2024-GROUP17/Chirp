@@ -1,3 +1,4 @@
+using System.Data.Common;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using CLI.Records;
@@ -26,7 +27,7 @@ namespace CLI.Tests
         public void getCheepsTest()
         {
             // Arrange
-            var db = new CSVDatabase<Cheep>();
+            var db = CSVDatabase<Cheep>.Instance;
             // Act
             var cheeps = db.Read();
             // Assert
@@ -42,6 +43,7 @@ namespace CLI.Tests
                 Assert.IsType<string>(cheep.Message);
                 Assert.IsType<long>(cheep.Timestamp);
             }
+            db.Clear();
         }
 
         [Theory]
@@ -66,7 +68,7 @@ namespace CLI.Tests
 
             // Assert
             // Replace "\r\n" with " " to ignore line endings
-            Assert.Equal(help, actual.Replace("\r\n", " "),
+            Assert.Equal(help.Replace("\r\n", "").Replace("\n", "").Replace(" ", ""), actual.Replace("\r\n", "").Replace("\n", "").Replace(" ", ""),
             ignoreWhiteSpaceDifferences: true,
             ignoreLineEndingDifferences: true,
             ignoreAllWhiteSpace: true);
@@ -76,6 +78,13 @@ namespace CLI.Tests
         public void TestReadCommand()
         {
             string command = "read";
+
+            if (CSVDatabase<Cheep>.Instance.Read().Count() == 0)
+            {
+                // Arrange
+                var cheep = new Cheep("test", "Test", DateTimeOffset.Now.ToUnixTimeSeconds());
+                CSVDatabase<Cheep>.Instance.Store(cheep);
+            }
 
             var actual = RunProgramWithArguments(command);
 
