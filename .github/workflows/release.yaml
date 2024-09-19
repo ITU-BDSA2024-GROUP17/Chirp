@@ -15,6 +15,9 @@ env:
   MACOS_BUILD_NAME: "${{ github.event.repository.name }}-${{ github.ref_name }}-macos-x64"
   WINDOWS_BUILD_NAME: "${{ github.event.repository.name }}-${{ github.ref_name }}-windows-x64"
 
+permissions:
+  contents: write
+
 jobs:
   build-linux:
     runs-on: ubuntu-latest
