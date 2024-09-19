@@ -27,7 +27,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Build
-      run: dotnet publish CLI/CLI.csproj -c Release -o "$LINUX_BUILD_NAME" -r linux-x64 --self-contained false
+      run: dotnet publish CLI -c Release -o "$LINUX_BUILD_NAME" -r linux-x64 --self-contained false
     - name: Compress
       run: 7z a "$LINUX_BUILD_NAME.zip" "./$LINUX_BUILD_NAME/*"
     - name: Upload artifact
@@ -47,7 +47,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Build
-      run: dotnet publish CLI/CLI.csproj -c Release -o "$MACOS_BUILD_NAME" -r osx-x64 --self-contained false
+      run: dotnet publish CLI -c Release -o "$MACOS_BUILD_NAME" -r osx-x64 --self-contained false
     - name: Compress
       run: 7z a "$MACOS_BUILD_NAME.zip" "./$MACOS_BUILD_NAME/*"
     - name: Upload artifact
@@ -67,7 +67,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Build
-      run: dotnet publish CLI/CLI.csproj -c Release -o "$WINDOWS_BUILD_NAME" -r win-x64 --self-contained false
+      run: dotnet publish CLI -c Release -o "$WINDOWS_BUILD_NAME" -r win-x64 --self-contained false
     - name: Compress
       run: 7z a "$WINDOWS_BUILD_NAME.zip" "./$WINDOWS_BUILD_NAME/*"
     - name: Upload artifact
@@ -89,12 +89,10 @@ jobs:
       run: find . -name "*.zip" -exec mv {} ./ \;
 
     - name: Create Release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v2
       with:
         tag_name: ${{ github.ref_name }}
-        release_name: Release ${{ github.ref_name }}
+        name: Release ${{ github.ref_name }}
         files: "*.zip"
         draft: false
         prerelease: false
