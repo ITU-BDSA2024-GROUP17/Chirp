@@ -3,7 +3,10 @@
 
 name: Build and test
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - main
 
 env:
   DOTNET_VERSION: '8.0.x'
