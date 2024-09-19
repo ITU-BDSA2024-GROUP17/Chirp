@@ -87,6 +87,8 @@ jobs:
     steps:
     - name: Download artifacts
       uses: actions/download-artifact@v4
+      with:
+        merge-multiple: true
 
     - name: Move zip files to root
       run: find . -name "*.zip" -exec mv {} ./ \;
@@ -96,6 +98,9 @@ jobs:
       with:
         tag_name: ${{ github.ref_name }}
         name: Release ${{ github.ref_name }}
-        files: "*.zip"
+        files: |
+          ${{ env.LINUX_BUILD_NAME }}
+          ${{ env.MACOS_BUILD_NAME }}
+          ${{ env.WINDOWS_BUILD_NAME }}
         draft: false
         prerelease: false
