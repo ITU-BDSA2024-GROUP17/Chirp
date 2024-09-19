@@ -93,6 +93,9 @@ jobs:
     - name: Move zip files to root
       run: find . -name "*.zip" -exec mv {} ./ \;
 
+    - name: LS
+      run: ls -la
+
     - name: Create Release
       uses: softprops/action-gh-release@v2
       with:
