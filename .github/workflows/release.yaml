@@ -99,8 +99,8 @@ jobs:
         tag_name: ${{ github.ref_name }}
         name: Release ${{ github.ref_name }}
         files: |
-          ${{ env.LINUX_BUILD_NAME }}
-          ${{ env.MACOS_BUILD_NAME }}
-          ${{ env.WINDOWS_BUILD_NAME }}
+          ${{ env.LINUX_BUILD_NAME }}.zip
+          ${{ env.MACOS_BUILD_NAME }}.zip
+          ${{ env.WINDOWS_BUILD_NAME }}.zip
         draft: false
         prerelease: false
