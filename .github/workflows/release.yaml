@@ -36,8 +36,8 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.LINUX_BUILD_NAME }}
-        path: ./${{ env.LINUX_BUILD_NAME }}
+        name: ${{ env.LINUX_BUILD_NAME }}.zip
+        path: ./${{ env.LINUX_BUILD_NAME }}.zip
 
   build-macos:
     runs-on: ubuntu-latest
@@ -56,8 +56,8 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.MACOS_BUILD_NAME }}
-        path: ./${{ env.MACOS_BUILD_NAME }}
+        name: ${{ env.MACOS_BUILD_NAME }}.zip
+        path: ./${{ env.MACOS_BUILD_NAME }}.zip
 
   build-windows:
     runs-on: ubuntu-latest
@@ -76,8 +76,8 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.WINDOWS_BUILD_NAME }}
-        path: ./${{ env.WINDOWS_BUILD_NAME }}
+        name: ${{ env.WINDOWS_BUILD_NAME }}.zip
+        path: ./${{ env.WINDOWS_BUILD_NAME }}.zip
 
   release:
     runs-on: ubuntu-latest
@@ -92,9 +92,6 @@ jobs:
 
     - name: Move zip files to root
       run: find . -name "*.zip" -exec mv {} ./ \;
-
-    - name: LS
-      run: ls -la
 
     - name: Create Release
       uses: softprops/action-gh-release@v2
