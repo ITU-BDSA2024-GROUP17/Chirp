@@ -32,7 +32,7 @@ jobs:
     - name: Build
       run: dotnet publish CLI -c Release -o "$LINUX_BUILD_NAME" -r linux-x64 --self-contained false
     - name: Compress
-      run: 7z a "$LINUX_BUILD_NAME.zip" "./$LINUX_BUILD_NAME/*"
+      run: 7z -tzip a "$LINUX_BUILD_NAME.zip" "./$LINUX_BUILD_NAME/*"
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
@@ -52,7 +52,7 @@ jobs:
     - name: Build
       run: dotnet publish CLI -c Release -o "$MACOS_BUILD_NAME" -r osx-x64 --self-contained false
     - name: Compress
-      run: 7z a "$MACOS_BUILD_NAME.zip" "./$MACOS_BUILD_NAME/*"
+      run: 7z -tzip a "$MACOS_BUILD_NAME.zip" "./$MACOS_BUILD_NAME/*"
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
@@ -72,7 +72,7 @@ jobs:
     - name: Build
       run: dotnet publish CLI -c Release -o "$WINDOWS_BUILD_NAME" -r win-x64 --self-contained false
     - name: Compress
-      run: 7z a "$WINDOWS_BUILD_NAME.zip" "./$WINDOWS_BUILD_NAME/*"
+      run: 7z -tzip a "$WINDOWS_BUILD_NAME.zip" "./$WINDOWS_BUILD_NAME/*"
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
@@ -92,6 +92,9 @@ jobs:
 
     - name: Move zip files to root
       run: find . -name "*.zip" -exec mv {} ./ \;
+
+    - name: LS
+      run: ls -la
 
     - name: Create Release
       uses: softprops/action-gh-release@v2
