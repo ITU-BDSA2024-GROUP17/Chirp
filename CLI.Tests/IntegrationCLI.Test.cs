@@ -1,8 +1,7 @@
-using System.Data.Common;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using CLI.Records;
-using CsvHelper.Configuration.Attributes;
 using SimpleDB;
 
 
@@ -79,12 +78,13 @@ namespace CLI.Tests
         {
             string command = "read";
 
-            if (CSVDatabase<Cheep>.Instance.Read().Count() == 0)
-            {
-                // Arrange
-                var cheep = new Cheep("test", "Test", DateTimeOffset.Now.ToUnixTimeSeconds());
-                CSVDatabase<Cheep>.Instance.Store(cheep);
-            }
+            // if (CSVDatabase<Cheep>.Instance.Read().Count() == 0)
+            // {
+            //     // Arrange
+            //     var cheep = new Cheep("test", "Test", DateTimeOffset.Now.ToUnixTimeSeconds());
+            //     CSVDatabase<Cheep>.Instance.Store(cheep);
+            // }
+            RunProgramWithArguments("cheep test");
 
             var actual = RunProgramWithArguments(command);
 
