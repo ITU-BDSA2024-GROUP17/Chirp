@@ -19,8 +19,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SimpleDB\SimpleDB.csproj" />
-  </ItemGroup>
-
 </Project>
