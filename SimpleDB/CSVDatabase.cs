@@ -7,12 +7,16 @@ using CsvHelper.Configuration;
 public class CSVDatabase<T> : IDatabaseRepository<T>
 {
     private readonly string databasePath = "../db.csv";
-    private static CSVDatabase<T> instance = new();
+    private static readonly CSVDatabase<T> instance = new();
 
     static CSVDatabase()
-    { }
+    {
+
+    }
     private CSVDatabase()
-    { }
+    {
+
+    }
 
     public static CSVDatabase<T> Instance
     {
