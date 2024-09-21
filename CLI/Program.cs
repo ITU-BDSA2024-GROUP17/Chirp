@@ -24,7 +24,7 @@ Options:
     --version     Show version.
 ";
 
-var baseURL = "http://localhost:5281";
+var baseURL = "http://localhost:5281"; // This should use the correct URL based on the environment
 using HttpClient client = new();
 client.DefaultRequestHeaders.Accept.Clear();
 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
