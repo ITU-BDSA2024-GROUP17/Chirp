@@ -41,7 +41,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseStaticFiles(); // For the css file
-    app.UseHttpsRedirection();
+    // app.UseHttpsRedirection(); // use in production
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
@@ -56,7 +56,7 @@ app.MapPost("/cheep", (Cheep cheep) =>
     db.Store(cheep);
 
     return cheep;
-}).WithSummary("Posts a new cheep");
+});
 
 
 app.MapGet("/cheeps", () => db.Read().ToList())
