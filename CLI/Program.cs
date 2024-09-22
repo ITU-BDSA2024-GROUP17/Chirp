@@ -2,7 +2,6 @@ using CLI;
 using CLI.Records;
 using DocoptNet;
 using SimpleDB;
-
 var db = CSVDatabase<Cheep>.Instance;
 
 
@@ -55,6 +54,7 @@ return parser.Parse(args) switch
     IInputErrorResult => OnError(help),
     _ => throw new InvalidOperationException("Unexpected result type")
 };
+
 
 List<Cheep> getCheeps()
 {
