@@ -54,9 +54,6 @@ jobs:
       - name: List files
         run: ls
 
-      - name: List app folder
-        run: ls app/
-
       - name: Login to Azure
         uses: azure/login@v2
         with:
