@@ -2,9 +2,6 @@ using System.Reflection;
 using CSVDBService.Records;
 using Microsoft.OpenApi.Models;
 using SimpleDB;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Hosting;
 
 var db = CSVDatabase<Cheep>.Instance;
 
@@ -56,10 +53,8 @@ app.MapPost("/cheep", (Cheep cheep) =>
     db.Store(cheep);
 
     return cheep;
-});
+}).WithSummary("Sends a cheep");
 
-
-app.MapGet("/cheeps", () => db.Read().ToList())
-.WithSummary("Retrieves the cheeps");
+app.MapGet("/cheeps", () => db.Read().ToList()).WithSummary("Retrieves the cheeps");
 
 app.Run();
