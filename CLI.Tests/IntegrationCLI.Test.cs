@@ -107,7 +107,7 @@ namespace CLI.Tests
                 RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
-                WorkingDirectory = "../../../../CLI"
+                WorkingDirectory = Path.Combine("..", "..", "..", "..", "CLI")
             };
             var process = new Process
             {
