@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GenerateProgramFile>false</GenerateProgramFile>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
   </PropertyGroup>
 
   <ItemGroup>

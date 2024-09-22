@@ -17,5 +17,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CLI\CLI.csproj" />
+    <ProjectReference Include="..\SimpleDB\SimpleDB.csproj" />
   </ItemGroup>
 </Project>
