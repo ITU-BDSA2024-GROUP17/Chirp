@@ -8,6 +8,8 @@ var db = CSVDatabase<Cheep>.Instance;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddRazorPages();
+
 builder.Services.AddSwaggerGen(options =>
 {
     // using System.Reflection;
@@ -38,13 +40,14 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseStaticFiles(); // For the css file
-    // app.UseHttpsRedirection(); // use in production
+    app.UseRouting();
+    app.UseAuthorization();
+    // app.UseHttpsRedirection(); // use in production (FOR HTTPS)
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
         options.InjectStylesheet("./swaggerUI.css");
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Chirp API");
-        options.RoutePrefix = string.Empty; // At the root (remove later and use another endpoint)
     });
 }
 
@@ -56,5 +59,7 @@ app.MapPost("/cheep", (Cheep cheep) =>
 }).WithSummary("Sends a cheep");
 
 app.MapGet("/cheeps", () => db.Read().ToList()).WithSummary("Retrieves the cheeps");
+
+app.MapRazorPages();
 
 app.Run();
