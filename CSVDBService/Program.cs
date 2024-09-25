@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddRazorPages();
+builder.Services.AddSingleton<ICheepService, CheepService>();
 
 builder.Services.AddSwaggerGen(options =>
 {
