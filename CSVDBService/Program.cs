@@ -40,14 +40,12 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseStaticFiles(); // For the css file
     app.UseRouting();
     app.UseAuthorization();
     // app.UseHttpsRedirection(); // use in production (FOR HTTPS)
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-        options.InjectStylesheet("./swaggerUI.css");
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Chirp API");
     });
 }
