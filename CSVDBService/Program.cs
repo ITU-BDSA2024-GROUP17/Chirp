@@ -40,8 +40,6 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseRouting();
-    app.UseAuthorization();
     // app.UseHttpsRedirection(); // use in production (FOR HTTPS)
     app.UseSwagger();
     app.UseSwaggerUI(options =>
@@ -58,6 +56,12 @@ app.MapPost("/cheep", (Cheep cheep) =>
 }).WithSummary("Sends a cheep");
 
 app.MapGet("/cheeps", () => db.Read().ToList()).WithSummary("Retrieves the cheeps");
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
 
 app.MapRazorPages();
 
