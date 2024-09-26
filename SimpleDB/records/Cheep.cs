@@ -1,4 +1,4 @@
-namespace CSVDBService.Records;
+namespace SimpleDB.Records;
 
 /// <summary>
 /// A Cheep is a message posted by a user.
