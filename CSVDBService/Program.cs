@@ -3,7 +3,7 @@ using Microsoft.OpenApi.Models;
 using SimpleDB;
 using SimpleDB.Records;
 
-var db = CSVDatabase<Cheep>.Instance;
+var db = CSVDatabase.Instance;
 
 var builder = WebApplication.CreateBuilder(args);
 
