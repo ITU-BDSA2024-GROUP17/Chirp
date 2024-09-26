@@ -76,7 +76,6 @@ body {
 .root {
     margin: auto;
     max-width: 72rem;
-    background-color: var(--orange-300);
 }
 
 .line {
@@ -128,4 +127,7 @@ body {
     justify-content: center;
     flex-direction: column;
     overflow: hidden;
+}
+
+.container {
 }

@@ -1,13 +1,12 @@
 ﻿@page "/"
 @model Chirp.Razor.Pages.PublicModel
 @{
-    ViewData["Title"] = "Chirp!";
+    ViewData["Title"] = "Public Timeline";
     Layout = "Shared/_Layout";
 }
 
+<link href="/css/pages/public.css" rel="stylesheet" type="text/css" />
 <div>
-    <h2> Public Timeline </h2>
-
     @if (Model.Cheeps.Any())
     {
         <ul id="messagelist" class="cheeps">
@@ -24,6 +23,7 @@
                 </li>
             }
         </ul>
+        ViewData["totalCheeps"] = Model.Cheeps.Count;
     }
     else
     {

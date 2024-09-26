@@ -1,0 +1,7 @@
+.cheeps {
+    background-color: var(--background);
+    border: 1px solid var(--gray-300);
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
