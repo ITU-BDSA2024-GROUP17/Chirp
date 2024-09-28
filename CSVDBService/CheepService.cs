@@ -1,29 +1,31 @@
-public record CheepViewModel(string Author, string Message, string Timestamp);
-
+using Microsoft.AspNetCore.Mvc;
+using SimpleDB;
+using SimpleDB.Records;
 public interface ICheepService
 {
-    public List<CheepViewModel> GetCheeps();
-    public List<CheepViewModel> GetCheepsFromAuthor(string author);
+    public Task<List<Cheep>> GetCheeps();
+    public Task<List<Cheep>> GetCheepsFromAuthor(string author);
 }
 
 public class CheepService : ICheepService
 {
-    // These would normally be loaded from a database for example
-    private static readonly List<CheepViewModel> _cheeps = new()
-        {
-            new CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
-            new CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
-        };
+    private readonly CSVDatabase _context = CSVDatabase.Instance;
 
-    public List<CheepViewModel> GetCheeps()
+
+    public async Task<List<Cheep>> GetCheeps()
     {
-        return _cheeps;
+        _context.Store(new Cheep("Alice", "Hello, World!", DateTimeOffset.UtcNow.ToUnixTimeSeconds()));
+        _context.Store(new Cheep("Bob", "Goodbye, World!", DateTimeOffset.UtcNow.ToUnixTimeSeconds()));
+        // Get Cheeps from the database
+        var cheeps = await _context.Read();
+        return cheeps;
     }
 
-    public List<CheepViewModel> GetCheepsFromAuthor(string author)
+    public async Task<List<Cheep>> GetCheepsFromAuthor(string author)
     {
         // filter by the provided author name
-        return _cheeps.Where(x => x.Author == author).ToList();
+        var Cheeps = await _context.Read();
+        return Cheeps.Where(x => x.Author == author).ToList();
     }
 
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)

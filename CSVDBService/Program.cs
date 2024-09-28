@@ -55,7 +55,7 @@ app.MapPost("/cheep", (Cheep cheep) =>
     return cheep;
 }).WithSummary("Sends a cheep");
 
-app.MapGet("/cheeps", () => db.Read().ToList()).WithSummary("Retrieves the cheeps");
+app.MapGet("/cheeps", () => db.Read().Result).WithSummary("Retrieves the cheeps");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

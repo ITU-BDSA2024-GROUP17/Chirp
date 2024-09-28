@@ -9,7 +9,6 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
     private static readonly string databasePath = "../sqliteDB.db";
     private static readonly SqliteConnection connection = new($"Data Source={databasePath}");
     private static readonly CSVDatabase instance = new();
-
     static CSVDatabase()
     {
 
@@ -44,7 +43,7 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
         command.ExecuteNonQuery();
     }
 
-    public IEnumerable<Cheep> Read(int? limit = null)
+    public Task<List<Cheep>> Read(int? limit = null)
     {
 
         var command = connection.CreateCommand();
@@ -52,11 +51,11 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
 
         var reader = command.ExecuteReader();
         List<Cheep> data = [];
-        while (reader.Read())
+        while (reader.Read() && data.Count() <= limit)
         {
             data.Add(new(reader.GetString(0), reader.GetString(1), reader.GetInt64(2)));
         }
-        return data;
+        return Task.FromResult(data);
     }
 
     public void Store(Cheep record)
