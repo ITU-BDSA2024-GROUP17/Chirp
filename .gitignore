@@ -223,4 +223,5 @@ AppPackages/
 #####
 
 # Database files
-*csv
+*.csv
+*.db
