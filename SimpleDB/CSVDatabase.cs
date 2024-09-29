@@ -1,6 +1,8 @@
 namespace SimpleDB;
 
+using System.Reflection;
 using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.FileProviders;
 using SimpleDB.Records;
 
 public class CSVDatabase : IDatabaseRepository<Cheep>
@@ -38,7 +40,9 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
     private static void CreateSchema()
     {
         var command = connection.CreateCommand();
-        using var schemaReader = new StreamReader("../SimpleDB/data/schema.sql");
+        var fileProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
+        using var reader = fileProvider.GetFileInfo("data/schema.sql").CreateReadStream();
+        using var schemaReader = new StreamReader(reader);
         command.CommandText = schemaReader.ReadToEnd();
 
         command.ExecuteNonQuery();
