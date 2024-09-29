@@ -129,5 +129,75 @@ body {
     overflow: hidden;
 }
 
-.container {
+/*
+
+Cheeps
+
+*/
+
+.cheeps-container {
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-decoration: none;
+}
+
+.cheep-wrapper {
+    display: flex;
+    margin-bottom: 1rem;
+    list-style-type: none;
+}
+
+.cheep-avatar {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-color: var(--gray-200);
+    text-align: center;
+    align-self: center;
+    font-weight: bold;
+    font-size: 16px;
+    align-content: center;
+    cursor: default;
+    text-decoration: none;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.cheep {
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.cheep-author {
+    font-weight: bold;
+    color: var(--text);
+    text-decoration: none;
+}
+
+.cheep-user {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+}
+
+.cheep-author::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 1px;
+    background: #000;
+    transition: width 0.2s ease-in-out;
+}
+
+.cheep-author:hover::after {
+    width: 100%;
+}
+
+.cheep-timestamp {
+    color: var(--gray-700);
+    font-size: 12px;
+    font-weight: 400;
 }
