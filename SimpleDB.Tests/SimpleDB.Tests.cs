@@ -1,52 +1,22 @@
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Xunit;
 using Xunit.Sdk;
-
+using System.Data;
+using SimpleDB.Records;
 namespace SimpleDB.Tests;
 
 
-
-public record test(int id)
-{
-}
-
 public class CSVDatabaseTests
 {
-    // TODO: This fails, to be continued
-    [Theory]
-    [InlineData(-1)]
-    [InlineData(0)]
-    [InlineData(1)]
-    public void TestStore(int val)
+    [Fact]
+    public void TestConnection()
     {
-        CSVDatabase<test> database = CSVDatabase<test>.Instance;
         // Act
-        database.Store(new test(val));
-        var records = database.Read();
+        var connection = CSVDatabase.connection != null && CSVDatabase.connection.State == ConnectionState.Open;
 
         // Assert
-        Assert.Single(records);
-        Assert.Equal(new test(val), records.First());
-        database.Clear();
+        Assert.True(connection);
     }
 
 
-    [Fact]
-    public void TestClear()
-    {
-
-    }
-
-    [Fact]
-    public void TestRead()
-    {
-        // Arrange
-        CSVDatabase<int> database = CSVDatabase<int>.Instance;
-
-        database.Clear();
-        // Act
-        var records = database.Read();
-
-        // Assert
-        Assert.Empty(records);
-    }
 }
