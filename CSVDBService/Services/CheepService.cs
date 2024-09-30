@@ -1,4 +1,4 @@
-using CSVDBService.interfaces;
+using CSVDBService.Interfaces;
 using SimpleDB;
 using SimpleDB.Records;
 
