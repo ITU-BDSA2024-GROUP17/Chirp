@@ -3,15 +3,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Razor.Pages;
 
-public class UserTimelineModel : PageModel
+public class UserTimelineModel(ICheepService service) : PageModel
 {
-    private readonly ICheepService _service;
-    public List<CheepViewModel> Cheeps { get; set; }
-
-    public UserTimelineModel(ICheepService service)
-    {
-        _service = service;
-    }
+    private readonly ICheepService _service = service;
+    public List<CheepViewModel> Cheeps { get; set; } = [];
 
     public ActionResult OnGet(string author)
     {

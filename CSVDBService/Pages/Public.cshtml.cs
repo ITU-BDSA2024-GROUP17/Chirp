@@ -3,15 +3,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Razor.Pages;
 
-public class PublicModel : PageModel
+public class PublicModel(ICheepService service) : PageModel
 {
-    private readonly ICheepService _service;
-    public List<CheepViewModel> Cheeps { get; set; }
-
-    public PublicModel(ICheepService service)
-    {
-        _service = service;
-    }
+    private readonly ICheepService _service = service;
+    public List<CheepViewModel> Cheeps { get; set; } = [];
 
     public ActionResult OnGet()
     {
