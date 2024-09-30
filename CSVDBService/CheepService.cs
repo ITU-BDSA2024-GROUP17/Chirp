@@ -20,6 +20,8 @@ public class CheepService : ICheepService
 
     public async Task<List<Cheep>> GetCheepsFromAuthor(string author, int page)
     {
-        return await _context.Read(author, page);
+        Console.WriteLine(author);
+        Console.WriteLine(page);
+        return await CSVDatabase.Read(author, page);
     }
 }

@@ -3,8 +3,8 @@ using Xunit;
 using Xunit.Sdk;
 using System.Data;
 using SimpleDB.Records;
-namespace SimpleDB.Tests;
 
+namespace SimpleDB.Tests;
 
 public class CSVDatabaseTests
 {
@@ -18,5 +18,9 @@ public class CSVDatabaseTests
         Assert.True(connection);
     }
 
-
+    // [Fact]
+    // public void TestRead()
+    // {
+    //     // Arrange
+    //     CSVDatabase<int> database = CSVDatabase<int>.Instance;
 }

@@ -1,19 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SimpleDB.Records;
 
-namespace Chirp.Razor.Pages;
+namespace CSVDBService.Pages;
 
-public class PublicModel : PageModel
+public class PublicModel(ICheepService service) : PageModel
 {
-    private readonly ICheepService _service;
-    public List<Cheep> Cheeps { get; set; }
+    private readonly ICheepService _service = service;
+    public List<Cheep> Cheeps { get; set; } = [];
 
-    public PublicModel(ICheepService service)
-    {
-        _service = service;
-    }
-    public ActionResult OnGet([FromQuery] int page = 1)
+    public ActionResult OnGet([FromQuery] int page)
     {
         // Redirect if user try 0 or negative page
         if (page < 1)

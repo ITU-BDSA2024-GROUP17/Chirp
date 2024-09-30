@@ -1,14 +1,17 @@
 namespace SimpleDB;
 
+using System.Reflection;
 using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.FileProviders;
 using SimpleDB.Records;
 
 public class CSVDatabase : IDatabaseRepository<Cheep>
 {
-
     private static readonly string databasePath = "../sqliteDB.db";
-    private static readonly SqliteConnection connection = new($"Data Source={databasePath}");
     private static readonly CSVDatabase instance = new();
+
+    public static readonly SqliteConnection connection = new($"Data Source={databasePath}");
+
     static CSVDatabase()
     {
 
@@ -37,7 +40,9 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
     private static void CreateSchema()
     {
         var command = connection.CreateCommand();
-        using var schemaReader = new StreamReader("../SimpleDB/data/schema.sql");
+        var fileProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
+        using var reader = fileProvider.GetFileInfo("data/schema.sql").CreateReadStream();
+        using var schemaReader = new StreamReader(reader);
         command.CommandText = schemaReader.ReadToEnd();
 
         command.ExecuteNonQuery();
@@ -49,7 +54,7 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
     /// <param name="username">The author to read cheeps from</param>
     /// <param name="page">The query page</param>
     /// <returns>Task list of Cheeps from author</returns>
-    public Task<List<Cheep>> Read(string username, int? page = 1)
+    public static Task<List<Cheep>> Read(string username, int? page = 1)
     {
         var limit = 32;
         // Offset rows based on the page number and limit of rows to read
@@ -68,8 +73,9 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
         command.Parameters.AddWithValue("@offset", offset);
 
         var reader = command.ExecuteReader();
-        return Task.FromResult(returnCheeps(reader));
+        return Task.FromResult(ReturnCheeps(reader));
     }
+
     /// <summary>
     /// Read unordered cheeps from the database.
     /// </summary>
@@ -91,7 +97,7 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
         command.Parameters.AddWithValue("@offset", offset);
 
         var reader = command.ExecuteReader();
-        return Task.FromResult(returnCheeps(reader));
+        return Task.FromResult(ReturnCheeps(reader));
     }
 
     /// <summary>
@@ -99,7 +105,7 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
     /// </summary>
     /// <param name="reader">SqliteDataReader from command</param>
     /// <returns>List of Cheeps</returns>
-    private List<Cheep> returnCheeps(SqliteDataReader reader)
+    private static List<Cheep> ReturnCheeps(SqliteDataReader reader)
     {
         List<Cheep> data = [];
         while (reader.Read())
@@ -148,7 +154,7 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
     }
 
 
-    public void Clear()
+    public static void Clear()
     {
         File.Delete(databasePath);
     }
