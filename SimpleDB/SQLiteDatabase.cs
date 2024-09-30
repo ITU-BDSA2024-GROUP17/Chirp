@@ -27,7 +27,8 @@ public class SQLiteDatabase : IDatabaseRepository<Cheep>
         if (command.ExecuteScalar()!.ToString() == "0")
         {
             Console.WriteLine("Creating new database");
-            CreateSchema();
+            RunSQLFile("data/schema.sql");
+            RunSQLFile("data/dump.sql");
         }
     }
 
@@ -39,14 +40,13 @@ public class SQLiteDatabase : IDatabaseRepository<Cheep>
         }
     }
 
-    private void CreateSchema()
+    private void RunSQLFile(string path)
     {
         var command = connection.CreateCommand();
         var fileProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
-        using var reader = fileProvider.GetFileInfo("data/schema.sql").CreateReadStream();
-        using var schemaReader = new StreamReader(reader);
-        command.CommandText = schemaReader.ReadToEnd();
-
+        using var stream = fileProvider.GetFileInfo(path).CreateReadStream();
+        using var StreamReader = new StreamReader(stream);
+        command.CommandText = StreamReader.ReadToEnd();
         command.ExecuteNonQuery();
     }
 
