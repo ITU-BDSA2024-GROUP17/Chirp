@@ -1,4 +1,4 @@
-﻿@page "/cheepers/{author}"
+﻿@page "/{author}"
 @model CSVDBService.Pages.UserTimelineModel
 @{
     ViewData["Title"] = "Chirp!";
@@ -17,7 +17,7 @@
                 <li>
                     <p>
                         <strong>
-                            <a href="/cheepers/@cheep.Author">@cheep.Author</a>
+                            <a href="/@cheep.Author">@cheep.Author</a>
                         </strong>
                         @cheep.Message
                         <small>&mdash; @cheep.Timestamp</small>
