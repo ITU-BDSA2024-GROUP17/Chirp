@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDB", "SimpleDB\Simple
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDB.Tests", "SimpleDB.Tests\SimpleDB.Tests.csproj", "{82A88917-7931-4C3A-A3D3-444FF8D9A004}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSVDBService", "CSVDBService\CSVDBService.csproj", "{451CD5E1-7ADE-4ED8-BAEB-28C306776F08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{451CD5E1-7ADE-4ED8-BAEB-28C306776F08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

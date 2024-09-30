@@ -1,6 +1,6 @@
 using SimpleDB.Records;
 
-namespace CSVDBService.Interfaces;
+namespace Web.Interfaces;
 
 public interface ICheepService
 {

@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SimpleDB.Records;
-using CSVDBService.Interfaces;
+using Web.Interfaces;
 
-namespace CSVDBService.Pages;
+namespace Web.Pages;
 
 public class PublicModel(ICheepService service) : PageModel
 {

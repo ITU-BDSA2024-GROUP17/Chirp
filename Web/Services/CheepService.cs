@@ -1,12 +1,12 @@
-using CSVDBService.Interfaces;
+using Web.Interfaces;
 using SimpleDB;
 using SimpleDB.Records;
 
-namespace CSVDBService.Services;
+namespace Web.Services;
 
 public class CheepService : ICheepService
 {
-    private readonly CSVDatabase _context = CSVDatabase.Instance;
+    private readonly SQLiteDatabase _context = SQLiteDatabase.Instance;
 
     public async Task<List<Cheep>> GetCheeps(int page)
     {

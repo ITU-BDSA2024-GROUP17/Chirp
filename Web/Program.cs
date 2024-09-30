@@ -2,10 +2,10 @@ using System.Reflection;
 using Microsoft.OpenApi.Models;
 using SimpleDB;
 using SimpleDB.Records;
-using CSVDBService.Services;
-using CSVDBService.Interfaces;
+using Web.Services;
+using Web.Interfaces;
 
-var db = CSVDatabase.Instance;
+var db = SQLiteDatabase.Instance;
 
 var builder = WebApplication.CreateBuilder(args);
 
