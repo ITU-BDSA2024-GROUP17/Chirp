@@ -1,13 +1,16 @@
 namespace SimpleDB;
 
-using System.Globalization;
-using CsvHelper;
-using CsvHelper.Configuration;
+using System.Reflection;
+using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.FileProviders;
+using SimpleDB.Records;
 
-public class CSVDatabase<T> : IDatabaseRepository<T>
+public class CSVDatabase : IDatabaseRepository<Cheep>
 {
-    private readonly string databasePath = "../db.csv";
-    private static readonly CSVDatabase<T> instance = new();
+
+    private static readonly string databasePath = "../sqliteDB.db";
+    private static readonly SqliteConnection connection = new($"Data Source={databasePath}");
+    private static readonly CSVDatabase instance = new();
 
     static CSVDatabase()
     {
@@ -15,10 +18,18 @@ public class CSVDatabase<T> : IDatabaseRepository<T>
     }
     private CSVDatabase()
     {
-
+        connection.Open();
+        var command = connection.CreateCommand();
+        command.CommandText = "SELECT COUNT(name) FROM sqlite_master WHERE type='table' AND name=@table_name";
+        command.Parameters.AddWithValue("@table_name", "message");
+        if (command.ExecuteScalar()!.ToString() == "0")
+        {
+            Console.WriteLine("Creating new database");
+            CreateSchema();
+        }
     }
 
-    public static CSVDatabase<T> Instance
+    public static CSVDatabase Instance
     {
         get
         {
@@ -26,47 +37,72 @@ public class CSVDatabase<T> : IDatabaseRepository<T>
         }
     }
 
-    private void CreateDatabaseFileIfMissing()
+    private static void CreateSchema()
     {
-        if (File.Exists(databasePath)) return;
+        var command = connection.CreateCommand();
+        var fileProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
+        using var reader = fileProvider.GetFileInfo("data/schema.sql").CreateReadStream();
+        using var schemaReader = new StreamReader(reader);
+        command.CommandText = schemaReader.ReadToEnd();
 
-        using var stream = File.Create(databasePath);
-        using var writer = new StreamWriter(stream);
-        using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
-
-        csv.WriteHeader<T>();
-        csv.NextRecord(); // Create a newline, such that new records wont be on headerline.
+        command.ExecuteNonQuery();
     }
 
-    public IEnumerable<T> Read(int? limit = null)
+    public IEnumerable<Cheep> Read(int? limit = null)
     {
-        CreateDatabaseFileIfMissing();
-        using var reader = new StreamReader(databasePath);
-        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-        var records = csv.GetRecords<T>();
-        return records.ToList();
-    }
 
-    public void Store(T record)
-    {
-        var records = new List<T> { record };
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        var command = connection.CreateCommand();
+        command.CommandText = "SELECT u.username, m.text, m.pub_date FROM message m JOIN user u ON m.author_id = u.user_id";
+
+        var reader = command.ExecuteReader();
+        List<Cheep> data = [];
+        while (reader.Read())
         {
-            HasHeaderRecord = false,
-        };
-        CreateDatabaseFileIfMissing();
+            data.Add(new(reader.GetString(0), reader.GetString(1), reader.GetInt64(2)));
+        }
+        return data;
+    }
 
+    public void Store(Cheep record)
+    {
+        var transaction = connection.BeginTransaction(System.Data.IsolationLevel.Serializable);
+        var command = connection.CreateCommand();
+        command.CommandText = "SELECT user_id FROM user WHERE username = @username";
+        command.Parameters.AddWithValue("@username", record.Author);
+        var reader = command.ExecuteReader();
+        int userId;
+        if (reader.HasRows)
+        {
+            reader.Read();
+            userId = reader.GetInt32(0);
+        }
+        else
+        {
+            command = connection.CreateCommand();
+            command.CommandText = "insert into user (username, email) values (@username, \"not implemented\");";
+            command.Parameters.AddWithValue("@username", record.Author);
+            command.ExecuteNonQuery();
 
-        using var stream = File.Open(databasePath, FileMode.Append);
-        using var writer = new StreamWriter(stream);
-        using var csv = new CsvWriter(writer, config);
+            command = connection.CreateCommand();
+            command.CommandText = "SELECT user_id FROM user WHERE username = @username";
+            command.Parameters.AddWithValue("@username", record.Author);
+            reader = command.ExecuteReader();
+            reader.Read();
+            userId = reader.GetInt32(0);
+        }
 
-        csv.WriteRecords(records);
+        command = connection.CreateCommand();
+        command.CommandText = "insert into message (author_id, text, pub_date) values (@id, @message, @timestamp);";
+        command.Parameters.AddWithValue("@id", userId);
+        command.Parameters.AddWithValue("@message", record.Message);
+        command.Parameters.AddWithValue("@timestamp", record.Timestamp);
+        command.ExecuteNonQuery();
+
+        transaction.Commit();
     }
 
     public void Clear()
     {
         File.Delete(databasePath);
-        CreateDatabaseFileIfMissing();
     }
 }

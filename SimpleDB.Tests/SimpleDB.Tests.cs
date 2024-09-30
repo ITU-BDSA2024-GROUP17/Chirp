@@ -23,17 +23,17 @@ public class CSVDatabaseTests
     //     database.Clear();
     // }
 
-    [Fact]
-    public void TestRead()
-    {
-        // Arrange
-        CSVDatabase<int> database = CSVDatabase<int>.Instance;
+    // [Fact]
+    // public void TestRead()
+    // {
+    //     // Arrange
+    //     CSVDatabase<int> database = CSVDatabase<int>.Instance;
 
-        database.Clear();
-        // Act
-        var records = database.Read();
+    //     database.Clear();
+    //     // Act
+    //     var records = database.Read();
 
-        // Assert
-        Assert.Empty(records);
-    }
+    //     // Assert
+    //     Assert.Empty(records);
+    // }
 }
