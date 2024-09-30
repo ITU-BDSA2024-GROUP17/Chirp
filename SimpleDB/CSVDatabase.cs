@@ -60,7 +60,7 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
     {
         var limit = 32;
         // Offset rows based on the page number and limit of rows to read
-        var offset = page == 1 ? limit : limit * (page - 1);
+        var offset = page == 1 ? 0 : limit * (page - 1);
 
         var command = connection.CreateCommand();
         command.CommandText = @"
@@ -87,12 +87,14 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
     {
         var limit = 32;
         // Offset rows based on the page number and limit of rows to read
-        var offset = page == 1 ? limit : limit * (page - 1);
+        var offset = page == 1 ? 0 : limit * (page - 1);
+
+        Console.WriteLine($"Reading page {page} with offset {offset} and limit {limit}");
 
         var command = connection.CreateCommand();
         command.CommandText = @"SELECT u.username, m.text, m.pub_date FROM message m
         JOIN user u ON m.author_id = u.user_id
-        LIMIT @limit OFFSET @limit * @offset
+        LIMIT @limit OFFSET @offset
         ";
         // Add LIMIT and OFFSET to the query
         command.Parameters.AddWithValue("@limit", limit);
