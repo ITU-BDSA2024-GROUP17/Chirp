@@ -3,15 +3,9 @@ using Xunit.Sdk;
 
 namespace SimpleDB.Tests;
 
-
-
-public record test(int id)
-{
-}
-
 public class CSVDatabaseTests
 {
-    // // TODO: This fails, to be continued
+    // TODO: This fails, to be continued
     // [Theory]
     // [InlineData(-1)]
     // [InlineData(0)]
@@ -27,13 +21,6 @@ public class CSVDatabaseTests
     //     Assert.Single(records);
     //     Assert.Equal(new test(val), records.First());
     //     database.Clear();
-    // }
-
-
-    // [Fact]
-    // public void TestClear()
-    // {
-
     // }
 
     // [Fact]
