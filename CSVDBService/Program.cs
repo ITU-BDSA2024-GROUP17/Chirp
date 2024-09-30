@@ -2,6 +2,8 @@ using System.Reflection;
 using Microsoft.OpenApi.Models;
 using SimpleDB;
 using SimpleDB.Records;
+using CSVDBService.Services;
+using CSVDBService.Interfaces;
 
 var db = CSVDatabase.Instance;
 
@@ -54,7 +56,7 @@ app.MapPost("/cheep", (Cheep cheep) =>
     return cheep;
 }).WithSummary("Sends a cheep");
 
-app.MapGet("/cheeps", () => db.Read().ToList()).WithSummary("Retrieves the cheeps");
+app.MapGet("/cheeps", () => db.Read().Result).WithSummary("Retrieves the cheeps");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

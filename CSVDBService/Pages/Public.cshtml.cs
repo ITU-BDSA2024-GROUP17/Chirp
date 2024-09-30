@@ -1,16 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SimpleDB.Records;
+using CSVDBService.Interfaces;
 
-namespace Chirp.Razor.Pages;
+namespace CSVDBService.Pages;
 
 public class PublicModel(ICheepService service) : PageModel
 {
     private readonly ICheepService _service = service;
-    public List<CheepViewModel> Cheeps { get; set; } = [];
+    public List<Cheep> Cheeps { get; set; } = [];
 
-    public ActionResult OnGet()
+    public ActionResult OnGet([FromQuery] int page)
     {
-        Cheeps = _service.GetCheeps();
+        // Redirect if user try 0 or negative page
+        if (page < 1)
+        {
+            return Redirect("/?page=1");
+        }
+        Cheeps = _service.GetCheeps(page).Result;
         return Page();
     }
 }

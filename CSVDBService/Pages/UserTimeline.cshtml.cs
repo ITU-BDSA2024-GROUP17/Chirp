@@ -1,16 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SimpleDB.Records;
+using CSVDBService.Interfaces;
 
-namespace Chirp.Razor.Pages;
+namespace CSVDBService.Pages;
 
 public class UserTimelineModel(ICheepService service) : PageModel
 {
     private readonly ICheepService _service = service;
-    public List<CheepViewModel> Cheeps { get; set; } = [];
+    public List<Cheep> Cheeps { get; set; } = [];
 
-    public ActionResult OnGet(string author)
+    public ActionResult OnGet(string author, [FromQuery] int page = 1)
     {
-        Cheeps = _service.GetCheepsFromAuthor(author);
+        if (page < 1)
+        {
+            return Redirect($"/cheepers/{author}?page=1");
+        }
+        Cheeps = _service.GetCheepsFromAuthor(author, page).Result;
         return Page();
     }
 }
