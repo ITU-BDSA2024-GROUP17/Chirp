@@ -5,18 +5,18 @@ using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.FileProviders;
 using SimpleDB.Records;
 
-public class CSVDatabase : IDatabaseRepository<Cheep>
+public class SQLiteDatabase : IDatabaseRepository<Cheep>
 {
     private static readonly string databasePath = "./sqliteDB.db";
-    private static readonly CSVDatabase instance = new();
+    private static readonly SQLiteDatabase instance = new();
 
     public readonly SqliteConnection connection;
 
-    static CSVDatabase()
+    static SQLiteDatabase()
     {
 
     }
-    private CSVDatabase()
+    private SQLiteDatabase()
     {
         connection = new SqliteConnection($"Data Source={databasePath}");
 
@@ -32,7 +32,7 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
         }
     }
 
-    public static CSVDatabase Instance
+    public static SQLiteDatabase Instance
     {
         get
         {
@@ -88,8 +88,6 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
         var limit = 32;
         // Offset rows based on the page number and limit of rows to read
         var offset = page == 1 ? 0 : limit * (page - 1);
-
-        Console.WriteLine($"Reading page {page} with offset {offset} and limit {limit}");
 
         var command = connection.CreateCommand();
         command.CommandText = @"SELECT u.username, m.text, m.pub_date FROM message m
