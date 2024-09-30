@@ -19,6 +19,6 @@ public class CheepService : ICheepService
     {
         Console.WriteLine(author);
         Console.WriteLine(page);
-        return await CSVDatabase.Read(author, page);
+        return await _context.Read(author, page);
     }
 }

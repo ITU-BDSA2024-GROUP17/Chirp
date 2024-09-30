@@ -7,10 +7,10 @@ using SimpleDB.Records;
 
 public class CSVDatabase : IDatabaseRepository<Cheep>
 {
-    private static readonly string databasePath = "../sqliteDB.db";
+    private static readonly string databasePath = "./sqliteDB.db";
     private static readonly CSVDatabase instance = new();
 
-    public static readonly SqliteConnection connection = new($"Data Source={databasePath}");
+    public readonly SqliteConnection connection;
 
     static CSVDatabase()
     {
@@ -18,6 +18,8 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
     }
     private CSVDatabase()
     {
+        connection = new SqliteConnection($"Data Source={databasePath}");
+
         connection.Open();
         var command = connection.CreateCommand();
         command.CommandText = "SELECT COUNT(name) FROM sqlite_master WHERE type='table' AND name=@table_name";
@@ -37,7 +39,7 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
         }
     }
 
-    private static void CreateSchema()
+    private void CreateSchema()
     {
         var command = connection.CreateCommand();
         var fileProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
@@ -54,7 +56,7 @@ public class CSVDatabase : IDatabaseRepository<Cheep>
     /// <param name="username">The author to read cheeps from</param>
     /// <param name="page">The query page</param>
     /// <returns>Task list of Cheeps from author</returns>
-    public static Task<List<Cheep>> Read(string username, int? page = 1)
+    public Task<List<Cheep>> Read(string username, int? page = 1)
     {
         var limit = 32;
         // Offset rows based on the page number and limit of rows to read
