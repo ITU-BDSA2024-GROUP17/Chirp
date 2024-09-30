@@ -1,15 +1,12 @@
+using CSVDBService.interfaces;
 using SimpleDB;
 using SimpleDB.Records;
-public interface ICheepService
-{
-    public Task<List<Cheep>> GetCheeps(int page);
-    public Task<List<Cheep>> GetCheepsFromAuthor(string author, int page);
-}
+
+namespace CSVDBService.Services;
 
 public class CheepService : ICheepService
 {
     private readonly CSVDatabase _context = CSVDatabase.Instance;
-
 
     public async Task<List<Cheep>> GetCheeps(int page)
     {
