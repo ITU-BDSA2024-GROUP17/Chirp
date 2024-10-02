@@ -4,6 +4,7 @@ using System.Reflection;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.FileProviders;
 using SimpleDB.Records;
+using System.Linq;
 
 public class SQLiteDatabase : IDatabaseRepository<Cheep>
 {

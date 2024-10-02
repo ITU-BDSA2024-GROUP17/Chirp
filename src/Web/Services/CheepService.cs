@@ -1,22 +1,31 @@
 using Web.Interfaces;
 using SimpleDB;
-using SimpleDB.Records;
+using Microsoft.EntityFrameworkCore;
+using System.Collections;
+using Web.Entities;
 
 namespace Web.Services;
 
-public class CheepService : ICheepService
+public class CheepService(CheepDbContext context) : ICheepService
 {
-    private readonly SQLiteDatabase _context = SQLiteDatabase.Instance;
+    private readonly CheepDbContext _context = context;
 
-    public async Task<List<Cheep>> GetCheeps(int page)
+    public List<Cheep> GetCheeps(int page)
     {
-        var cheeps = await _context.Read(page);
+        var cheeps = _context.Cheeps.Select(cheep => cheep).ToList();
+
+
         return cheeps;
     }
 
-    public async Task<List<Cheep>> GetCheepsFromAuthor(string author, int page)
+    public List<Cheep> GetCheepsFromAuthor(string author, int page)
     {
-        var cheeps = await _context.Read(author, page);
-        return cheeps;
+        var cheeps = _context.Authors.Where(_author => _author.Name == author).Select(_author => _author.Cheeps).First();
+
+        return (List<Cheep>)cheeps;
+    }
+
+    public void StoreCheep(Cheep cheep){
+        // TODO: Need a way to store to the db!!
     }
 }

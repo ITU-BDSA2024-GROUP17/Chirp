@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SimpleDB.Records;
+using Web.Entities;
 using Web.Interfaces;
 
 namespace Web.Pages;
@@ -8,7 +8,7 @@ namespace Web.Pages;
 public class PublicModel(ICheepService service) : PageModel
 {
     private readonly ICheepService _service = service;
-    public List<Cheep> Cheeps { get; set; } = [];
+    public ICollection<Cheep> Cheeps { get; set; } = [];
 
     public ActionResult OnGet([FromQuery] int page)
     {
@@ -17,7 +17,7 @@ public class PublicModel(ICheepService service) : PageModel
         {
             return Redirect("/?page=1");
         }
-        Cheeps = _service.GetCheeps(page).Result;
+        Cheeps = _service.GetCheeps(page);
         return Page();
     }
 }
