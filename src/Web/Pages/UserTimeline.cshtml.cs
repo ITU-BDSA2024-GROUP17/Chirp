@@ -14,7 +14,7 @@ public class UserTimelineModel(ICheepService service) : PageModel
     {
         if (page < 1)
         {
-            return Redirect($"/cheepers/{author}?page=1");
+            return Redirect($"/{author}?page=1");
         }
         Cheeps = _service.GetCheepsFromAuthor(author, page).Result;
         return Page();
