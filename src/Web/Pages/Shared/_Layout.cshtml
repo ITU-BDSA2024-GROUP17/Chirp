@@ -11,21 +11,20 @@
 
 <body>
     <div class="header">
-        <a href="/"><img class="logo" src="/images/icon1.png" alt="Icon1" /></a>
+        <a style="justify-self: center" href="/"><img class="logo" src="/images/icon1.png" alt="Icon1" /></a>
+        <input id="navSearchForm" type="text" placeholder="Search for user">
         <div class="nav-wrapper">
             <span class="nav-link"><a href="/">Public Timeline</a></span>
             <span class="nav-link"><a href="/cheep">Cheeps</a></span>
-            <span class="nav-link"><a href="/Swagger">Swagger</a></span>
-        </div>
-        <div>
-            <input id="navSearchForm" type="text" placeholder="Search for user">
         </div>
     </div>
     <div class="line"></div>
     <div class=root>
         <div class=container>
+
+
             <h2>@ViewData["Title"]</h2>
-            <h2>Found Cheeps: @ViewData["totalCheeps"]</h2>
+            <h2>@ViewData["totalCheeps"] Cheeps displayed</h2>
             @RenderBody()
         </div>
         <div class=footer>
