@@ -1,9 +1,11 @@
 using System.Reflection;
-using CSVDBService.Records;
 using Microsoft.OpenApi.Models;
 using SimpleDB;
+using SimpleDB.Records;
+using Web.Services;
+using Web.Interfaces;
 
-var db = CSVDatabase<Cheep>.Instance;
+var db = SQLiteDatabase.Instance;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +42,6 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    // app.UseHttpsRedirection(); // use in production (FOR HTTPS)
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
@@ -55,14 +56,12 @@ app.MapPost("/cheep", (Cheep cheep) =>
     return cheep;
 }).WithSummary("Sends a cheep");
 
-app.MapGet("/cheeps", () => db.Read().ToList()).WithSummary("Retrieves the cheeps");
+app.MapGet("/cheeps", () => db.Read().Result).WithSummary("Retrieves the cheeps");
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapRazorPages();
-
 app.Run();
