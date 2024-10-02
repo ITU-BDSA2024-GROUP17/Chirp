@@ -1,29 +1,32 @@
 ﻿@page "/"
 @model Web.Pages.PublicModel
 @{
-    ViewData["Title"] = "Chirp!";
+    ViewData["Title"] = "Public Timeline";
     Layout = "Shared/_Layout";
 }
 
+<link href="/css/pages/public.css" rel="stylesheet" type="text/css" />
 <div>
-    <h2> Public Timeline </h2>
-
     @if (Model.Cheeps.Any())
     {
-        <ul id="messagelist" class="cheeps">
+        <ul id="messagelist" class="cheeps-container">
             @foreach (var cheep in Model.Cheeps)
             {
-                <li>
-                    <p>
-                        <strong>
-                            <a href="/@cheep.Author">@cheep.Author</a>
-                        </strong>
+                <li class="cheep-wrapper">
+                    <a href="/@cheep.Author" class="cheep-avatar">
+                        @cheep.Author.First()
+                    </a>
+                    <div class="cheep">
+                        <div class="cheep-user">
+                            <a class="cheep-author" href="/@cheep.Author">@cheep.Author</a>
+                            <small class="cheep-timestamp">&sdot; @cheep.Timestamp</small>
+                        </div>
                         @cheep.Message
-                        <small>&mdash; @cheep.Timestamp</small>
-                    </p>
+                    </div>
                 </li>
             }
         </ul>
+        ViewData["totalCheeps"] = Model.Cheeps.Count;
     }
     else
     {

@@ -1,0 +1,203 @@
+body {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 14px;
+}
+
+:root {
+    --text: #1d1d1d;
+    --background: #f4f4f4;
+    --border: #f1f1f1;
+
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-500: #adb5bd;
+    --gray-600: #868e96;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+
+    --blue-100: #e7f5ff;
+    --blue-200: #d0ebff;
+    --blue-300: #a5d8ff;
+    --blue-400: #74c0fc;
+    --blue-500: #339af0;
+    --blue-600: #228be6;
+    --blue-700: #1c7ed6;
+    --blue-800: #1971c2;
+    --blue-900: #1864ab;
+
+    --indigo-100: #edf2ff;
+    --indigo-200: #dbe4ff;
+    --indigo-300: #bac8ff;
+    --indigo-400: #91a7ff;
+    --indigo-500: #748ffc;
+    --indigo-600: #5c7cfa;
+    --indigo-700: #4c6ef5;
+    --indigo-800: #4263eb;
+    --indigo-900: #3b5bdb;
+
+    --red-100: #fff5f5;
+    --red-200: #ffe3e3;
+    --red-300: #ffc9c9;
+    --red-400: #ffa8a8;
+    --red-500: #ff8787;
+    --red-600: #ff6b6b;
+    --red-700: #fa5252;
+    --red-800: #f03e3e;
+    --red-900: #e03131;
+
+    --orange-100: #fff4e6;
+    --orange-200: #ffe8cc;
+    --orange-300: #ffd8a8;
+    --orange-400: #ffc078;
+    --orange-500: #ffa94d;
+    --orange-600: #ff922b;
+    --orange-700: #fd7e14;
+    --orange-800: #f76707;
+    --orange-900: #e8590c;
+
+    --green-100: #ebfbee;
+    --green-200: #d3f9d8;
+    --green-300: #b2f2bb;
+    --green-400: #8ce99a;
+    --green-500: #51cf66;
+    --green-600: #40c057;
+    --green-700: #37b24d;
+    --green-800: #2f9e44;
+    --green-900: #2b8a3e;
+}
+
+body {
+    margin: unset;
+}
+
+.root {
+    margin: auto;
+    max-width: 72rem;
+}
+
+.line {
+    border-bottom: 1px solid var(--gray-300);
+}
+
+.header {
+    margin: auto;
+    max-width: 72rem;
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 1fr;
+}
+
+.logo {
+    height: 64px;
+    width: 64px;
+    padding: 0.25em;
+}
+
+.nav-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.nav-link::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 1px;
+    background: #000;
+    transition: width 0.2s ease-in-out;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-link > a {
+    font-size: 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: block;
+    background: #fff;
+    transition: all 300ms;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/*
+
+Cheeps
+
+*/
+
+.cheeps-container {
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-decoration: none;
+}
+
+.cheep-wrapper {
+    display: flex;
+    margin-bottom: 1rem;
+    list-style-type: none;
+}
+
+.cheep-avatar {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-color: var(--gray-200);
+    text-align: center;
+    align-self: center;
+    font-weight: bold;
+    font-size: 16px;
+    align-content: center;
+    cursor: default;
+    text-decoration: none;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.cheep {
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.cheep-author {
+    font-weight: bold;
+    color: var(--text);
+    text-decoration: none;
+}
+
+.cheep-user {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+}
+
+.cheep-author::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 1px;
+    background: #000;
+    transition: width 0.2s ease-in-out;
+}
+
+.cheep-author:hover::after {
+    width: 100%;
+}
+
+.cheep-timestamp {
+    color: var(--gray-700);
+    font-size: 12px;
+    font-weight: 400;
+}
