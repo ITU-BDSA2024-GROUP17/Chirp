@@ -18,7 +18,7 @@
             <span class="nav-link"><a href="/Swagger">Swagger</a></span>
         </div>
         <div>
-            <input id="navSearchForm" type="text" placeholder="Search for user">
+            <input id="searchUser" type="text" placeholder="Search for user" onkeypress="handleKeyPress(event)">
         </div>
     </div>
     <div class="line"></div>
@@ -32,6 +32,15 @@
             Chirp &mdash; An ASP.NET Application
         </div>
     </div>
+
+    <script>
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                const searchText = document.getElementById('searchUser').value;
+                window.location.href = `./${searchText}`;
+            }
+        }
+    </script>
 </body>
 @await RenderSectionAsync("Scripts", required: false)
 
