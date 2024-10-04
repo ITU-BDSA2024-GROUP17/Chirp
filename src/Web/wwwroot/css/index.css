@@ -1,6 +1,7 @@
 body {
     font-family: "Trebuchet MS", sans-serif;
     font-size: 14px;
+    margin: 1em !important;
 }
 
 :root {
@@ -85,14 +86,24 @@ body {
 .header {
     margin: auto;
     max-width: 72rem;
-    display: grid;
-    grid-template-columns: 0.5fr 1fr 1fr;
+    display: flex;
+    gap: 1em;
+    justify-content: space-between;
 }
 
 .logo {
     height: 64px;
     width: 64px;
     padding: 0.25em;
+}
+
+#navSearchForm {
+    max-width: 32rem;
+    width: -webkit-fill-available;
+    margin: 20px 0px 20px 0;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 0.25em;
 }
 
 .nav-wrapper {
