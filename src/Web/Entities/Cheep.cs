@@ -5,8 +5,9 @@ namespace Web.Entities;
 public class Cheep
 {
     [Key]
-    public required string Id { get; set; }
+    public required int Id { get; set; }
+    public required int AuthorId { get; set; }
     public required string Message { get; set; }
-    public required long Timestamp { get; set; }
+    public required DateTime TimeStamp { get; set; }
     public required Author Author { get; set; }
 }
