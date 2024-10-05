@@ -25,7 +25,14 @@ public class CheepService(CheepDbContext context) : ICheepService
         return (List<Cheep>)cheeps;
     }
 
-    public void StoreCheep(Cheep cheep){
-        // TODO: Need a way to store to the db!!
+    public void StoreCheep(Cheep cheep)
+    {
+        _context.Cheeps.Add(cheep);
+        var tempAuth = _context.Authors.Where(_author => _author.Id == cheep.Author.Id).Select(_author => _author).First();
+        if (tempAuth == null)
+        {
+            _context.Authors.Add(cheep.Author);
+        }
+        _context.SaveChanges();
     }
 }
