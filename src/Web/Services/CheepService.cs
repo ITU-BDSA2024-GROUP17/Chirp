@@ -25,10 +25,10 @@ public class CheepService(CheepDbContext context) : ICheepService
 
     public List<Cheep> GetCheepsFromAuthor(string author, int page)
     {
-        var cheeps = _context.Cheeps
+        var cheeps = _context.Authors
+            .Where(a => a.Name == author)
+            .SelectMany(a => a.Cheeps)
             .Include(c => c.Author)
-            .Where(c => c.Author.Name == author)
-            .Select(c => c)
             .OrderBy(c => c.TimeStamp)
             .Skip(Math.Max(0, page - 1) * _pageSize)
             .Take(_pageSize)
