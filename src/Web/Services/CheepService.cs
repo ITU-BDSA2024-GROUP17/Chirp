@@ -1,7 +1,4 @@
 using Web.Interfaces;
-using SimpleDB;
-using Microsoft.EntityFrameworkCore;
-using System.Collections;
 using Web.Entities;
 
 namespace Web.Services;
