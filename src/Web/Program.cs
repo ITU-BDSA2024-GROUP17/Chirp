@@ -4,14 +4,19 @@ using SimpleDB;
 using SimpleDB.Records;
 using Web.Services;
 using Web.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Web;
 
 var db = SQLiteDatabase.Instance;
 
 var builder = WebApplication.CreateBuilder(args);
 
+string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<CheepDbContext>(options => options.UseSqlite(connectionString));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddRazorPages();
-builder.Services.AddSingleton<ICheepService, CheepService>();
+builder.Services.AddScoped<ICheepService, CheepService>();
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -39,6 +44,17 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+// Create a disposable service scope
+using (var scope = app.Services.CreateScope())
+{
+    // From the scope, get an instance of our database context.
+    // Through the `using` keyword, we make sure to dispose it after we are done.
+    using var context = scope.ServiceProvider.GetService<CheepDbContext>();
+
+    // Execute the migration from code.
+    context?.Database.Migrate();
+}
 
 if (app.Environment.IsDevelopment())
 {

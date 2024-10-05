@@ -1,11 +1,9 @@
-using SimpleDB.Records;
+using Web.Entities;
 
 namespace Web.Interfaces;
 
 public interface ICheepService
 {
-    public Task<List<Cheep>> GetCheeps(int page);
-
-    public Task<List<Cheep>> getAllCheeps(string author);
-    public Task<List<Cheep>> GetCheepsFromAuthor(string author, int page);
+    public List<Cheep> GetCheeps(int page);
+    public List<Cheep> GetCheepsFromAuthor(string author, int page);
 }
