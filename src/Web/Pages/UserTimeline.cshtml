@@ -2,14 +2,12 @@
 @model Web.Pages.UserTimelineModel
 @{
     Layout = "Shared/_Layout";
-
     var routeName = HttpContext.GetRouteValue("author");
 }
 
 <link href="/css/pages/userTimeline.css" rel="stylesheet" type="text/css" />
 <div>
     @if (Model.Cheeps.Any())
-
     {
         <ul id="messagelist" class="cheeps-container">
             @foreach (var cheep in Model.Cheeps)
@@ -31,14 +29,10 @@
             }
         </ul>
         ViewData["Title"] = @routeName + "'s Timeline";
-
         ViewData["totalCheeps"] = Model.Cheeps.Count;
-
     }
-
     else
-
     {
-        <em>There are no cheeps so far.</em>
+        ViewData["Title"] = "The end of " + @routeName + "'s Timeline";
     }
 </div>
