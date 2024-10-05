@@ -21,10 +21,13 @@
     <div class="line"></div>
     <div class=root>
         <div class=container>
-
-
-            <h2>@ViewData["Title"]</h2>
-            <h2>@ViewData["totalCheeps"] Cheeps displayed</h2>
+            <div class="header nav-wrapper">
+                <h2>@ViewData["Title"]</h2>
+                <div>
+                    <button class="skip-btn prev" onclick="skipPages(-1)"></button>
+                    <button class="skip-btn" onclick="skipPages(1)"></button>
+                </div>
+            </div>
             @RenderBody()
         </div>
         <div class=footer>
@@ -33,6 +36,21 @@
     </div>
 
     <script>
+        function skipPages(pagesToSkip) {
+            if (pagesToSkip == 0) throw new Error('pagesToSkip can not be 0');
+            const [url, pageNum] = window.location.href.split('?page=');
+            const currentPageNum = parseInt(pageNum);
+
+            if (isNaN(currentPageNum)) {
+                window.location.href = `${url}?page=2`;
+                return
+            }
+
+            window.location.href = `${url}?page=${currentPageNum + pagesToSkip}`;
+
+        }
+
+
         function handleKeyPress(event) {
             if (event.key === "Enter") {
                 const searchText = document.getElementById('navSearchForm').value;
