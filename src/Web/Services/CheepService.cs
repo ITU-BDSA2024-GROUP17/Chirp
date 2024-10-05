@@ -10,14 +10,14 @@ public class CheepService(CheepDbContext context) : ICheepService
 {
     private readonly CheepDbContext _context = context;
 
-    public List<Cheep> GetCheeps()
+    public List<Cheep> GetCheeps(int page)
     {
         var cheeps = _context.Cheeps.Select(cheep => cheep).ToList();
 
         return cheeps;
     }
 
-    public List<Cheep> GetCheepsFromAuthor(string author)
+    public List<Cheep> GetCheepsFromAuthor(string author, int page)
     {
         var cheeps = _context.Authors.Where(_author => _author.Name == author).Select(_author => _author.Cheeps).First();
 
