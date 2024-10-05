@@ -1,11 +1,12 @@
-@page "/"
-@model Web.Pages.PublicModel
+@page "/{author}"
+@model Web.Pages.UserTimelineModel
 @{
     Layout = "Shared/_Layout";
-    ViewData["Title"] = "Public Timeline";
+    var routeName = HttpContext.GetRouteValue("author");
+    ViewData["Title"] = @routeName + "'s Timeline";
 }
 
-<link href="/css/pages/public.css" rel="stylesheet" type="text/css" />
+<link href="/css/pages/userTimeline.css" rel="stylesheet" type="text/css" />
 <div>
     @if (Model.Cheeps.Any())
     {
@@ -19,9 +20,8 @@
                     <div class="cheep">
                         <div class="cheep-user">
                             <a class="cheep-author" href="/@cheep.Author.Name">@cheep.Author.Name</a>
-                            <small class="cheep-timestamp">&sdot;
+                            <small onmouseover="" class="cheep-timestamp">&sdot;
                                 @Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.TimeStamp)</small>
-
                         </div>
                         @cheep.Message
                     </div>
@@ -32,6 +32,6 @@
     }
     else
     {
-        <em>There are no cheeps so far.</em>
+        ViewData["Title"] = "The end of " + @routeName + "'s Timeline";
     }
 </div>
