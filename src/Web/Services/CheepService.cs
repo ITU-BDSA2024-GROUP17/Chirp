@@ -12,16 +12,18 @@ public class CheepService(CheepDbContext context) : ICheepService
 
     public List<Cheep> GetCheeps(int page)
     {
-        var cheeps = _context.Cheeps.Select(cheep => cheep).ToList();
-
+        var cheeps = _context.Cheeps.ToList();
         return cheeps;
     }
 
     public List<Cheep> GetCheepsFromAuthor(string author, int page)
     {
-        var cheeps = _context.Authors.Where(_author => _author.Name == author).Select(_author => _author.Cheeps).First();
+        var query = _context.Authors.Where(_author => _author.Name == author);
 
-        return (List<Cheep>)cheeps;
+        if (!query.Any()) return [];
+
+        var cheeps = query.First().Cheeps.ToList();
+        return cheeps;
     }
 
     public void StoreCheep(Cheep cheep)
