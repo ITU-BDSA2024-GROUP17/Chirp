@@ -2,15 +2,9 @@
 @model Web.Pages.PublicModel
 @{
     ViewData["Title"] = "Public Timeline";
-
-
-
-
-
-
-
     Layout = "Shared/_Layout";
 }
+
 <link href="/css/pages/public.css" rel="stylesheet" type="text/css" />
 <div>
     @if (Model.Cheeps.Any())
@@ -28,7 +22,7 @@
                         <div class="cheep-user">
                             <a class="cheep-author" href="/@cheep.Author">@cheep.Author</a>
                             <small class="cheep-timestamp">&sdot;
-                                @Util.TimeUtilties.FormatUnixTimePretty(@cheep.Timestamp)</small>
+                                @Web.Utilities.TimeUtilties.FormatUnixTimePretty(@cheep.Timestamp)</small>
 
                         </div>
                         @cheep.Message
@@ -37,29 +31,8 @@
             }
         </ul>
         ViewData["totalCheeps"] = Model.Cheeps.Count;
-
-
-
-
-
-
-
     }
-
-
-
-
-
-
-
     else
-
-
-
-
-
-
-
     {
         <em>There are no cheeps so far.</em>
     }
