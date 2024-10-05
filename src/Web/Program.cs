@@ -16,8 +16,10 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    using var context = scope.ServiceProvider.GetService<CheepDbContext>();
-    context?.Database.Migrate();
+    using var context = scope.ServiceProvider.GetService<CheepDbContext>() ?? throw new Exception("CheepDbContext not found!");
+
+    context.Database.Migrate();
+    DbInitializer.SeedDatabase(context);
 }
 
 app.UseHttpsRedirection();
