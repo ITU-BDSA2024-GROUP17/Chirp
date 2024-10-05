@@ -2,15 +2,12 @@
 @model Web.Pages.UserTimelineModel
 @{
     Layout = "Shared/_Layout";
-
-
-
     var routeName = HttpContext.GetRouteValue("author");
+    ViewData["Title"] = $"{routeName}'s Timeline";
 }
 
 <link href="/css/pages/userTimeline.css" rel="stylesheet" type="text/css" />
 <div>
-    <h2> @routeName's Timeline </h2>
     @if (Model.Cheeps.Any())
 
     {

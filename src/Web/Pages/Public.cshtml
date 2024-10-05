@@ -2,15 +2,9 @@
 @model Web.Pages.PublicModel
 @{
     ViewData["Title"] = "Public Timeline";
-
-
-
-
-
-
-
     Layout = "Shared/_Layout";
 }
+
 <link href="/css/pages/public.css" rel="stylesheet" type="text/css" />
 <div>
     @if (Model.Cheeps.Any())
@@ -38,27 +32,9 @@
         </ul>
         ViewData["totalCheeps"] = Model.Cheeps.Count;
 
-
-
-
-
-
-
     }
 
-
-
-
-
-
-
     else
-
-
-
-
-
-
 
     {
         <em>There are no cheeps so far.</em>
