@@ -18,6 +18,14 @@ public class CheepService(CheepDbContext context) : ICheepService
         return cheeps;
     }
 
+    public async Task<List<Cheep>> getAllCheeps(string author)
+    {
+        var cheeps = await _context.Read(author);
+        return cheeps;
+    }
+
+    
+
     public List<Cheep> GetCheepsFromAuthor(string author, int page)
     {
         var cheeps = _context.Authors.Where(_author => _author.Name == author).Select(_author => _author.Cheeps).First();

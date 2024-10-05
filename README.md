@@ -19,8 +19,9 @@ _If the branch has **no**_ issue, use the following naming convention:
 or `feature/<branch-title>` depending on the branch type.
 
 
-## Positing Issues
+## Posting Issues
 - Use the issue template
+- Use the correct user story format: `As a <role>, I want <goal> [, so that <benefit>].`
 - Use the correct labels
 - Link the issue to the correct milestone & branch
 - If the issue is a `requirement` link it to the correct requirement, and use the right nameing convention.

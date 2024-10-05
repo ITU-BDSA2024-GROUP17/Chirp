@@ -51,6 +51,22 @@ public class SQLiteDatabase : IDatabaseRepository<Cheep>
         command.ExecuteNonQuery();
     }
 
+
+    public Task<List<Cheep>> Read(string username)
+    {
+        var command = connection.CreateCommand();
+        command.CommandText = @"
+        SELECT u.username, m.text, m.pub_date
+        FROM message m
+        JOIN user u ON m.author_id = u.user_id
+        WHERE u.username = @username
+        ";
+        command.Parameters.AddWithValue("@username", username);
+
+        var reader = command.ExecuteReader();
+        return Task.FromResult(ReturnCheeps(reader));
+    }
+
     /// <summary>
     /// Read cheeps from the database of a specific author.
     /// </summary>
@@ -69,7 +85,7 @@ public class SQLiteDatabase : IDatabaseRepository<Cheep>
         FROM message m
         JOIN user u ON m.author_id = u.user_id
         WHERE u.username = @username
-        LIMIT @limit OFFSET @limit * @offset
+        LIMIT @limit OFFSET @offset
         ";
         command.Parameters.AddWithValue("@username", username);
         command.Parameters.AddWithValue("@limit", limit);
