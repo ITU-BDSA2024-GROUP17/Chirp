@@ -2,9 +2,6 @@
 @model Web.Pages.UserTimelineModel
 @{
     Layout = "Shared/_Layout";
-
-
-
     var routeName = HttpContext.GetRouteValue("author");
 }
 
@@ -16,7 +13,6 @@
     {
         <ul id="messagelist" class="cheeps-container">
             @foreach (var cheep in Model.Cheeps)
-
             {
                 <li class="cheep-wrapper">
                     <a href="/@cheep.Author" class="cheep-avatar">
@@ -26,7 +22,7 @@
                         <div class="cheep-user">
                             <a class="cheep-author" href="/@cheep.Author">@cheep.Author</a>
                             <small onmouseover="" class="cheep-timestamp">&sdot;
-                                @Util.TimeUtilties.FormatUnixTimePretty(@cheep.Timestamp)</small>
+                                @Web.Utilities.TimeUtilties.FormatUnixTimePretty(@cheep.Timestamp)</small>
                         </div>
                         @cheep.Message
                     </div>
@@ -34,11 +30,8 @@
             }
         </ul>
         ViewData["totalCheeps"] = Model.Cheeps.Count;
-
     }
-
     else
-
     {
         <em>There are no cheeps so far.</em>
     }

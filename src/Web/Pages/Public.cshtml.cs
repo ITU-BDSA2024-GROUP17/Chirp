@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Web.Entities;
 using Web.Interfaces;
-using Util;
 
 namespace Web.Pages;
 
