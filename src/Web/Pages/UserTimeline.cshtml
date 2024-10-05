@@ -15,7 +15,9 @@
             @foreach (var cheep in Model.Cheeps)
             {
                 <li class="cheep-wrapper">
-                    <a href="/@cheep.Author.Name" class="cheep-avatar"></a>
+                    <a href="/@cheep.Author" class="cheep-avatar">
+                        @cheep.Author.Name.First()
+                    </a>
                     <div class="cheep">
                         <div class="cheep-user">
                             <a class="cheep-author" href="/@cheep.Author.Name">@cheep.Author.Name</a>
