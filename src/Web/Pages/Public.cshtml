@@ -1,4 +1,4 @@
-﻿@page "/"
+@page "/"
 @model Web.Pages.PublicModel
 @{
     ViewData["Title"] = "Public Timeline";
@@ -22,7 +22,7 @@
                         <div class="cheep-user">
                             <a class="cheep-author" href="/@cheep.Author">@cheep.Author</a>
                             <small class="cheep-timestamp">&sdot;
-                                @Util.TimeUtilties.FormatUnixTimePretty(@cheep.Timestamp)</small>
+                                @Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.TimeStamp)</small>
 
                         </div>
                         @cheep.Message
@@ -31,11 +31,8 @@
             }
         </ul>
         ViewData["totalCheeps"] = Model.Cheeps.Count;
-
     }
-
     else
-
     {
         <em>There are no cheeps so far.</em>
     }
