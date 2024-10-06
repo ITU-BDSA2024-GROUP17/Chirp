@@ -1,0 +1,22 @@
+@using Web.Entities;
+@model IEnumerable<Author>
+@if (Model.Any())
+
+{
+    <ul id="messagelist" class="cheeps-container">
+        @foreach (var author in Model)
+
+        {
+            <li class="cheep-wrapper">
+                <a href="/@author.Name" class="cheep-avatar">
+                    @author.Name.First()
+                </a>
+                <div class="cheep">
+                    <div class="cheep-user">
+                        <a class="cheep-author" href="/@author.Name">@author.Name</a>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+}

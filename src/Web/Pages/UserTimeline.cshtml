@@ -10,25 +10,7 @@
 <div>
     @if (Model.Cheeps.Any())
     {
-        <ul id="messagelist" class="cheeps-container">
-            @foreach (var cheep in Model.Cheeps)
-            {
-                <li class="cheep-wrapper">
-                    <a href="/@cheep.Author.Name" class="cheep-avatar">
-                        @cheep.Author.Name.First()
-                    </a>
-                    <div class="cheep">
-                        <div class="cheep-user">
-                            <a class="cheep-author" href="/@cheep.Author.Name">@cheep.Author.Name</a>
-                            <small onmouseover="" class="cheep-timestamp">&sdot;
-                                @Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.TimeStamp)</small>
-                        </div>
-                        @cheep.Message
-                    </div>
-                </li>
-            }
-        </ul>
-        ViewData["totalCheeps"] = Model.Cheeps.Count;
+        @await Html.PartialAsync("_CheepsPartial", Model.Cheeps)
     }
     else
     {

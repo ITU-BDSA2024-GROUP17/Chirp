@@ -3,47 +3,12 @@
 
 @{
     Layout = "Shared/_Layout";
-    ViewData["Title"] = "Search for " +"'"+ @Model.SearchQuery+"'";
+
+    ViewData["Title"] = "Search for " + "'" + @Model.SearchQuery + "'";
 }
 <div>
     <h1>Authors</h1>
-    @if (Model.Authors.Any())
-
-    {
-        <ul>
-            @foreach (var author in Model.Authors)
-
-            {
-                <li>
-                    <a href="/@author.Name">@author.Name</a>
-                </li>
-            }
-        </ul>
-    }
-    else
-    {
-        <em>No authors found</em>
-    }
+    @await Html.PartialAsync("_AuthorPartial", Model.Authors)
     <h1>Cheeps</h1>
-    @if (Model.Cheeps.Any())
-
-    {
-        <ul>
-            @foreach (var cheep in Model.Cheeps)
-
-
-
-            {
-                <li>
-                    <a href="/@cheep.Author.Name">@cheep.Author.Name</a>
-                    <small>@cheep.Message</small>
-                </li>
-            }
-        </ul>
-    }
-    else
-
-    {
-        <em>No cheeps found.</em>
-    }
+    @await Html.PartialAsync("_CheepsPartial", Model.Cheeps)
 </div>
