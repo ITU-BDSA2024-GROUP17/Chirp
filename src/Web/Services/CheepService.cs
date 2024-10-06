@@ -10,6 +10,24 @@ public class CheepService(CheepDbContext context) : ICheepService
 
     private readonly int _pageSize = 32;
 
+    public Tuple<HashSet<Author>, HashSet<Cheep>> GetCheeps(string searchQuery)
+    {
+        var authors = _context.Cheeps
+            .Include(c => c.Author).Select(c => c.Author).Where(a => a.Name.ToLower().Contains(searchQuery.ToLower())).ToHashSet();
+        var messages = _context.Cheeps
+            .Include(c => c.Author)
+            .Select(c => c)
+            .Where(c => c.Message.ToLower().Contains(searchQuery.ToLower())).ToHashSet();
+
+
+
+        //var authors = cheeps.Where(c => c.Author.Name.ToLower().Contains(searchQuery.ToLower())).ToHashSet();
+        Console.WriteLine("Count Author: " + authors);
+        Console.WriteLine("Count Cheeps: " + messages);
+        return Tuple.Create(authors, messages);
+
+    }
+
     public List<Cheep> GetCheeps(int page)
     {
         var cheeps = _context.Cheeps

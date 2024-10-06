@@ -1,0 +1,118 @@
+@page "/search"
+@model Web.Pages.SearchModel
+
+@{
+    Layout = "Shared/_Layout";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ViewData["Title"] = "Search";
+}
+<div>
+    <form>
+        <p>
+            <label>Title: <input type="text" name="SearchQuery" /></label>
+            <input type="submit" value="Filter" />
+        </p>
+    </form>
+    <h1>Authors</h1>
+    @if (Model.Authors.Any())
+
+    {
+        <ul>
+            @foreach (var author in Model.Authors)
+
+            {
+                <li>
+                    <a href="/@author.Name">@author.Name</a>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <em>No authors found</em>
+    }
+    <h1>Cheeps</h1>
+    @if (Model.Cheeps.Any())
+
+    {
+        <ul>
+            @foreach (var cheep in Model.Cheeps)
+
+
+
+            {
+                <li>
+                    <a href="/@cheep.Author.Name">@cheep.Author.Name</a>
+                    <small>@cheep.Message</small>
+                </li>
+            }
+        </ul>
+    }
+    else
+
+    {
+        <em>No cheeps found.</em>
+    }
+</div>

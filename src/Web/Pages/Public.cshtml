@@ -3,6 +3,8 @@
 @{
     Layout = "Shared/_Layout";
 
+
+
     ViewData["Title"] = "Public Timeline";
 }
 
@@ -13,6 +15,8 @@
     {
         <ul id="messagelist" class="cheeps-container">
             @foreach (var cheep in Model.Cheeps)
+
+
 
             {
                 <li class="cheep-wrapper">
@@ -32,6 +36,8 @@
             }
         </ul>
         ViewData["totalCheeps"] = Model.Cheeps.Count;
+
+
 
     }
 
