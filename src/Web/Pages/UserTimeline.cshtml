@@ -3,19 +3,18 @@
 @{
     Layout = "Shared/_Layout";
     var routeName = HttpContext.GetRouteValue("author");
+    ViewData["Title"] = @routeName + "'s Timeline";
 }
 
 <link href="/css/pages/userTimeline.css" rel="stylesheet" type="text/css" />
 <div>
-    <h2> @routeName's Timeline </h2>
     @if (Model.Cheeps.Any())
-
     {
         <ul id="messagelist" class="cheeps-container">
             @foreach (var cheep in Model.Cheeps)
             {
                 <li class="cheep-wrapper">
-                    <a href="/@cheep.Author" class="cheep-avatar">
+                    <a href="/@cheep.Author.Name" class="cheep-avatar">
                         @cheep.Author.Name.First()
                     </a>
                     <div class="cheep">
@@ -33,6 +32,6 @@
     }
     else
     {
-        <em>There are no cheeps so far.</em>
+        ViewData["Title"] = "The end of " + @routeName + "'s Timeline";
     }
 </div>

@@ -92,6 +92,7 @@ body {
 }
 
 .logo {
+    filter: brightness(125%);
     height: 64px;
     width: 64px;
     padding: 0.25em;
@@ -211,4 +212,25 @@ Cheeps
     color: var(--gray-700);
     font-size: 12px;
     font-weight: 400;
+}
+
+.skip-btn {
+    background-image: url(../images/arrow.png);
+    background-size: contain;
+    color: var(--text);
+    background-color: white;
+    width: 30px;
+    height: 30px;
+    padding: 0.5em;
+    border-radius: 50%;
+    border: 1px solid var(--gray-300);
+    cursor: pointer;
+}
+
+.prev {
+    transform: rotate(180deg);
+}
+
+.skip-btn:hover {
+    background-color: var(--gray-200);
 }
