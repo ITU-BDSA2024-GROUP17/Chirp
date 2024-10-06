@@ -18,15 +18,21 @@ public class SearchModel(ICheepService service) : PageModel
 
     public ActionResult OnGet([FromQuery] string SearchQuery)
     {
-        Console.WriteLine(Cheeps.ToList().Count);
-
         if (SearchQuery == null)
         {
             return Page();
         }
+        else if (SearchQuery.First() == '@')
+        {
+            Authors = _service.GetCheeps(SearchQuery.Split("@")[1]).Item1;
+            return Page();
+        }
+        else
+        {
+            Authors = _service.GetCheeps(SearchQuery).Item1;
+            Cheeps = _service.GetCheeps(SearchQuery).Item2;
+        }
 
-        Authors = _service.GetCheeps(SearchQuery).Item1;
-        Cheeps = _service.GetCheeps(SearchQuery).Item2;
         return Page();
     }
 }
