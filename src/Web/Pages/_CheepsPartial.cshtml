@@ -1,0 +1,31 @@
+@using Web.Entities;
+@model IEnumerable<Cheep>
+@if (Model.Any())
+
+{
+    <ul id="messagelist" class="cheeps-container">
+        @foreach (var cheep in Model)
+
+        {
+            <li class="cheep-wrapper">
+                <a href="/@cheep.Author.Name" class="cheep-avatar">
+                    @cheep.Author.Name.First()
+                </a>
+                <div class="cheep">
+                    <div class="cheep-user">
+                        <a class="cheep-author" href="/@cheep.Author.Name">@cheep.Author.Name</a>
+                        <small onmouseover="" class="cheep-timestamp">&sdot;
+                            @Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.TimeStamp)</small>
+                    </div>
+                    @cheep.Message
+                </div>
+            </li>
+        }
+    </ul>
+}
+
+else
+
+{
+    <em>No Cheeps found</em>
+}

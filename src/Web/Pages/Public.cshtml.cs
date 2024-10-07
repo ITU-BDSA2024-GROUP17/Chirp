@@ -13,10 +13,10 @@ public class PublicModel(ICheepService service) : PageModel
     public ActionResult OnGet([FromQuery] int page)
     {
         // Redirect if user try 0 or negative page
-        if (page < 1)
-        {
-            return Redirect("/?page=1");
-        }
+        // if (page < 1)
+        // {
+        //     return Redirect("/?page=1");
+        // }
         Cheeps = _service.GetCheeps(page);
         return Page();
     }

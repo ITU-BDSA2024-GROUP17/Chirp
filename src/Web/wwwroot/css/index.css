@@ -99,6 +99,10 @@ body {
 }
 
 #navSearchForm {
+    width: 32rem;
+}
+
+#navSearchInput {
     max-width: 32rem;
     width: -webkit-fill-available;
     margin: 20px 0px 20px 0;
