@@ -10,22 +10,27 @@ public class CheepService(CheepDbContext context) : ICheepService
 
     private readonly int _pageSize = 32;
 
-    public Task<Tuple<IEnumerable<Author>, IEnumerable<Cheep>>> GetCheeps(string searchQuery, int chunkSize)
+    public Task<IEnumerable<Author>> SearchAuthors(string searchQuery, int chunkSize)
     {
         var authors = _context.Cheeps
-              .Include(c => c.Author)
-              .Select(c => c.Author)
-              .Where(a => a.Name.ToLower().Contains(searchQuery.ToLower()))
-              .AsEnumerable().ToHashSet()
-              .Take(chunkSize);
+               .Include(c => c.Author)
+               .Select(c => c.Author)
+               .Where(a => a.Name.ToLower().Contains(searchQuery.ToLower()))
+               .AsEnumerable().ToHashSet()
+               .Take(chunkSize);
 
+        return Task.FromResult(authors);
+    }
+
+    public Task<IEnumerable<Cheep>> SearchCheeps(string searchQuery, int chunkSize)
+    {
         var messages = _context.Cheeps
             .Include(c => c.Author)
             .Where(c => c.Message.ToLower().Contains(searchQuery.ToLower()))
             .AsEnumerable().ToHashSet()
             .Take(chunkSize);
 
-        return Task.FromResult(Tuple.Create(authors, messages));
+        return Task.FromResult(messages);
     }
 
     public List<Cheep> GetCheeps(int page)

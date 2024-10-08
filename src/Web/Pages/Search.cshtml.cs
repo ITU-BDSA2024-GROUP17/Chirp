@@ -2,8 +2,6 @@ using Web.Interfaces;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Web.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Web.Pages;
 
@@ -28,15 +26,12 @@ public class SearchModel(ICheepService service) : PageModel
         }
         else if (SearchQuery.First() == '@')
         {
-            var result = await _service.GetCheeps(SearchQuery.Split("@")[1], chunkSize);
-            Authors = result.Item1;
+            Authors = await _service.SearchAuthors(SearchQuery.Split("@")[1], chunkSize);
             return Page();
         }
         else
         {
-            var res = await _service.GetCheeps(SearchQuery, chunkSize);
-            Authors = res.Item1;
-            Cheeps = res.Item2;
+            Cheeps = await _service.SearchCheeps(SearchQuery, chunkSize);
             return Page();
         }
     }
