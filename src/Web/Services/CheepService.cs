@@ -10,22 +10,44 @@ public class CheepService(CheepDbContext context) : ICheepService
 
     private readonly int _pageSize = 32;
 
-    public Task<Tuple<IEnumerable<Author>, IEnumerable<Cheep>>> GetCheeps(string searchQuery, int chunkSize)
+    public Task<IEnumerable<Author>> SearchAuthors(string searchQuery, int page)
     {
-        var authors = _context.Cheeps
-              .Include(c => c.Author)
-              .Select(c => c.Author)
-              .Where(a => a.Name.ToLower().Contains(searchQuery.ToLower()))
-              .AsEnumerable().ToHashSet()
-              .Take(chunkSize);
+        var authors = _context.Authors
+         .Select(a => a)
+         .OrderBy(a => a.Name)
+         .AsEnumerable()
+         .Where(a => a.Name.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))
+         .Skip(Math.Max(0, page - 1) * _pageSize)
+         .Take(_pageSize);
 
+
+        return Task.FromResult(authors);
+    }
+
+    public Task<IEnumerable<Cheep>> SearchCheeps(string searchQuery, int page)
+    {
         var messages = _context.Cheeps
             .Include(c => c.Author)
-            .Where(c => c.Message.ToLower().Contains(searchQuery.ToLower()))
-            .AsEnumerable().ToHashSet()
-            .Take(chunkSize);
+            .Select(c => c)
+            .OrderBy(c => c.TimeStamp)
+            .AsEnumerable()
+            .Where(c => c.Message.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))
+            .Skip(Math.Max(0, page - 1) * _pageSize)
+            .Take(_pageSize);
 
-        return Task.FromResult(Tuple.Create(authors, messages));
+        return Task.FromResult(messages);
+    }
+
+    public List<Author> GetAuthors(int page)
+    {
+        var authors = _context.Authors
+            .Select(a => a)
+            .OrderBy(a => a.Name)
+            .Skip(Math.Max(0, page - 1) * _pageSize)
+            .Take(_pageSize)
+            .ToList();
+
+        return authors;
     }
 
     public List<Cheep> GetCheeps(int page)

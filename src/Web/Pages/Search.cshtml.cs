@@ -2,11 +2,9 @@ using Web.Interfaces;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Web.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Web.Pages;
-
+[BindProperties]
 public class SearchModel(ICheepService service) : PageModel
 {
     private readonly ICheepService _service = service;
@@ -18,26 +16,32 @@ public class SearchModel(ICheepService service) : PageModel
     [BindProperty(SupportsGet = true)]
     public string? SearchQuery { get; set; }
 
-    public int chunkSize { get; set; } = 25;
-
-    public async Task<IActionResult> OnGet([FromQuery] string SearchQuery)
+    public async Task<IActionResult> OnGet([FromQuery] string SearchQuery, [FromQuery] int page = 1)
     {
-        if (SearchQuery == null)
+        if (string.IsNullOrEmpty(SearchQuery))
         {
             return Page();
         }
-        else if (SearchQuery.First() == '@')
+        // Redirect if user try 0 or negative page
+        if (page < 1)
         {
-            var result = await _service.GetCheeps(SearchQuery.Split("@")[1], chunkSize);
-            Authors = result.Item1;
-            return Page();
+            return Redirect($"/search?SearchQuery={SearchQuery}&page=1");
         }
-        else
+
+        // Focus search by symbol
+        switch (SearchQuery.First())
         {
-            var res = await _service.GetCheeps(SearchQuery, chunkSize);
-            Authors = res.Item1;
-            Cheeps = res.Item2;
-            return Page();
+            case '@':
+                Authors = await _service.SearchAuthors(SearchQuery.Split("@")[1], page);
+                break;
+            case '&':
+                Cheeps = await _service.SearchCheeps(SearchQuery.Split("&")[1], page);
+                break;
+            default:
+                Authors = await _service.SearchAuthors(SearchQuery, page);
+                Cheeps = await _service.SearchCheeps(SearchQuery, page);
+                break;
         }
+        return Page();
     }
 }

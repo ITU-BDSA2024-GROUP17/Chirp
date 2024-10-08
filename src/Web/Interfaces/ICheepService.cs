@@ -4,7 +4,8 @@ namespace Web.Interfaces;
 
 public interface ICheepService
 {
-    public Task<Tuple<IEnumerable<Author>, IEnumerable<Cheep>>> GetCheeps(string searchQuery, int chunkSize);
+    public Task<IEnumerable<Author>> SearchAuthors(string searchQuery, int chunkSize);
+    public Task<IEnumerable<Cheep>> SearchCheeps(string searchQuery, int chunkSize);
     public List<Cheep> GetCheeps(int page);
     public List<Cheep> GetCheepsFromAuthor(string author, int page);
 }
