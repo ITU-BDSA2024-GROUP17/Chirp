@@ -1,14 +1,21 @@
 @page "/search"
 @model Web.Pages.SearchModel
-
 @{
     Layout = "Shared/_Layout";
 
     ViewData["Title"] = "Search for " + "'" + @Model.SearchQuery + "'";
 }
 <div>
-    <h1>Authors</h1>
-    @await Html.PartialAsync("_AuthorPartial", Model.Authors)
-    <h1>Cheeps</h1>
-    @await Html.PartialAsync("_CheepsPartial", Model.Cheeps)
+    @if (Model.Authors.Any() || Model.Cheeps.Any())
+
+    {
+        @await Html.PartialAsync("_AuthorPartial", Model.Authors)
+        @await Html.PartialAsync("_CheepsPartial", Model.Cheeps)
+    }
+
+    else
+
+    {
+        <em>No Authors nor Cheeps found</em>
+    }
 </div>
