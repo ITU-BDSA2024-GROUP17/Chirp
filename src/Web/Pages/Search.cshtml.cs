@@ -4,7 +4,7 @@ using Web.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Pages;
-
+[BindProperties]
 public class SearchModel(ICheepService service) : PageModel
 {
     private readonly ICheepService _service = service;
@@ -16,23 +16,34 @@ public class SearchModel(ICheepService service) : PageModel
     [BindProperty(SupportsGet = true)]
     public string? SearchQuery { get; set; }
 
-    public int chunkSize { get; set; } = 25;
 
-    public async Task<IActionResult> OnGet([FromQuery] string SearchQuery)
+    public async Task<IActionResult> OnGet([FromQuery] string SearchQuery, [FromQuery] int page = 1)
     {
-        if (SearchQuery == null)
+        SearchQuery = SearchQuery.Split("?")[0];
+        // Redirect if user try 0 or negative page
+        if (page < 1)
+        {
+            return Redirect($"/search?SearchQuery={SearchQuery}&page=1");
+        }
+        if (string.IsNullOrEmpty(SearchQuery))
         {
             return Page();
         }
-        else if (SearchQuery.First() == '@')
+
+
+        switch (SearchQuery.First())
         {
-            Authors = await _service.SearchAuthors(SearchQuery.Split("@")[1], chunkSize);
-            return Page();
+            case '@':
+                Authors = await _service.SearchAuthors(SearchQuery.Split("@")[1], page);
+                break;
+            case '&':
+                Cheeps = await _service.SearchCheeps(SearchQuery.Split("&")[1], page);
+                break;
+            default:
+                Authors = await _service.SearchAuthors(SearchQuery, page);
+                Cheeps = await _service.SearchCheeps(SearchQuery, page);
+                break;
         }
-        else
-        {
-            Cheeps = await _service.SearchCheeps(SearchQuery, chunkSize);
-            return Page();
-        }
+        return Page();
     }
 }
