@@ -1,5 +1,6 @@
 using Web.Services;
 using Web.Interfaces;
+using Web.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Web;
 
@@ -11,6 +12,7 @@ builder.Services.AddDbContext<CheepDbContext>(options => options.UseSqlite(conne
 builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<ICheepService, CheepService>();
+builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 
 var app = builder.Build();
 
