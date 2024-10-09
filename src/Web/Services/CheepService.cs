@@ -1,28 +1,19 @@
 using Web.Interfaces;
 using Web.Entities;
 using Microsoft.EntityFrameworkCore;
+using Web.Repositories;
 
 namespace Web.Services;
 
-public class CheepService(CheepDbContext context, ICheepRepository cheeprepository) : ICheepService
+public class CheepService(CheepDbContext context, ICheepRepository cheeprepository, IAuthorRepository authorrepository) : ICheepService
 {
     private readonly CheepDbContext _context = context;
     private readonly ICheepRepository _cheeprepository = cheeprepository;
-
-    private readonly int _pageSize = 32;
+    private readonly IAuthorRepository _authorepository = authorrepository;
 
     public Task<IEnumerable<Author>> SearchAuthors(string searchQuery, int page)
     {
-        var authors = _context.Authors
-            .Select(a => a)
-            .OrderBy(a => a.Name)
-            .AsEnumerable()
-            .Where(a => a.Name.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))
-            .Skip(Math.Max(0, page - 1) * _pageSize)
-            .Take(_pageSize);
-
-
-        return Task.FromResult(authors);
+        return _authorepository.SearchAuthors(searchQuery, page);
     }
 
     public Task<IEnumerable<Cheep>> SearchCheeps(string searchQuery, int page)
@@ -32,14 +23,7 @@ public class CheepService(CheepDbContext context, ICheepRepository cheepreposito
 
     public List<Author> GetAuthors(int page)
     {
-        var authors = _context.Authors
-            .Select(a => a)
-            .OrderBy(a => a.Name)
-            .Skip(Math.Max(0, page - 1) * _pageSize)
-            .Take(_pageSize)
-            .ToList();
-
-        return authors;
+        return _authorepository.GetAuthors(page);
     }
 
     public List<Cheep> GetCheeps(int page)
