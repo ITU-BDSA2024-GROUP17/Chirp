@@ -24,7 +24,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
         return Task.CompletedTask;
     }
 
-    public Task<List<Cheep>> ReadCheeps(string author, int page)
+    public List<Cheep> ReadCheeps(string author, int page)
     {
         var cheeps = _context.Authors
             .Where(a => a.Name == author)
@@ -35,10 +35,10 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
             .Take(_pageSize)
             .ToList();
 
-        return Task.FromResult(cheeps);
+        return cheeps;
     }
 
-    public Task<List<Cheep>> ReadCheeps(int page)
+    public List<Cheep> ReadCheeps(int page)
     {
         var cheeps = _context.Cheeps
             .Include(c => c.Author)
@@ -48,7 +48,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
             .Take(_pageSize)
             .ToList();
 
-        return Task.FromResult(cheeps);
+        return cheeps;
     }
 
 
@@ -57,5 +57,19 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
         _context.Cheeps.Update(alteredCheep);
         _context.SaveChanges();
         return Task.CompletedTask;
+    }
+
+    public Task<IEnumerable<Cheep>> SearchCheeps(string searchQuery, int page)
+    {
+        var messages = _context.Cheeps
+            .Include(c => c.Author)
+            .Select(c => c)
+            .OrderBy(c => c.TimeStamp)
+            .AsEnumerable()
+            .Where(c => c.Message.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))
+            .Skip(Math.Max(0, page - 1) * _pageSize)
+            .Take(_pageSize);
+
+        return Task.FromResult(messages);
     }
 }
