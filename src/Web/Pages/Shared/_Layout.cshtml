@@ -12,8 +12,11 @@
 <body>
     <div class="header">
         <a style="justify-self: center" href="/"><img class="logo" src="/images/icon1.png" alt="Icon1" /></a>
+        <form id="submitCheepForm" action="cheep" method="post">
+            <input id="message" class="text-box" name="message" placeholder="Whats on your mind?">
+        </form>
         <form id="navSearchForm" action="search">
-            <input id="navSearchInput" name="SearchQuery" type="text" placeholder="Search for user">
+            <input id="navSearchInput" class="text-box" name="SearchQuery" type="text" placeholder="Search for user">
         </form>
         <div class="nav-wrapper">
             <span class="nav-link"><a href="/">Public Timeline</a></span>

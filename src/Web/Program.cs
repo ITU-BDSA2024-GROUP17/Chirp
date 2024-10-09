@@ -2,6 +2,7 @@ using Web.Services;
 using Web.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Web;
+using Web.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
+app.MapCheepEndpoints(app.Services.CreateScope().ServiceProvider.GetService<ICheepService>() ?? throw new Exception("CheepService not found!"));
 
 app.MapRazorPages();
 app.Run();

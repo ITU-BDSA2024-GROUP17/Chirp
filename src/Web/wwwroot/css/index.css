@@ -98,11 +98,15 @@ body {
     padding: 0.25em;
 }
 
-#navSearchForm {
+#submitCheepForm {
     width: 32rem;
 }
 
-#navSearchInput {
+#navSearchForm {
+    width: 12rem;
+}
+
+.text-box {
     max-width: 32rem;
     width: -webkit-fill-available;
     margin: 20px 0px 20px 0;
