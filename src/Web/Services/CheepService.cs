@@ -13,12 +13,12 @@ public class CheepService(CheepDbContext context) : ICheepService
     public Task<IEnumerable<Author>> SearchAuthors(string searchQuery, int page)
     {
         var authors = _context.Authors
-         .Select(a => a)
-         .OrderBy(a => a.Name)
-         .AsEnumerable()
-         .Where(a => a.Name.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))
-         .Skip(Math.Max(0, page - 1) * _pageSize)
-         .Take(_pageSize);
+            .Select(a => a)
+            .OrderBy(a => a.Name)
+            .AsEnumerable()
+            .Where(a => a.Name.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))
+            .Skip(Math.Max(0, page - 1) * _pageSize)
+            .Take(_pageSize);
 
 
         return Task.FromResult(authors);
