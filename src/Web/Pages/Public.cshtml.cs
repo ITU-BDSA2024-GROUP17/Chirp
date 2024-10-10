@@ -8,16 +8,16 @@ namespace Web.Pages;
 public class PublicModel(ICheepService service) : PageModel
 {
     private readonly ICheepService _service = service;
-    public ICollection<Cheep> Cheeps { get; set; } = [];
+    public IEnumerable<Cheep> Cheeps { get; set; } = [];
 
-    public ActionResult OnGet([FromQuery] int page)
+    public async Task<ActionResult> OnGet([FromQuery] int page)
     {
         // Redirect if user try 0 or negative page
         if (page < 1)
         {
             return Redirect("/?page=1");
         }
-        Cheeps = _service.GetCheeps(page);
+        Cheeps = await _service.GetAllCheeps(page);
         return Page();
     }
 }

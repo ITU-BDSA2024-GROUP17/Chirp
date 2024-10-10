@@ -1,14 +1,12 @@
 using Web.Interfaces;
 using Web.Entities;
 using Microsoft.EntityFrameworkCore;
-
+using System.Linq;
 namespace Web.Services;
 
 public class CheepService(CheepDbContext context) : ICheepService
 {
     private readonly CheepDbContext _context = context;
-
-    private readonly int _pageSize = 32;
 
     public Task<IEnumerable<Author>> SearchAuthors(string searchQuery, int page)
     {
@@ -16,10 +14,7 @@ public class CheepService(CheepDbContext context) : ICheepService
          .Select(a => a)
          .OrderBy(a => a.Name)
          .AsEnumerable()
-         .Where(a => a.Name.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))
-         .Skip(Math.Max(0, page - 1) * _pageSize)
-         .Take(_pageSize);
-
+         .Search(searchQuery, x => x.Name).Paginate(page);
 
         return Task.FromResult(authors);
     }
@@ -31,36 +26,9 @@ public class CheepService(CheepDbContext context) : ICheepService
             .Select(c => c)
             .OrderBy(c => c.TimeStamp)
             .AsEnumerable()
-            .Where(c => c.Message.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))
-            .Skip(Math.Max(0, page - 1) * _pageSize)
-            .Take(_pageSize);
+            .Search(searchQuery, x => x.Message).Paginate(page);
 
         return Task.FromResult(messages);
-    }
-
-    public List<Author> GetAuthors(int page)
-    {
-        var authors = _context.Authors
-            .Select(a => a)
-            .OrderBy(a => a.Name)
-            .Skip(Math.Max(0, page - 1) * _pageSize)
-            .Take(_pageSize)
-            .ToList();
-
-        return authors;
-    }
-
-    public List<Cheep> GetCheeps(int page)
-    {
-        var cheeps = _context.Cheeps
-            .Include(c => c.Author)
-            .Select(c => c)
-            .OrderBy(c => c.TimeStamp)
-            .Skip(Math.Max(0, page - 1) * _pageSize)
-            .Take(_pageSize)
-            .ToList();
-
-        return cheeps;
     }
 
     public List<Cheep> GetCheepsFromAuthor(string author, int page)
@@ -70,8 +38,37 @@ public class CheepService(CheepDbContext context) : ICheepService
             .SelectMany(a => a.Cheeps)
             .Include(c => c.Author)
             .OrderBy(c => c.TimeStamp)
-            .Skip(Math.Max(0, page - 1) * _pageSize)
-            .Take(_pageSize)
+            .Paginate(page).ToList();
+
+        return cheeps;
+    }
+
+    public Task<IEnumerable<Cheep>> GetAllCheeps(int page)
+    {
+        var cheeps = _context.Cheeps
+            .Include(c => c.Author)
+            .Select(c => c)
+            .OrderBy(c => c.TimeStamp)
+            .AsEnumerable()
+            .Paginate(page);
+
+        return Task.FromResult(cheeps);
+    }
+
+    public List<Author> GetAuthors()
+    {
+        var authors = _context.Authors
+            .Select(a => a)
+            .OrderBy(a => a.Name).ToList();
+        return authors;
+    }
+
+    public List<Cheep> GetCheeps()
+    {
+        var cheeps = _context.Cheeps
+            .Include(c => c.Author)
+            .Select(c => c)
+            .OrderBy(c => c.TimeStamp)
             .ToList();
 
         return cheeps;
@@ -88,3 +85,4 @@ public class CheepService(CheepDbContext context) : ICheepService
         _context.SaveChanges();
     }
 }
+
