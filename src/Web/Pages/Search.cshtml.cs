@@ -5,9 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Pages;
 [BindProperties]
-public class SearchModel(ICheepService service) : PageModel
+public class SearchModel(ICheepService.ICheeps cheepService, ICheepService.IAuthor authorService) : PageModel
 {
-    private readonly ICheepService _service = service;
+    private readonly ICheepService.ICheeps _cheepService = cheepService;
+    private readonly ICheepService.IAuthor _authorService = authorService;
 
     public IEnumerable<Author> Authors { get; set; } = [];
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
@@ -32,14 +33,14 @@ public class SearchModel(ICheepService service) : PageModel
         switch (SearchQuery.First())
         {
             case '@':
-                Authors = await _service.SearchAuthors(SearchQuery.Split("@")[1], page);
+                Authors = await _authorService.SearchAuthors(SearchQuery.Split("@")[1], page);
                 break;
             case '&':
-                Cheeps = await _service.SearchCheeps(SearchQuery.Split("&")[1], page);
+                Cheeps = await _cheepService.SearchCheeps(SearchQuery.Split("&")[1], page);
                 break;
             default:
-                Authors = await _service.SearchAuthors(SearchQuery, page);
-                Cheeps = await _service.SearchCheeps(SearchQuery, page);
+                Authors = await _authorService.SearchAuthors(SearchQuery, page);
+                Cheeps = await _cheepService.SearchCheeps(SearchQuery, page);
                 break;
         }
         return Page();

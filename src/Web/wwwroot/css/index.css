@@ -105,6 +105,7 @@ body {
 #navSearchInput {
     max-width: 32rem;
     width: -webkit-fill-available;
+    width: -moz-available;
     margin: 20px 0px 20px 0;
     padding: 10px;
     border: 1px solid black;

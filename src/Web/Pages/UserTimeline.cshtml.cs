@@ -5,18 +5,18 @@ using Web.Interfaces;
 
 namespace Web.Pages;
 
-public class UserTimelineModel(ICheepService service) : PageModel
+public class UserTimelineModel(ICheepService.IAuthor authorService) : PageModel
 {
-    private readonly ICheepService _service = service;
-    public ICollection<Cheep> Cheeps { get; set; } = [];
+    private readonly ICheepService.IAuthor _authorService = authorService;
+    public IEnumerable<Cheep> Cheeps { get; set; } = [];
 
-    public ActionResult OnGet(string author, [FromQuery] int page = 1)
+    public async Task<IActionResult> OnGet(string author, [FromQuery] int page = 1)
     {
         if (page < 1)
         {
             return Redirect($"/{author}?page=1");
         }
-        Cheeps = _service.GetCheepsFromAuthor(author, page);
+        Cheeps = await _authorService.GetCheepsFromAuthor(author, page);
         return Page();
     }
 }

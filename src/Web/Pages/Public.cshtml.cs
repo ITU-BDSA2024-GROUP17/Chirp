@@ -5,9 +5,9 @@ using Web.Interfaces;
 
 namespace Web.Pages;
 
-public class PublicModel(ICheepService service) : PageModel
+public class PublicModel(ICheepService.ICheeps cheepService) : PageModel
 {
-    private readonly ICheepService _service = service;
+    private readonly ICheepService.ICheeps _cheepService = cheepService;
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
 
     public async Task<ActionResult> OnGet([FromQuery] int page)
@@ -17,7 +17,7 @@ public class PublicModel(ICheepService service) : PageModel
         {
             return Redirect("/?page=1");
         }
-        Cheeps = await _service.GetAllCheeps(page);
+        Cheeps = await _cheepService.GetAllCheeps(page);
         return Page();
     }
 }
