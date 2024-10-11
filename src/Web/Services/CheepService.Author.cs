@@ -10,7 +10,7 @@ public class CheepServiceAuthor(CheepDbContext context) : ICheepService.IAuthor
 
     public List<Author> GetAuthors()
     {
-        var authors = _context.Authors
+        List<Author> authors = _context.Authors
             .Select(a => a)
             .OrderBy(a => a.Name)
             .ToList();
@@ -19,7 +19,7 @@ public class CheepServiceAuthor(CheepDbContext context) : ICheepService.IAuthor
 
     public Task<IEnumerable<Author>> SearchAuthors(string searchQuery, int page)
     {
-        var authors = GetAuthors()
+        IEnumerable<Author> authors = GetAuthors()
         .Select(a => a)
         .OrderBy(a => a.Name)
         .AsEnumerable()
@@ -31,7 +31,7 @@ public class CheepServiceAuthor(CheepDbContext context) : ICheepService.IAuthor
 
     public Task<IEnumerable<Cheep>> GetCheepsFromAuthor(string author, int page)
     {
-        var cheeps = _context.Authors
+        IEnumerable<Cheep> cheeps = _context.Authors
           .Where(a => a.Name == author)
           .SelectMany(a => a.Cheeps)
           .Include(c => c.Author)
@@ -40,4 +40,21 @@ public class CheepServiceAuthor(CheepDbContext context) : ICheepService.IAuthor
 
         return Task.FromResult(cheeps);
     }
+
+    public Task<Author> GetAuthorByField(string author, Func<Author, string> field)
+    {
+        Author FoundAuthor = GetAuthors().Search(author, field).First();
+
+        return Task.FromResult(FoundAuthor);
+    }
+
+    public void createAuthor(Author author)
+    {
+        if (GetAuthors().Contains(author)) throw new InvalidDataException("Author is not avaliable");
+
+
+        _context.Authors.Add(author);
+        _context.SaveChanges();
+    }
+
 }
