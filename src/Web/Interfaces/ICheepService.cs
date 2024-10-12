@@ -1,3 +1,4 @@
+using web.DTOs;
 using Web.Entities;
 
 namespace Web.Interfaces;
@@ -9,5 +10,5 @@ public interface ICheepService
     public List<Author> GetAuthors(int page);
     public List<Cheep> GetCheeps(int page);
     public List<Cheep> GetCheepsFromAuthor(string author, int page);
-    public void StoreCheep(Cheep cheep);
+    public void StoreCheep(CreateCheepDto cheep);
 }

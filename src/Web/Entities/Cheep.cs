@@ -5,7 +5,7 @@ namespace Web.Entities;
 public class Cheep
 {
     [Key]
-    public required int Id { get; set; }
+    public int Id { get; set; }
     public required int AuthorId { get; set; }
     public required string Message { get; set; }
     public required DateTime TimeStamp { get; set; }

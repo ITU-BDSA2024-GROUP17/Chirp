@@ -1,6 +1,7 @@
 using Web.Interfaces;
 using Web.Entities;
 using Microsoft.EntityFrameworkCore;
+using web.DTOs;
 
 namespace Web.Services;
 
@@ -77,14 +78,30 @@ public class CheepService(CheepDbContext context) : ICheepService
         return cheeps;
     }
 
-    public void StoreCheep(Cheep cheep)
+    public Author GetOrCreateAuthor(string author)
     {
-        _context.Cheeps.Add(cheep);
-        var tempAuth = _context.Authors.Where(_author => _author.Id == cheep.Author.Id).Select(_author => _author).First();
-        if (tempAuth == null)
+        var query = _context.Authors.Where(_author => _author.Name == author);
+        if (!query.Any())
         {
-            _context.Authors.Add(cheep.Author);
+            var authorObj = new Author() { Name = author, Email = "" };
+            _context.Authors.Add(authorObj);
+            _context.SaveChanges();
+            return authorObj;
         }
+        return query.First();
+    }
+
+    public void StoreCheep(CreateCheepDto cheep)
+    {
+        var author = GetOrCreateAuthor(cheep.Author);
+        _context.Cheeps.Add(new Cheep()
+        {
+            AuthorId = author.Id,
+            Message = cheep.Message,
+            TimeStamp = DateTime.Now,
+            Author = author
+        });
+
         _context.SaveChanges();
     }
 }

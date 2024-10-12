@@ -1,3 +1,4 @@
+using web.DTOs;
 using Web.Entities;
 using Web.Interfaces;
 
@@ -9,7 +10,7 @@ public static class CheepEndpoints
     public static void MapCheepEndpoints(this WebApplication app, ICheepService cheepService)
     {
 
-        app.MapPost("/cheep", (Cheep cheep) =>
+        app.MapPost("/cheep", (CreateCheepDto cheep) =>
         {
             cheepService.StoreCheep(cheep);
 
