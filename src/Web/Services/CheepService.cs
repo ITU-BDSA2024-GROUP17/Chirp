@@ -14,7 +14,6 @@ public class CheepService(CheepDbContext context) : ICheepService
     public Task<IEnumerable<Author>> SearchAuthors(string searchQuery, int page)
     {
         var authors = _context.Authors
-         .Select(a => a)
          .OrderBy(a => a.Name)
          .AsEnumerable()
          .Where(a => a.Name.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))
@@ -29,8 +28,7 @@ public class CheepService(CheepDbContext context) : ICheepService
     {
         var messages = _context.Cheeps
             .Include(c => c.Author)
-            .Select(c => c)
-            .OrderBy(c => c.TimeStamp)
+            .OrderByDescending(c => c.TimeStamp)
             .AsEnumerable()
             .Where(c => c.Message.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))
             .Skip(Math.Max(0, page - 1) * _pageSize)
@@ -42,7 +40,6 @@ public class CheepService(CheepDbContext context) : ICheepService
     public List<Author> GetAuthors(int page)
     {
         var authors = _context.Authors
-            .Select(a => a)
             .OrderBy(a => a.Name)
             .Skip(Math.Max(0, page - 1) * _pageSize)
             .Take(_pageSize)
@@ -55,8 +52,7 @@ public class CheepService(CheepDbContext context) : ICheepService
     {
         var cheeps = _context.Cheeps
             .Include(c => c.Author)
-            .Select(c => c)
-            .OrderBy(c => c.TimeStamp)
+            .OrderByDescending(c => c.TimeStamp)
             .Skip(Math.Max(0, page - 1) * _pageSize)
             .Take(_pageSize)
             .ToList();
@@ -70,7 +66,7 @@ public class CheepService(CheepDbContext context) : ICheepService
             .Where(a => a.Name == author)
             .SelectMany(a => a.Cheeps)
             .Include(c => c.Author)
-            .OrderBy(c => c.TimeStamp)
+            .OrderByDescending(c => c.TimeStamp)
             .Skip(Math.Max(0, page - 1) * _pageSize)
             .Take(_pageSize)
             .ToList();
