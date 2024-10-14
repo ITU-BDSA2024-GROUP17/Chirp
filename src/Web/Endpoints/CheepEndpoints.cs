@@ -9,7 +9,6 @@ public static class CheepEndpoints
 
     public static void MapCheepEndpoints(this WebApplication app, ICheepService cheepService)
     {
-
         app.MapPost("/cheep", (CreateCheepDto cheep) =>
         {
             cheepService.StoreCheep(cheep);
@@ -17,5 +16,4 @@ public static class CheepEndpoints
             return cheep;
         }).WithSummary("Sends a cheep");
     }
-
 }
