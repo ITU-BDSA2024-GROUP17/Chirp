@@ -39,6 +39,7 @@ public class CheepService(CheepDbContext context, ICheepRepository cheepreposito
 
     public void StoreCheep(CreateCheepDto cheep)
     {
-        _cheeprepository.CreateCheep(cheep);
+        var author = _authorepository.GetOrCreateAuthor(cheep.Author);
+        _cheeprepository.CreateCheep(cheep, author);
     }
 }

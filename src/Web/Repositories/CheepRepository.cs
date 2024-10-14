@@ -10,23 +10,8 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     private readonly CheepDbContext _context = context;
     private readonly int _pageSize = 32;
 
-
-    private Author GetOrCreateAuthor(string author)
+    public Task CreateCheep(CreateCheepDto cheep, Author author)
     {
-        var query = _context.Authors.Where(_author => _author.Name == author);
-        if (!query.Any())
-        {
-            var authorObj = new Author() { Name = author, Email = "" };
-            _context.Authors.Add(authorObj);
-            _context.SaveChanges();
-            return authorObj;
-        }
-        return query.First();
-    }
-
-    public Task CreateCheep(CreateCheepDto cheep)
-    {
-        var author = GetOrCreateAuthor(cheep.Author);
         _context.Cheeps.Add(new Cheep()
         {
             AuthorId = author.Id,
