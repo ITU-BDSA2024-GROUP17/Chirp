@@ -1,10 +1,11 @@
+using web.DTOs;
 using Web.Entities;
 
 namespace Web.Interfaces;
 
 public interface ICheepRepository
 {
-    public Task CreateCheep(Cheep newCheep);
+    public Task CreateCheep(CreateCheepDto newCheep, Author author);
     // Potentially make this return a task
     public List<Cheep> ReadCheeps(string author, int page);
     // Potentially make this return a task

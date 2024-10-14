@@ -1,6 +1,7 @@
 using Web.Interfaces;
 using Web.Entities;
 using Microsoft.EntityFrameworkCore;
+using web.DTOs;
 
 namespace Web.Repositories;
 
@@ -9,17 +10,16 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     private readonly CheepDbContext _context = context;
     private readonly int _pageSize = 32;
 
-    public Task CreateCheep(Cheep newCheep)
+    public Task CreateCheep(CreateCheepDto cheep, Author author)
     {
-        _context.Cheeps.Add(newCheep);
-        var tempAuth = _context.Authors
-            .Where(_author => _author.Id == newCheep.Author.Id)
-            .Select(_author => _author)
-            .First();
-        if (tempAuth == null)
+        _context.Cheeps.Add(new Cheep()
         {
-            _context.Authors.Add(newCheep.Author);
-        }
+            AuthorId = author.Id,
+            Message = cheep.Message,
+            TimeStamp = DateTime.Now,
+            Author = author
+        });
+
         _context.SaveChanges();
         return Task.CompletedTask;
     }
@@ -30,7 +30,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
             .Where(a => a.Name == author)
             .SelectMany(a => a.Cheeps)
             .Include(c => c.Author)
-            .OrderBy(c => c.TimeStamp)
+            .OrderByDescending(c => c.TimeStamp)
             .Skip(Math.Max(0, page - 1) * _pageSize)
             .Take(_pageSize)
             .ToList();
@@ -42,8 +42,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     {
         var cheeps = _context.Cheeps
             .Include(c => c.Author)
-            .Select(c => c)
-            .OrderBy(c => c.TimeStamp)
+            .OrderByDescending(c => c.TimeStamp)
             .Skip(Math.Max(0, page - 1) * _pageSize)
             .Take(_pageSize)
             .ToList();
@@ -63,8 +62,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     {
         var messages = _context.Cheeps
             .Include(c => c.Author)
-            .Select(c => c)
-            .OrderBy(c => c.TimeStamp)
+            .OrderByDescending(c => c.TimeStamp)
             .AsEnumerable()
             .Where(c => c.Message.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))
             .Skip(Math.Max(0, page - 1) * _pageSize)

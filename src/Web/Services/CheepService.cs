@@ -1,6 +1,7 @@
 using Web.Interfaces;
 using Web.Entities;
 using Microsoft.EntityFrameworkCore;
+using web.DTOs;
 using Web.Repositories;
 
 namespace Web.Services;
@@ -36,8 +37,9 @@ public class CheepService(CheepDbContext context, ICheepRepository cheepreposito
         return _cheeprepository.ReadCheeps(author, page);
     }
 
-    public void StoreCheep(Cheep cheep)
+    public void StoreCheep(CreateCheepDto cheep)
     {
-        _cheeprepository.CreateCheep(cheep);
+        var author = _authorepository.GetOrCreateAuthor(cheep.Author);
+        _cheeprepository.CreateCheep(cheep, author);
     }
 }
