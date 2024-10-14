@@ -2,102 +2,43 @@ using Web.Interfaces;
 using Web.Entities;
 using Microsoft.EntityFrameworkCore;
 using web.DTOs;
+using Web.Repositories;
 
 namespace Web.Services;
 
-public class CheepService(CheepDbContext context) : ICheepService
+public class CheepService(CheepDbContext context, ICheepRepository cheeprepository, IAuthorRepository authorrepository) : ICheepService
 {
     private readonly CheepDbContext _context = context;
-
-    private readonly int _pageSize = 32;
+    private readonly ICheepRepository _cheeprepository = cheeprepository;
+    private readonly IAuthorRepository _authorepository = authorrepository;
 
     public Task<IEnumerable<Author>> SearchAuthors(string searchQuery, int page)
     {
-        var authors = _context.Authors
-         .OrderBy(a => a.Name)
-         .AsEnumerable()
-         .Where(a => a.Name.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))
-         .Skip(Math.Max(0, page - 1) * _pageSize)
-         .Take(_pageSize);
-
-
-        return Task.FromResult(authors);
+        return _authorepository.SearchAuthors(searchQuery, page);
     }
 
     public Task<IEnumerable<Cheep>> SearchCheeps(string searchQuery, int page)
     {
-        var messages = _context.Cheeps
-            .Include(c => c.Author)
-            .OrderByDescending(c => c.TimeStamp)
-            .AsEnumerable()
-            .Where(c => c.Message.Contains(searchQuery, StringComparison.CurrentCultureIgnoreCase))
-            .Skip(Math.Max(0, page - 1) * _pageSize)
-            .Take(_pageSize);
-
-        return Task.FromResult(messages);
+        return _cheeprepository.SearchCheeps(searchQuery, page);
     }
 
     public List<Author> GetAuthors(int page)
     {
-        var authors = _context.Authors
-            .OrderBy(a => a.Name)
-            .Skip(Math.Max(0, page - 1) * _pageSize)
-            .Take(_pageSize)
-            .ToList();
-
-        return authors;
+        return _authorepository.GetAuthors(page);
     }
 
     public List<Cheep> GetCheeps(int page)
     {
-        var cheeps = _context.Cheeps
-            .Include(c => c.Author)
-            .OrderByDescending(c => c.TimeStamp)
-            .Skip(Math.Max(0, page - 1) * _pageSize)
-            .Take(_pageSize)
-            .ToList();
-
-        return cheeps;
+        return _cheeprepository.ReadCheeps(page);
     }
 
     public List<Cheep> GetCheepsFromAuthor(string author, int page)
     {
-        var cheeps = _context.Authors
-            .Where(a => a.Name == author)
-            .SelectMany(a => a.Cheeps)
-            .Include(c => c.Author)
-            .OrderByDescending(c => c.TimeStamp)
-            .Skip(Math.Max(0, page - 1) * _pageSize)
-            .Take(_pageSize)
-            .ToList();
-
-        return cheeps;
-    }
-
-    public Author GetOrCreateAuthor(string author)
-    {
-        var query = _context.Authors.Where(_author => _author.Name == author);
-        if (!query.Any())
-        {
-            var authorObj = new Author() { Name = author, Email = "" };
-            _context.Authors.Add(authorObj);
-            _context.SaveChanges();
-            return authorObj;
-        }
-        return query.First();
+        return _cheeprepository.ReadCheeps(author, page);
     }
 
     public void StoreCheep(CreateCheepDto cheep)
     {
-        var author = GetOrCreateAuthor(cheep.Author);
-        _context.Cheeps.Add(new Cheep()
-        {
-            AuthorId = author.Id,
-            Message = cheep.Message,
-            TimeStamp = DateTime.Now,
-            Author = author
-        });
-
-        _context.SaveChanges();
+        _cheeprepository.CreateCheep(cheep);
     }
 }
