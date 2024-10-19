@@ -2,12 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Web.Entities;
 using Web.Interfaces;
+using Web.Services;
 
 namespace Web.Pages;
 
-public class PublicModel(ICheepService.ICheeps cheepService) : PageModel
+public class PublicModel(CheepService service) : PageModel
 {
-    private readonly ICheepService.ICheeps _cheepService = cheepService;
+    private readonly CheepService _service = service;
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
 
     public async Task<ActionResult> OnGet([FromQuery] int page)
@@ -17,7 +18,7 @@ public class PublicModel(ICheepService.ICheeps cheepService) : PageModel
         {
             return Redirect("/?page=1");
         }
-        Cheeps = await _cheepService.GetAllCheeps(page);
+        Cheeps = await _service.GetAllCheeps(page);
         return Page();
     }
 }

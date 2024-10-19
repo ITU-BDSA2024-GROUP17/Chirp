@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 namespace Web.Services;
 
-public class CheepServiceCheeps(CheepDbContext context) : ICheepService.ICheeps
+public class CheepRepository(CheepDbContext context) : ICheepRepository
 {
     private readonly CheepDbContext _context = context;
 

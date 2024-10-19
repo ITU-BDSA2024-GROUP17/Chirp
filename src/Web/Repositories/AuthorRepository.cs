@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 namespace Web.Services;
 
-public class CheepServiceAuthor(CheepDbContext context) : ICheepService.IAuthor
+public class AuthorRepository(CheepDbContext context) : IAuthorRepository
 {
     private readonly CheepDbContext _context = context;
 

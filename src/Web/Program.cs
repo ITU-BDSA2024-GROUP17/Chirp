@@ -10,8 +10,11 @@ builder.Services.AddDbContext<CheepDbContext>(options => options.UseSqlite(conne
 
 builder.Services.AddRazorPages();
 
-builder.Services.AddScoped<ICheepService.ICheeps, CheepServiceCheeps>();
-builder.Services.AddScoped<ICheepService.IAuthor, CheepServiceAuthor>();
+
+builder.Services.AddScoped<ICheepRepository, CheepRepository>();
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<CheepService>();
+
 
 
 var app = builder.Build();

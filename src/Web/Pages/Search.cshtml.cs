@@ -2,13 +2,13 @@ using Web.Interfaces;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Web.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Web.Services;
 
 namespace Web.Pages;
 [BindProperties]
-public class SearchModel(ICheepService.ICheeps cheepService, ICheepService.IAuthor authorService) : PageModel
+public class SearchModel(CheepService service) : PageModel
 {
-    private readonly ICheepService.ICheeps _cheepService = cheepService;
-    private readonly ICheepService.IAuthor _authorService = authorService;
+    private readonly CheepService _service = service;
 
     public IEnumerable<Author> Authors { get; set; } = [];
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
@@ -33,14 +33,14 @@ public class SearchModel(ICheepService.ICheeps cheepService, ICheepService.IAuth
         switch (SearchQuery.First())
         {
             case '@':
-                Authors = await _authorService.SearchAuthors(SearchQuery.Split("@")[1], page);
+                Authors = await _service.SearchAuthors(SearchQuery.Split("@")[1], page);
                 break;
             case '&':
-                Cheeps = await _cheepService.SearchCheeps(SearchQuery.Split("&")[1], page);
+                Cheeps = await _service.SearchCheeps(SearchQuery.Split("&")[1], page);
                 break;
             default:
-                Authors = await _authorService.SearchAuthors(SearchQuery, page);
-                Cheeps = await _cheepService.SearchCheeps(SearchQuery, page);
+                Authors = await _service.SearchAuthors(SearchQuery, page);
+                Cheeps = await _service.SearchCheeps(SearchQuery, page);
                 break;
         }
         return Page();
