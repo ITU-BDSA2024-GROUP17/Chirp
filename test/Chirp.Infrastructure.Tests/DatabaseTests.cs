@@ -1,6 +1,6 @@
-namespace SimpleDB.Tests;
+namespace Chirp.Infrastructure.Tests;
 
-public class CSVDatabaseTests
+public class DatabaseTests
 {
     // [Fact]
     // public void TestConnection()
