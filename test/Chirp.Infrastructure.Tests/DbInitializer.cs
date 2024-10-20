@@ -7,12 +7,12 @@ public static class DbInitializer
 {
     public static void SeedDatabase(CheepDbContext cheepDbContext)
     {
-        if (cheepDbContext.Authors.Any() && cheepDbContext.Cheeps.Any()) return;
+        if (cheepDbContext.Authors.Any() || cheepDbContext.Cheeps.Any()) return;
 
         var a1 = new Author() { Id = 1, Name = "John Doe ", Email = "John-Doe@mail.com", Cheeps = [] };
         var a2 = new Author() { Id = 2, Name = "Jane Doe", Email = "Jane-Doe@mail.dk", Cheeps = [] };
         var a3 = new Author() { Id = 3, Name = "John Smith", Email = "John-Smith@mail.com", Cheeps = [] };
-        var a4 = new Author() { Id = 3, Name = "Jane Smith", Email = "Jane-Smith@mail.com", Cheeps = [] };
+        var a4 = new Author() { Id = 4, Name = "Jane Smith", Email = "Jane-Smith@mail.com", Cheeps = [] };
 
         var authors = new List<Author>() { a1, a2, a3, a4 };
 
