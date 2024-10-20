@@ -47,13 +47,14 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         return Task.FromResult(FoundAuthor);
     }
 
-    public void createAuthor(Author author)
+    public Task CreateAuthor(Author author)
     {
         if (GetAuthors().Result.Contains(author)) throw new InvalidDataException("Author is not avaliable");
 
 
         _context.Authors.Add(author);
         _context.SaveChanges();
+        return Task.CompletedTask;
     }
 
 }

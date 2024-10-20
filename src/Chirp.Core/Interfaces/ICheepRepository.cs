@@ -10,6 +10,6 @@ public interface ICheepRepository
 
     public Task<IEnumerable<Cheep>> GetAllCheeps(int page);
 
-    public void StoreCheep(Cheep cheep);
+    public Task StoreCheep(Cheep cheep);
 
 }

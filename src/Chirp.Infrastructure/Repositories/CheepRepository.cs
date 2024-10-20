@@ -36,7 +36,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
         return Task.FromResult(cheeps);
     }
 
-    public void StoreCheep(Cheep cheep)
+    public Task StoreCheep(Cheep cheep)
     {
         _context.Cheeps.Add(cheep);
         var tempAuth = _context.Authors.Where(_author => _author.Id == cheep.Author.Id).Select(_author => _author).First();
@@ -45,6 +45,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
             _context.Authors.Add(cheep.Author);
         }
         _context.SaveChanges();
+        return Task.CompletedTask;
     }
 
 }

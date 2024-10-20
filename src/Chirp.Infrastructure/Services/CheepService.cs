@@ -42,9 +42,9 @@ public class CheepService(ICheepRepository cheepRepo, IAuthorRepository authorRe
     /// Stores a new Cheep to the database.
     /// </summary>
     /// <param name="cheep">The Cheep object to store.</param>
-    public void StoreCheep(Cheep cheep)
+    public Task StoreCheep(Cheep cheep)
     {
-        _cheepRepo.StoreCheep(cheep);
+        return _cheepRepo.StoreCheep(cheep);
     }
 
     /// <summary>
@@ -97,8 +97,8 @@ public class CheepService(ICheepRepository cheepRepo, IAuthorRepository authorRe
     /// Creates a new Author.
     /// </summary>
     /// <param name="author">The Author to create.</param>
-    public void createAuthor(Author author)
+    public Task CreateAuthor(Author author)
     {
-        _authorRepo.createAuthor(author);
+        return _authorRepo.CreateAuthor(author);
     }
 }
