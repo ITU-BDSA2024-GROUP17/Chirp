@@ -8,20 +8,20 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
 {
     private readonly CheepDbContext _context = context;
 
-    public List<Cheep> GetCheeps()
+    public Task<List<Cheep>> GetCheeps()
     {
         var cheeps = _context.Cheeps
             .Include(c => c.Author)
             .Select(c => c)
             .OrderBy(c => c.TimeStamp)
-            .ToList();
+            .ToListAsync();
 
         return cheeps;
     }
 
     public Task<IEnumerable<Cheep>> SearchCheeps(string searchQuery, int page)
     {
-        var messages = GetCheeps()
+        var messages = GetCheeps().Result
             .AsEnumerable()
             .Search(searchQuery, x => x.Message).Paginate(page);
 
@@ -29,7 +29,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     }
     public Task<IEnumerable<Cheep>> GetAllCheeps(int page)
     {
-        var cheeps = GetCheeps()
+        var cheeps = GetCheeps().Result
             .AsEnumerable()
             .Paginate(page);
 

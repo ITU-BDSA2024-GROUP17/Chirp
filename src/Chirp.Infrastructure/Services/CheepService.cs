@@ -12,7 +12,7 @@ public class CheepService(ICheepRepository cheepRepo, IAuthorRepository authorRe
     /// Retrieves all Cheeps from the database.
     /// </summary>
     /// <returns>A list of Cheep objects.</returns>
-    public List<Cheep> GetCheeps()
+    public Task<List<Cheep>> GetCheeps()
     {
         return _cheepRepo.GetCheeps();
     }
@@ -51,7 +51,7 @@ public class CheepService(ICheepRepository cheepRepo, IAuthorRepository authorRe
     /// Retrieves all Authors from the database.
     /// </summary>
     /// <returns>A list of Author objects.</returns>
-    public List<Author> GetAuthors()
+    public Task<List<Author>> GetAuthors()
     {
         return _authorRepo.GetAuthors();
     }

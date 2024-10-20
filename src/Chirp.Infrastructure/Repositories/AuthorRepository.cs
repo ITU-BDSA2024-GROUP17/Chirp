@@ -8,18 +8,17 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
 {
     private readonly CheepDbContext _context = context;
 
-    public List<Author> GetAuthors()
+    public Task<List<Author>> GetAuthors()
     {
-        List<Author> authors = _context.Authors
+        List<Author> authors = [.. _context.Authors
             .Select(a => a)
-            .OrderBy(a => a.Name)
-            .ToList();
-        return authors;
+            .OrderBy(a => a.Name)];
+        return Task.FromResult(authors);
     }
 
     public Task<IEnumerable<Author>> SearchAuthors(string searchQuery, int page)
     {
-        IEnumerable<Author> authors = GetAuthors()
+        IEnumerable<Author> authors = GetAuthors().Result
         .Select(a => a)
         .OrderBy(a => a.Name)
         .AsEnumerable()
@@ -43,14 +42,14 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
 
     public Task<Author> GetAuthorByField(string author, Func<Author, string> field)
     {
-        Author FoundAuthor = GetAuthors().Search(author, field).First();
+        Author FoundAuthor = GetAuthors().Result.Search(author, field).First();
 
         return Task.FromResult(FoundAuthor);
     }
 
     public void createAuthor(Author author)
     {
-        if (GetAuthors().Contains(author)) throw new InvalidDataException("Author is not avaliable");
+        if (GetAuthors().Result.Contains(author)) throw new InvalidDataException("Author is not avaliable");
 
 
         _context.Authors.Add(author);
