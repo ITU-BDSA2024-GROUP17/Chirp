@@ -19,12 +19,11 @@ public class CheepServiceTests
             .Options;
 
         _cheepDbContext = new CheepDbContext(options);
+        DbInitializer.SeedDatabase(_cheepDbContext);
 
         _authorRepository = new AuthorRepository(_cheepDbContext);
         _cheepRepository = new CheepRepository(_cheepDbContext);
 
         _cheepService = new CheepService(_cheepRepository, _authorRepository);
     }
-
-
 }
