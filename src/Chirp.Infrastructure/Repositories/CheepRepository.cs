@@ -1,8 +1,9 @@
-using Core.Interfaces;
-using Core.Entities;
+using Chirp.Core.Interfaces;
+using Chirp.Core.Entities;
+using Chirp.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-namespace Infrastructure.Services;
+
+namespace Chirp.Infrastructure.Repositories;
 
 public class CheepRepository(CheepDbContext context) : ICheepRepository
 {
@@ -27,6 +28,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
 
         return Task.FromResult(messages);
     }
+
     public Task<IEnumerable<Cheep>> GetAllCheeps(int page)
     {
         var cheeps = GetCheeps()
@@ -46,6 +48,4 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
         }
         _context.SaveChanges();
     }
-
 }
-

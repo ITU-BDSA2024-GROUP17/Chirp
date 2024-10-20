@@ -1,11 +1,11 @@
-@using Core.Entities;
+@using Chirp.Core.Entities;
 @model IEnumerable<Author>
 @if (Model.Any())
 
 {
     <h1>Authors</h1>
     <ul id="messagelist" class="cheeps-container">
-        @foreach (var author in Model)
+    @foreach (var author in Model)
 
         {
             <li class="cheep-wrapper">

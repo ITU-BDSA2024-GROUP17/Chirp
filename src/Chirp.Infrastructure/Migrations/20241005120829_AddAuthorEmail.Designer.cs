@@ -3,11 +3,10 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Infrastructure;
 
 #nullable disable
 
-namespace Infrastructure.Migrations
+namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(CheepDbContext))]
     [Migration("20241005120829_AddAuthorEmail")]

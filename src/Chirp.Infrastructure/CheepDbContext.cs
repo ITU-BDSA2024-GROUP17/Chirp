@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Core.Entities;
+using Chirp.Core.Entities;
 
-namespace Infrastructure;
+namespace Chirp.Infrastructure;
 
 public class CheepDbContext(DbContextOptions<CheepDbContext> options) : DbContext(options)
 {

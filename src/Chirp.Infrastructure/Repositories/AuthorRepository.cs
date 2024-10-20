@@ -1,8 +1,9 @@
-using Core.Interfaces;
-using Core.Entities;
+using Chirp.Core.Interfaces;
+using Chirp.Core.Entities;
+using Chirp.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Services;
+namespace Chirp.Infrastructure.Repositories;
 
 public class AuthorRepository(CheepDbContext context) : IAuthorRepository
 {
@@ -28,7 +29,6 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         return Task.FromResult(authors);
     }
 
-
     public Task<IEnumerable<Cheep>> GetCheepsFromAuthor(string author, int page)
     {
         IEnumerable<Cheep> cheeps = _context.Authors
@@ -52,9 +52,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
     {
         if (GetAuthors().Contains(author)) throw new InvalidDataException("Author is not avaliable");
 
-
         _context.Authors.Add(author);
         _context.SaveChanges();
     }
-
 }
