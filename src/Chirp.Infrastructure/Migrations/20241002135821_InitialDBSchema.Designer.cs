@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Infrastructure.Migrations
+namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(CheepDbContext))]
     [Migration("20241002135821_InitialDBSchema")]

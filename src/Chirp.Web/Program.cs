@@ -1,8 +1,10 @@
-using Core.Interfaces;
-using Infrastructure;
-using Infrastructure.Services;
+using Chirp.Core.Interfaces;
+using Chirp.Infrastructure;
+using Chirp.Infrastructure.Repositories;
+using Chirp.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
+// Builder setup
 var builder = WebApplication.CreateBuilder(args);
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -10,13 +12,11 @@ builder.Services.AddDbContext<CheepDbContext>(options => options.UseSqlite(conne
 
 builder.Services.AddRazorPages();
 
-
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<CheepService>();
 
-
-
+// Application setup
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

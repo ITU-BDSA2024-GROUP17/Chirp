@@ -1,10 +1,10 @@
-@using Core.Entities;
+@using Chirp.Core.Entities;
 @model IEnumerable<Cheep>
 @if (Model.Any())
 {
     <h1>Cheeps</h1>
     <ul id="messagelist" class="cheeps-container">
-        @foreach (var cheep in Model)
+    @foreach (var cheep in Model)
         {
             <li class="cheep-wrapper">
                 <a href="/@cheep.Author.Name" class="cheep-avatar">
@@ -14,7 +14,7 @@
                     <div class="cheep-user">
                         <a class="cheep-author" href="/@cheep.Author.Name">@cheep.Author.Name</a>
                         <small onmouseover="" class="cheep-timestamp">&sdot;
-                            @Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.TimeStamp)</small>
+                            @Chirp.Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.TimeStamp)</small>
                     </div>
                     @cheep.Message
                 </div>

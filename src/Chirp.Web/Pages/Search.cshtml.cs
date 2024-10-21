@@ -1,10 +1,9 @@
-using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Core.Entities;
+using Chirp.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Infrastructure.Services;
+using Chirp.Infrastructure.Services;
 
-namespace Web.Pages;
+namespace Chirp.Web.Pages;
 [BindProperties]
 public class SearchModel(CheepService service) : PageModel
 {
@@ -12,7 +11,6 @@ public class SearchModel(CheepService service) : PageModel
 
     public IEnumerable<Author> Authors { get; set; } = [];
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
-
 
     [BindProperty(SupportsGet = true)]
     public string? SearchQuery { get; set; }

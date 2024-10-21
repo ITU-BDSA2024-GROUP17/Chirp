@@ -1,7 +1,7 @@
-using Core.Interfaces;
-using Core.Entities;
+using Chirp.Core.Interfaces;
+using Chirp.Core.Entities;
 
-namespace Infrastructure.Services;
+namespace Chirp.Infrastructure.Services;
 
 public class CheepService(ICheepRepository cheepRepo, IAuthorRepository authorRepo) : ICheepRepository, IAuthorRepository
 {
