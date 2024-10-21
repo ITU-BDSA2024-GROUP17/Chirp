@@ -1,5 +1,4 @@
-using Core.Entities;
-using Infrastructure;
+using Chirp.Core.Entities;
 
 namespace Chirp.Infrastructure.Tests;
 

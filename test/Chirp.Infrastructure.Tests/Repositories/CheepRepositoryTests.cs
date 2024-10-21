@@ -1,5 +1,4 @@
-using Infrastructure;
-using Infrastructure.Services;
+using Chirp.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Tests.Repositories;
