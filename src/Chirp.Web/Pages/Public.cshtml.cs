@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Core.Entities;
-using Infrastructure.Services;
+using Chirp.Core.Entities;
+using Chirp.Infrastructure.Services;
 
-namespace Web.Pages;
+namespace Chirp.Web.Pages;
 
 public class PublicModel(CheepService service) : PageModel
 {

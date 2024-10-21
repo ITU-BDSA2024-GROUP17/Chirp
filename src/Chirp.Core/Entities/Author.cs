@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Core.Entities;
+namespace Chirp.Core.Entities;
 
 public class Author
 {

@@ -1,4 +1,4 @@
-namespace Web.Utilities;
+namespace Chirp.Web.Utilities;
 
 public static class TimeUtilties
 {

@@ -1,6 +1,6 @@
-using Core.Entities;
+using Chirp.Core.Entities;
 
-namespace Infrastructure;
+namespace Chirp.Infrastructure;
 
 public static class DbInitializer
 {
