@@ -104,7 +104,7 @@ public class CheepService(ICheepRepository cheepRepo, IAuthorRepository authorRe
     /// Creates a new Author.
     /// </summary>
     /// <param name="author">The Author to create.</param>
-    public Task CreateAuthor(Author author)
+    public Task<Author> CreateAuthor(Author author)
     {
         return _authorRepo.CreateAuthor(author);
     }
