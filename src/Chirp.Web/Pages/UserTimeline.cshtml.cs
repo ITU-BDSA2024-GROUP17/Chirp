@@ -16,7 +16,7 @@ public class UserTimelineModel(CheepService service) : PageModel
         {
             return Redirect($"/{author}?page=1");
         }
-        Cheeps = await _service.GetCheepsFromAuthor(author, page);
+        Cheeps = await _service.GetCheeps(author, page);
         return Page();
     }
 }
