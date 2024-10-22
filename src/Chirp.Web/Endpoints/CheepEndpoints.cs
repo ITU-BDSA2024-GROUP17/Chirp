@@ -30,7 +30,7 @@ public static class CheepEndpoints
             };
             cheepService.CreateCheep(cheep);
 
-            return cheep;
+            return cheepDto;
         }).WithSummary("Sends a cheep");
     }
 }

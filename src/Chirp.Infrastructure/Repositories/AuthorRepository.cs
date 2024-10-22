@@ -27,7 +27,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
             var author = _context.Authors.Where(a => a.Name == name).First();
             return Task.FromResult<Author?>(author);
         }
-        catch (ArgumentNullException)
+        catch (InvalidOperationException)
         {
             return Task.FromResult<Author?>(null);
         }
