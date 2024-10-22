@@ -1,0 +1,19 @@
+@page "/{author}"
+@model Chirp.Web.Pages.UserTimelineModel
+@{
+    Layout = "Shared/_Layout";
+    var routeName = HttpContext.GetRouteValue("author");
+    ViewData["Title"] = @routeName + "'s Timeline";
+}
+
+<link href="/css/pages/userTimeline.css" rel="stylesheet" type="text/css" />
+<div>
+    @if (Model.Cheeps.Any())
+    {
+        @await Html.PartialAsync("_CheepsPartial", Model.Cheeps)
+    }
+    else
+    {
+        ViewData["Title"] = "The end of " + @routeName + "'s Timeline";
+    }
+</div>
