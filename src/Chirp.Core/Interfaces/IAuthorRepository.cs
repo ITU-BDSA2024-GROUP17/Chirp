@@ -5,7 +5,7 @@ namespace Chirp.Core.Interfaces;
 public interface IAuthorRepository
 {
     public Task<Author> CreateAuthor(Author author);
-    public Task<Author?> GetAuthor(int id);
+    public Task<Author?> GetAuthor(string name);
     public Task<List<Author>> GetAuthors(int page);
     public Task<Author> GetAuthorByField(string author, Func<Author, string> field);
     public Task<List<Cheep>> GetCheeps(string author, int page);

@@ -44,14 +44,15 @@ public class CheepService(ICheepRepository cheepRepo, IAuthorRepository authorRe
     /// Stores a new Cheep to the database.
     /// </summary>
     /// <param name="cheep">The Cheep object to store.</param>
-    public Task<Cheep> CreateCheep(CreateCheepDto cheep)
+    public Task<Cheep> CreateCheep(Cheep cheep)
     {
+
         return _cheepRepo.CreateCheep(cheep);
     }
 
-    public Task<Author?> GetAuthor(int id)
+    public Task<Author?> GetAuthor(string name)
     {
-        return _authorRepo.GetAuthor(id);
+        return _authorRepo.GetAuthor(name);
     }
 
     /// <summary>

@@ -20,11 +20,18 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         return authors;
     }
 
-    public Task<Author?> GetAuthor(int id)
+    public Task<Author?> GetAuthor(string name)
     {
-        var author = _context.Authors.Find(id);
+        try
+        {
+            var author = _context.Authors.Where(a => a.Name == name).First();
+            return Task.FromResult<Author?>(author);
+        }
+        catch (ArgumentNullException)
+        {
+            return Task.FromResult<Author?>(null);
+        }
 
-        return Task.FromResult(author);
     }
 
     public Task<List<Author>> SearchAuthors(string searchQuery, int page)

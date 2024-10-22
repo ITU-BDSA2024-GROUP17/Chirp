@@ -5,7 +5,7 @@ namespace Chirp.Core.Interfaces;
 
 public interface ICheepRepository
 {
-    public Task<Cheep> CreateCheep(CreateCheepDto cheep);
+    public Task<Cheep> CreateCheep(Cheep cheep);
     public Task<Cheep?> GetCheep(int id);
     public Task<List<Cheep>> GetCheeps(int page);
     public Task<Cheep> UpdateCheep(Cheep cheep);
