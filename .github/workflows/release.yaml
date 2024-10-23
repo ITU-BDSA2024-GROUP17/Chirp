@@ -20,3 +20,6 @@ jobs:
         name: Release ${{ github.ref_name }}
         draft: false
         prerelease: false
+      env:
+        GHUB_CLIENT_ID: ${{ secrets.GHUB_CLIENT_ID }}
+        GHUB_CLIENT_SECRET: ${{ secrets.GHUB_CLIENT_SECRET }}
