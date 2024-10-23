@@ -32,5 +32,10 @@ public static class CheepEndpoints
 
             return cheepDto;
         }).WithSummary("Sends a cheep");
+
+        app.MapGet("/searchField", async (string SearchQuery) =>
+        {
+            return await cheepService.SearchAuthors(SearchQuery, 1);
+        }).WithSummary("Gets all authors");
     }
 }
