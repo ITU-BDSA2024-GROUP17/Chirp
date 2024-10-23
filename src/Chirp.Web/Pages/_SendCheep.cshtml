@@ -1,0 +1,51 @@
+<link href="/css/partials/SendCheeps.css" rel="stylesheet" type="text/css" />
+
+<div class="send-box">
+    <form onsubmit="sendCheep()" method="dialog" style="display: contents;">
+        <input id="cheepMessage" class="text-box cheep-input" name="message" placeholder="Whats on your mind?">
+        <button class="cheep-submit" type="submit">></button>
+    </form>
+</div>
+
+<script>
+    async function sendCheep() {
+        const message = document.getElementById("cheepMessage").value;
+        if (message.length <= 0 || message.length >= 160) {
+            return;
+        }
+        let author = localStorage.getItem("author");
+        if (!author) author = requestAuthor();
+
+        let result = await fetch("/cheep", {
+            method: "POST",
+            body: JSON.stringify({ message: message, author: author }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        if (result.ok) {
+            window.location.reload();
+        }
+    }
+
+    function requestAuthor() {
+        let author = prompt("whats your name?");
+        if (!author || author.length < 2) return requestAuthor();
+        localStorage.setItem("author", author);
+        return author;
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+        const cheepInputField = document.querySelector("#cheepMessage");
+        ['keyup', 'change'].forEach((type) => {
+            cheepInputField.addEventListener(type, (event) => {
+                const inputFieldValue = document.getElementById("cheepMessage").value;
+                if (inputFieldValue.length > 160) {
+                    document.getElementById("cheepMessage").style.color = "red";
+                } else {
+                    document.getElementById("cheepMessage").style.color = "black";
+                }
+            })
+        })
+    })
+</script>
