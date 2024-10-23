@@ -99,10 +99,10 @@ body {
 }
 
 #navSearchForm {
-    width: 32rem;
+    width: 12rem;
 }
 
-#navSearchInput {
+.text-box {
     max-width: 32rem;
     width: -webkit-fill-available;
     width: -moz-available;
@@ -219,6 +219,12 @@ Cheeps
     font-weight: 400;
 }
 
+/*
+
+Interface
+
+*/
+
 .skip-btn {
     background-image: url(../images/arrow.png);
     background-size: contain;
@@ -238,4 +244,27 @@ Cheeps
 
 .skip-btn:hover {
     background-color: var(--gray-200);
+}
+
+.send-box {
+    width: 27rem;
+    display: flex;
+}
+
+.cheep-input {
+    flex-grow: 1;
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.cheep-submit {
+    margin: 20px 0px 20px 0;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 0.25em;
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+
 }

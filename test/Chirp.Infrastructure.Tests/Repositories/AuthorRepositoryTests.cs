@@ -21,9 +21,9 @@ public class AuthorRepositoryTests
     }
 
     [Fact]
-    public void GetAllAuthors()
+    public async Task GetAllAuthors()
     {
-        var authors = _authorRepository.GetAuthors();
+        var authors = await _authorRepository.GetAuthors(1);
 
         Assert.Equal(4, authors.Count);
     }

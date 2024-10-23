@@ -2,6 +2,7 @@ using Chirp.Core.Interfaces;
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Repositories;
 using Chirp.Infrastructure.Services;
+using Chirp.Web.Endpoints;
 using Microsoft.EntityFrameworkCore;
 
 // Builder setup
@@ -31,6 +32,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
+app.MapCheepEndpoints(app.Services.CreateScope().ServiceProvider.GetService<CheepService>() ?? throw new Exception("CheepService not found!"));
 
 app.MapRazorPages();
 app.Run();

@@ -9,50 +9,71 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
 {
     private readonly CheepDbContext _context = context;
 
-    public Task<List<Author>> GetAuthors()
+    public Task<List<Author>> GetAuthors(int page)
     {
-        List<Author> authors = [.. _context.Authors
+        var authors = _context.Authors
             .Select(a => a)
-            .OrderBy(a => a.Name)];
+            .OrderBy(a => a.Name)
+            .Paginate(page)
+            .ToListAsync();
+
+        return authors;
+    }
+
+    public Task<Author?> GetAuthor(string name)
+    {
+        try
+        {
+            var author = _context.Authors.Where(a => a.Name == name).First();
+            return Task.FromResult<Author?>(author);
+        }
+        catch (InvalidOperationException)
+        {
+            return Task.FromResult<Author?>(null);
+        }
+
+    }
+
+    public Task<List<Author>> SearchAuthors(string searchQuery, int page)
+    {
+        var authors = _context.Authors
+            .Select(a => a)
+            .Search(searchQuery, x => x.Name)
+            .OrderBy(a => a.Name)
+            .Paginate(page)
+            .ToList();
+
         return Task.FromResult(authors);
     }
 
-    public Task<IEnumerable<Author>> SearchAuthors(string searchQuery, int page)
+    public Task<List<Cheep>> GetCheeps(string author, int page)
     {
-        IEnumerable<Author> authors = GetAuthors().Result
-        .Select(a => a)
-        .OrderBy(a => a.Name)
-        .AsEnumerable()
-        .Search(searchQuery, x => x.Name).Paginate(page);
-
-        return Task.FromResult(authors);
-    }
-
-    public Task<IEnumerable<Cheep>> GetCheepsFromAuthor(string author, int page)
-    {
-        IEnumerable<Cheep> cheeps = _context.Authors
+        var cheeps = _context.Authors
           .Where(a => a.Name == author)
           .SelectMany(a => a.Cheeps)
           .Include(c => c.Author)
-          .OrderBy(c => c.TimeStamp)
-          .Paginate(page);
+          .OrderByDescending(c => c.TimeStamp)
+          .Paginate(page)
+          .ToList();
 
         return Task.FromResult(cheeps);
     }
 
     public Task<Author> GetAuthorByField(string author, Func<Author, string> field)
     {
-        Author FoundAuthor = GetAuthors().Result.Search(author, field).First();
+        var FoundAuthor = _context.Authors
+            .Search(author, field)
+            .First();
 
         return Task.FromResult(FoundAuthor);
     }
 
-    public Task CreateAuthor(Author author)
+    public Task<Author> CreateAuthor(Author author)
     {
-        if (GetAuthors().Result.Contains(author)) throw new InvalidDataException("Author is not avaliable");
+        if (_context.Authors.Find(author.Id) != null) throw new InvalidDataException("Author is not avaliable");
 
         _context.Authors.Add(author);
         _context.SaveChanges();
-        return Task.CompletedTask;
+        return Task.FromResult(author);
     }
 }

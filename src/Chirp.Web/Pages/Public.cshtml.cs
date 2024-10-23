@@ -17,7 +17,7 @@ public class PublicModel(CheepService service) : PageModel
         {
             return Redirect("/?page=1");
         }
-        Cheeps = await _service.GetAllCheeps(page);
+        Cheeps = await _service.GetCheeps(page);
         return Page();
     }
 }

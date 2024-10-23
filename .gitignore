@@ -224,3 +224,7 @@ AppPackages/
 # Database files
 *.csv
 *.db
+
+# Cache db files
+*.db-shm
+*.db-wal

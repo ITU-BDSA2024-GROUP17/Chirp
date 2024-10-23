@@ -6,6 +6,11 @@ public static class QueryableExtensions
 {
     private static readonly int _pageSize = 32;
 
+    public static IQueryable<T> Paginate<T>(this IQueryable<T> source, int page)
+    {
+        return source.Skip(Math.Max(0, page - 1) * _pageSize).Take(_pageSize);
+    }
+
     public static IEnumerable<T> Paginate<T>(this IEnumerable<T> source, int page)
     {
         return source.Skip(Math.Max(0, page - 1) * _pageSize).Take(_pageSize);

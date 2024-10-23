@@ -1,15 +1,13 @@
+using Chirp.Core.DTOs;
 using Chirp.Core.Entities;
 
 namespace Chirp.Core.Interfaces;
 
 public interface ICheepRepository
 {
-    public Task<List<Cheep>> GetCheeps();
-
-    public Task<IEnumerable<Cheep>> SearchCheeps(string searchQuery, int page);
-
-    public Task<IEnumerable<Cheep>> GetAllCheeps(int page);
-
-    public Task StoreCheep(Cheep cheep);
-
+    public Task<Cheep> CreateCheep(Cheep cheep);
+    public Task<Cheep?> GetCheep(int id);
+    public Task<List<Cheep>> GetCheeps(int page);
+    public Task<Cheep> UpdateCheep(Cheep cheep);
+    public Task<List<Cheep>> SearchCheeps(string searchQuery, int page);
 }

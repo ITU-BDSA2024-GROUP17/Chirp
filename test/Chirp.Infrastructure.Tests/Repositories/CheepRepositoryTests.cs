@@ -21,9 +21,9 @@ public class CheepRepositoryTests
     }
 
     [Fact]
-    public void GetAllCheeps()
+    public async Task GetAllCheeps()
     {
-        var cheeps = _cheepRepository.GetCheeps();
+        var cheeps = await _cheepRepository.GetCheeps(1);
 
         Assert.Equal(10, cheeps.Count);
     }

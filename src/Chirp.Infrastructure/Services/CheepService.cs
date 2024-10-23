@@ -1,5 +1,6 @@
 using Chirp.Core.Interfaces;
 using Chirp.Core.Entities;
+using Chirp.Core.DTOs;
 
 namespace Chirp.Infrastructure.Services;
 
@@ -8,13 +9,14 @@ public class CheepService(ICheepRepository cheepRepo, IAuthorRepository authorRe
     private readonly ICheepRepository _cheepRepo = cheepRepo;
     private readonly IAuthorRepository _authorRepo = authorRepo;
 
-    /// <summary>
-    /// Retrieves all Cheeps from the database.
-    /// </summary>
-    /// <returns>A list of Cheep objects.</returns>
-    public Task<List<Cheep>> GetCheeps()
+    public Task<Cheep?> GetCheep(int id)
     {
-        return _cheepRepo.GetCheeps();
+        return _cheepRepo.GetCheep(id);
+    }
+
+    public Task<Cheep> UpdateCheep(Cheep cheep)
+    {
+        return _cheepRepo.UpdateCheep(cheep);
     }
 
     /// <summary>
@@ -22,9 +24,9 @@ public class CheepService(ICheepRepository cheepRepo, IAuthorRepository authorRe
     /// </summary>
     /// <param name="page">The paginated page number to retrieve.</param>
     /// <returns>Task result which contains an enumerable of Cheep objects.</returns>
-    public Task<IEnumerable<Cheep>> GetAllCheeps(int page)
+    public Task<List<Cheep>> GetCheeps(int page)
     {
-        return _cheepRepo.GetAllCheeps(page);
+        return _cheepRepo.GetCheeps(page);
     }
 
     /// <summary>
@@ -33,7 +35,7 @@ public class CheepService(ICheepRepository cheepRepo, IAuthorRepository authorRe
     /// <param name="searchQuery">The search query </param>
     /// <param name="page">The page number to retrieve.</param>
     /// <returns>Task result which contains an enumerable of Cheep objects.</returns>
-    public Task<IEnumerable<Cheep>> SearchCheeps(string searchQuery, int page)
+    public Task<List<Cheep>> SearchCheeps(string searchQuery, int page)
     {
         return _cheepRepo.SearchCheeps(searchQuery, page);
     }
@@ -42,18 +44,24 @@ public class CheepService(ICheepRepository cheepRepo, IAuthorRepository authorRe
     /// Stores a new Cheep to the database.
     /// </summary>
     /// <param name="cheep">The Cheep object to store.</param>
-    public Task StoreCheep(Cheep cheep)
+    public Task<Cheep> CreateCheep(Cheep cheep)
     {
-        return _cheepRepo.StoreCheep(cheep);
+
+        return _cheepRepo.CreateCheep(cheep);
+    }
+
+    public Task<Author?> GetAuthor(string name)
+    {
+        return _authorRepo.GetAuthor(name);
     }
 
     /// <summary>
     /// Retrieves all Authors from the database.
     /// </summary>
     /// <returns>A list of Author objects.</returns>
-    public Task<List<Author>> GetAuthors()
+    public Task<List<Author>> GetAuthors(int page)
     {
-        return _authorRepo.GetAuthors();
+        return _authorRepo.GetAuthors(page);
     }
 
     /// <summary>
@@ -77,7 +85,7 @@ public class CheepService(ICheepRepository cheepRepo, IAuthorRepository authorRe
     /// <param name="searchQuery">The search query</param>
     /// <param name="page">The paginated page number</param>
     /// <returns>Task result which contains an enumerable of a Author objects</returns>
-    public Task<IEnumerable<Author>> SearchAuthors(string searchQuery, int page)
+    public Task<List<Author>> SearchAuthors(string searchQuery, int page)
     {
         return _authorRepo.SearchAuthors(searchQuery, page);
     }
@@ -88,16 +96,16 @@ public class CheepService(ICheepRepository cheepRepo, IAuthorRepository authorRe
     /// <param name="author">The author</param>
     /// <param name="page">The paginated page number to retrieve.</param>
     /// <returns>Task result which contains an enumerable of a Cheep objects.</returns>
-    public Task<IEnumerable<Cheep>> GetCheepsFromAuthor(string author, int page)
+    public Task<List<Cheep>> GetCheeps(string author, int page)
     {
-        return _authorRepo.GetCheepsFromAuthor(author, page);
+        return _authorRepo.GetCheeps(author, page);
     }
 
     /// <summary>
     /// Creates a new Author.
     /// </summary>
     /// <param name="author">The Author to create.</param>
-    public Task CreateAuthor(Author author)
+    public Task<Author> CreateAuthor(Author author)
     {
         return _authorRepo.CreateAuthor(author);
     }
