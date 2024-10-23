@@ -4,6 +4,7 @@ using Chirp.Infrastructure.Repositories;
 using Chirp.Infrastructure.Services;
 using Chirp.Web.Endpoints;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 // Builder setup
@@ -21,6 +22,21 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<CheepService>();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.RequireAuthenticatedSignIn = true;
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultScheme = "Github";
+})
+.AddGitHub(options =>
+{
+    options.ClientId = builder.Configuration["GHUB_CLIENT_ID"] ?? throw new Exception("GitHub ClientId must be set in the configuration!");
+    options.ClientSecret = builder.Configuration["GHUB_CLIENT_SECRET"] ?? throw new Exception("GitHub ClientSecret must be set in the configuration!");
+
+    options.ReturnUrlParameter = "/signin-github";
+});
 
 // Application setup
 var app = builder.Build();
@@ -47,10 +63,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapCheepEndpoints(app.Services.CreateScope().ServiceProvider.GetService<CheepService>() ?? throw new Exception("CheepService not found!"));
-
 app.MapRazorPages();
 
 app.Run();

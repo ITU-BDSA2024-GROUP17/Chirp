@@ -89,6 +89,20 @@
             const searchQuery = urlParams.get("SearchQuery") || "";
             window.location.href = `/search?SearchQuery=${searchQuery}&page=${newPageNum}`;
         }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const cheepInputField = document.querySelector("#cheepMessage");
+            ['keyup', 'change'].forEach((type) => {
+                cheepInputField.addEventListener(type, (event) => {
+                    const inputFieldValue = document.getElementById("cheepMessage").value;
+                    if (inputFieldValue.length > 160){
+                        document.getElementById("cheepMessage").style.color = "red";
+                    }else{
+                        document.getElementById("cheepMessage").style.color = "black";
+                    }
+                })
+            })
+        })
     </script>
 </body>
 @await RenderSectionAsync("Scripts", required: false)
