@@ -3,6 +3,7 @@ using Chirp.Infrastructure;
 using Chirp.Infrastructure.Repositories;
 using Chirp.Infrastructure.Services;
 using Chirp.Web.Endpoints;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 // Builder setup
@@ -20,7 +21,11 @@ builder.Services.AddScoped<CheepService>();
 builder.Services.AddAuthentication(options =>
 {
     options.RequireAuthenticatedSignIn = true;
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultScheme = "Github";
 })
+.AddCookie()
 .AddGitHub(options =>
 {
     options.ClientId = Environment.GetEnvironmentVariable("GHUB_CLIENT_ID") ?? throw new Exception("GitHub ClientId must be set in the configuration!");
@@ -44,6 +49,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 app.UseAuthentication();
+app.UseSession();
 app.MapCheepEndpoints(app.Services.CreateScope().ServiceProvider.GetService<CheepService>() ?? throw new Exception("CheepService not found!"));
 
 app.MapRazorPages();
