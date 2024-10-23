@@ -17,6 +17,17 @@ builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<CheepService>();
 
+builder.Services.AddAuthentication(options =>
+{
+    options.RequireAuthenticatedSignIn = true;
+})
+.AddGitHub(options =>
+{
+    options.ClientId = builder.Configuration["GitHubClientId"] ?? throw new Exception("GitHub ClientId must be set in the configuration!");
+    options.ClientSecret = builder.Configuration["GitHubClientSecret"] ?? throw new Exception("GitHub ClientSecret must be set in the configuration!");
+    options.ReturnUrlParameter = "/signin-github";
+});
+
 // Application setup
 var app = builder.Build();
 
@@ -32,6 +43,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
+app.UseAuthentication();
 app.MapCheepEndpoints(app.Services.CreateScope().ServiceProvider.GetService<CheepService>() ?? throw new Exception("CheepService not found!"));
 
 app.MapRazorPages();
