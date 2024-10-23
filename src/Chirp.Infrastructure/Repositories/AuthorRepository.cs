@@ -13,7 +13,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
     {
         var authors = _context.Authors
             .Select(a => a)
-            .OrderBy(a => a.Name)
+            .OrderBy(a => a.UserName)
             .Paginate(page)
             .ToListAsync();
 
@@ -24,7 +24,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
     {
         try
         {
-            var author = _context.Authors.Where(a => a.Name == name).First();
+            var author = _context.Authors.Where(a => a.UserName == name).First();
             return Task.FromResult<Author?>(author);
         }
         catch (InvalidOperationException)
@@ -38,8 +38,8 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
     {
         var authors = _context.Authors
             .Select(a => a)
-            .Search(searchQuery, x => x.Name)
-            .OrderBy(a => a.Name)
+            .Search(searchQuery, x => x.UserName ?? "")
+            .OrderBy(a => a.UserName)
             .Paginate(page)
             .ToList();
 
@@ -49,7 +49,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
     public Task<List<Cheep>> GetCheeps(string author, int page)
     {
         var cheeps = _context.Authors
-          .Where(a => a.Name == author)
+          .Where(a => a.UserName == author)
           .SelectMany(a => a.Cheeps)
           .Include(c => c.Author)
           .OrderByDescending(c => c.TimeStamp)

@@ -16,7 +16,7 @@ public static class CheepEndpoints
             {
                 author = new Author
                 {
-                    Name = cheepDto.Author,
+                    UserName = cheepDto.Author,
                     Email = ""
                 };
                 cheepService.CreateAuthor(author);
