@@ -13,6 +13,7 @@ public class CheepDbContext : IdentityDbContext
 
     public CheepDbContext(DbContextOptions<CheepDbContext> options) : base(options)
     {
+
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
