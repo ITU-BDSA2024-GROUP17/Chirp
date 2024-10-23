@@ -23,8 +23,8 @@ builder.Services.AddAuthentication(options =>
 })
 .AddGitHub(options =>
 {
-    options.ClientId = Environment.GetEnvironmentVariable("GHUB_CLIENT_ID") ?? builder.Configuration["GHUB_CLIENT_ID"] ?? throw new Exception("GitHub ClientId must be set in the configuration!");
-    options.ClientSecret = Environment.GetEnvironmentVariable("GHUB_CLIENT_SECRET") ?? builder.Configuration["GHUB_CLIENT_SECRET"] ?? throw new Exception("GitHub ClientSecret must be set in the configuration!");
+    options.ClientId = Environment.GetEnvironmentVariable("GHUB_CLIENT_ID") ?? throw new Exception("GitHub ClientId must be set in the configuration!");
+    options.ClientSecret = Environment.GetEnvironmentVariable("GHUB_CLIENT_SECRET") ?? throw new Exception("GitHub ClientSecret must be set in the configuration!");
     options.ReturnUrlParameter = "/signin-github";
 });
 
