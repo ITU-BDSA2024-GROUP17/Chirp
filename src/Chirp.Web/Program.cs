@@ -1,3 +1,4 @@
+using System.Threading.Tasks.Dataflow;
 using Chirp.Core.Interfaces;
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Repositories;
@@ -28,9 +29,19 @@ builder.Services.AddAuthentication(options =>
 .AddCookie()
 .AddGitHub(options =>
 {
-    options.ClientId = Environment.GetEnvironmentVariable("GHUB_CLIENT_ID") ?? throw new Exception("GitHub ClientId must be set in the configuration!");
-    options.ClientSecret = Environment.GetEnvironmentVariable("GHUB_CLIENT_SECRET") ?? throw new Exception("GitHub ClientSecret must be set in the configuration!");
+    options.ClientId = builder.Configuration["GHUB_CLIENT_ID"] ?? throw new Exception("GitHub ClientId must be set in the configuration!");
+    options.ClientSecret = builder.Configuration["GHUB_CLIENT_SECRET"] ?? throw new Exception("GitHub ClientSecret must be set in the configuration!");
+
     options.ReturnUrlParameter = "/signin-github";
+});
+
+// Add session services
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
 });
 
 // Application setup
@@ -47,10 +58,9 @@ using (var scope = app.Services.CreateScope())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseAuthorization();
 app.UseAuthentication();
-app.UseSession();
+app.UseAuthorization();
+app.UseSession(); // Use session middleware
 app.MapCheepEndpoints(app.Services.CreateScope().ServiceProvider.GetService<CheepService>() ?? throw new Exception("CheepService not found!"));
-
 app.MapRazorPages();
 app.Run();
