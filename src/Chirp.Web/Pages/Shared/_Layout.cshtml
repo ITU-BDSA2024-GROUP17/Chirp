@@ -5,13 +5,14 @@
 
 <head>
     <title>@ViewData["Title"]</title>
-    <link href="/css/index.css" rel="stylesheet" type="text/css" />
-    <link rel="icon" type="image/png" href="/favicon/favicon.ico">
+    <link rel="icon" type="image/png" href="/favicon/favicon.ico" />
+    <link rel="stylesheet" href="/css/index.css" type="text/css" />
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
 
 <body>
-    <div class="header">
-        <a style="justify-self: center" href="/"><img class="logo" src="/images/icon1.png" alt="Icon1" /></a>
+    <header>
+        <a href="/"><img class="logo" src="/images/icon1.png" alt="Icon1" /></a>
         <div class="send-box">
             <form onsubmit="sendCheep()" method="dialog" style="display: contents;">
                 <input id="cheepMessage" class="text-box cheep-input" name="message" placeholder="Whats on your mind?">
@@ -21,11 +22,11 @@
         <form id="navSearchForm" action="search">
             <input id="navSearchInput" class="text-box" name="SearchQuery" type="text" placeholder="Search for user">
         </form>
-        <div class="nav-wrapper">
-            <span class="nav-link"><a href="/">Public Timeline</a></span>
-            <span class="nav-link"><a href="/cheep">Cheeps</a></span>
+        <div style="display: flex; gap: 1.5rem;">
+            <a class="btn-account" href="/Identity/Account/Register">Register</a>
+            <a class="btn-account" href="/Identity/Account/Login">Login</a>
         </div>
-    </div>
+    </header>
     <div class="line"></div>
     <div class=root>
         <div class=container>
