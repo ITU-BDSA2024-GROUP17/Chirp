@@ -8,18 +8,18 @@ public static class DbInitializer
     {
         if (!(cheepDbContext.Authors.Any() && cheepDbContext.Cheeps.Any()))
         {
-            var a1 = new Author() { Id = 1, Name = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = [] };
-            var a2 = new Author() { Id = 2, Name = "Luanna Muro", Email = "Luanna-Muro@ku.dk", Cheeps = [] };
-            var a3 = new Author() { Id = 3, Name = "Wendell Ballan", Email = "Wendell-Ballan@gmail.com", Cheeps = [] };
-            var a4 = new Author() { Id = 4, Name = "Nathan Sirmon", Email = "Nathan+Sirmon@dtu.dk", Cheeps = [] };
-            var a5 = new Author() { Id = 5, Name = "Quintin Sitts", Email = "Quintin+Sitts@itu.dk", Cheeps = [] };
-            var a6 = new Author() { Id = 6, Name = "Mellie Yost", Email = "Mellie+Yost@ku.dk", Cheeps = [] };
-            var a7 = new Author() { Id = 7, Name = "Malcolm Janski", Email = "Malcolm-Janski@gmail.com", Cheeps = [] };
-            var a8 = new Author() { Id = 8, Name = "Octavio Wagganer", Email = "Octavio.Wagganer@dtu.dk", Cheeps = [] };
-            var a9 = new Author() { Id = 9, Name = "Johnnie Calixto", Email = "Johnnie+Calixto@itu.dk", Cheeps = [] };
-            var a10 = new Author() { Id = 10, Name = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = [] };
-            var a11 = new Author() { Id = 11, Name = "Helge", Email = "ropf@itu.dk", Cheeps = [] };
-            var a12 = new Author() { Id = 12, Name = "Adrian", Email = "adho@itu.dk", Cheeps = [] };
+            var a1 = new Author() { Id = "182cac86-ec77-417f-83bd-35c6dd7f9391", UserName = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = [] };
+            var a2 = new Author() { Id = "4bf52408-b693-4ba6-a82d-6946ca4619c2", UserName = "Luanna Muro", Email = "Luanna-Muro@ku.dk", Cheeps = [] };
+            var a3 = new Author() { Id = "5e7a3446-d9ca-438e-861e-eb09245429d2", UserName = "Wendell Ballan", Email = "Wendell-Ballan@gmail.com", Cheeps = [] };
+            var a4 = new Author() { Id = "d25286e6-0691-4b6b-b9aa-8bad8343f76a", UserName = "Nathan Sirmon", Email = "Nathan+Sirmon@dtu.dk", Cheeps = [] };
+            var a5 = new Author() { Id = "83daf8c1-cc90-4c84-b4ee-f12a4635620c", UserName = "Quintin Sitts", Email = "Quintin+Sitts@itu.dk", Cheeps = [] };
+            var a6 = new Author() { Id = "82f0c4b9-32ce-43f5-ade1-6082b0d5151c", UserName = "Mellie Yost", Email = "Mellie+Yost@ku.dk", Cheeps = [] };
+            var a7 = new Author() { Id = "a0ea8997-3ba0-46db-9718-5fc15c27dfe6", UserName = "Malcolm Janski", Email = "Malcolm-Janski@gmail.com", Cheeps = [] };
+            var a8 = new Author() { Id = "4e9d45c2-c1b2-455a-b1d3-767fae48c44c", UserName = "Octavio Wagganer", Email = "Octavio.Wagganer@dtu.dk", Cheeps = [] };
+            var a9 = new Author() { Id = "338e3cde-f248-438d-b292-e89f011915ed", UserName = "Johnnie Calixto", Email = "Johnnie+Calixto@itu.dk", Cheeps = [] };
+            var a10 = new Author() { Id = "60ca63fb-e53f-4dba-9969-7482187c782b", UserName = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = [] };
+            var a11 = new Author() { Id = "15c1bc9e-e64b-4ea0-aa49-19b85f5a5dd6", UserName = "Helge", Email = "ropf@itu.dk", Cheeps = [] };
+            var a12 = new Author() { Id = "915ae556-b0d8-4c90-982f-ad0fa74ec85b", UserName = "Adrian", Email = "adho@itu.dk", Cheeps = [] };
 
             var authors = new List<Author>() { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 };
 
