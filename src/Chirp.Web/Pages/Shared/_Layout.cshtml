@@ -12,9 +12,8 @@
 <body>
     <div class="header">
         <a style="justify-self: center" href="/"><img class="logo" src="/images/icon1.png" alt="Icon1" /></a>
-        <!-- Insert here > </!-->
         <form id="navSearchForm" action="search" style="width: 100%;">
-            <input id="navSearchInput" class="text-box" name="SearchQuery" type="text" placeholder="Search for user">
+            <input id="navSearchInput" class="text-box" name="SearchQuery" type="text" placeholder="Search...">
         </form>
         <div class="nav-wrapper">
             <span class="nav-link"><a href="/">Public Timeline</a></span>
@@ -33,9 +32,10 @@
             </div>
 
             <div class="send-box" style="width: 100%; height: 10%">
+                <a class="profile-avatar cheep-avatar" href="/?page=1"></a>
                 <form onsubmit="sendCheep()" method="dialog" style="display: contents;">
                     <textarea id="cheepMessage" class="text-box cheep-input" name="message"
-                        placeholder="Whats on your mind?" autocomplete="off"></textarea>
+                        placeholder="Whats on your mind?" autocomplete="off" style="resize: none;"></textarea>
                     <button class="cheep-submit" type="submit">Cheep</button>
                 </form>
             </div>
@@ -50,6 +50,7 @@
     <script>
         author = localStorage.getItem("author");
         if (!author) author = requestAuthor();
+        setAvatar();
 
         async function sendCheep() {
             const message = document.getElementById("cheepMessage").value;
@@ -76,6 +77,14 @@
             if (!author || author.length < 2) return requestAuthor();
             localStorage.setItem("author", author);
             return author;
+        }
+
+        function setAvatar() {
+            if (!author) author = requestAuthor();
+            const el = document.getElementsByClassName("profile-avatar");
+            for (let i = 0; i < el.length; i++){
+                el.item(i).innerText = " " + author.charAt(0) + " ";
+            }
         }
 
         function skipPages(pagesToSkip) {
@@ -118,7 +127,7 @@
                     sendCheep();
                 }
             })
-            */
+
 
         })
 
