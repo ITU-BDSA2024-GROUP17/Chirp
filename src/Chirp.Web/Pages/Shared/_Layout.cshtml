@@ -48,6 +48,7 @@
     </div>
 
     <script>
+        // Last setup of the page. Dynamic setup
         author = localStorage.getItem("author");
         if (!author) author = requestAuthor();
         setAvatar();
@@ -72,6 +73,7 @@
             }
         }
 
+        // Asks the user what their name is (through a prompt) and returns it
         function requestAuthor() {
             let author = prompt("whats your name?");
             if (!author || author.length < 2) return requestAuthor();
@@ -79,6 +81,7 @@
             return author;
         }
 
+        // Sets the profile name on every avatar on the site
         function setAvatar() {
             if (!author) author = requestAuthor();
             const el = document.getElementsByClassName("profile-avatar");
@@ -120,18 +123,13 @@
                 })
             })
 
-
             document.getElementById("cheepMessage").addEventListener('keydown', e => {
                 if (e.key == "Enter") {
                     e.preventDefault();
                     sendCheep();
                 }
             })
-
-
         })
-
-
 
     </script>
 </body>
