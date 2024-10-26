@@ -103,7 +103,6 @@ body {
 }
 
 .text-box {
-    max-width: 32rem;
     width: -webkit-fill-available;
     width: -moz-available;
     margin: 20px 0px 20px 0;
