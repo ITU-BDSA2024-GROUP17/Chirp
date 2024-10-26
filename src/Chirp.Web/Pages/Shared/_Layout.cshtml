@@ -13,17 +13,8 @@
 <body>
     <header>
         <a href="/"><img class="logo" src="/images/icon1.png" alt="Icon1" /></a>
-        @if (User.Identity != null && User.Identity.IsAuthenticated)
-        {
-            <div class="send-box">
-                <form onsubmit="sendCheep()" method="dialog" style="display: contents;">
-                    <input id="cheepMessage" class="text-box cheep-input" name="message" placeholder="Whats on your mind?">
-                    <button class="cheep-submit" type="submit">></button>
-                </form>
-            </div>
-        }
-        <form id="navSearchForm" action="search">
-            <input id="navSearchInput" class="text-box" name="SearchQuery" type="text" placeholder="Search for user">
+        <form id="navSearchForm" action="search" style="width: 100%;">
+            <input id="navSearchInput" class="text-box" name="SearchQuery" type="text" placeholder="Search...">
         </form>
         @if (User.Identity != null && User.Identity.IsAuthenticated)
         {
@@ -49,73 +40,105 @@
                     <button class="skip-btn" onclick="skipPages(1)"></button>
                 </div>
             </div>
+
+            <div class="send-box" style="width: 100%; height: 10%">
+                <a class="profile-avatar cheep-avatar" href="/?page=1"></a>
+                <form onsubmit="sendCheep()" method="dialog" style="display: contents;">
+                    <textarea id="cheepMessage" class="text-box cheep-input" name="message"
+                        placeholder="Whats on your mind?" autocomplete="off" style="resize: none;"></textarea>
+                    <button class="cheep-submit" type="submit">Cheep</button>
+                </form>
+            </div>
+
             @RenderBody()
         </div>
         <footer>
             Chirp &mdash; An ASP.NET Application
         </footer>
-    </div>
 
-    <script>
-        async function sendCheep() {
-            const message = document.getElementById("cheepMessage").value;
-            if (message.length <= 0 || message.length >= 160) {
-                return;
-            }
-            let author = localStorage.getItem("author");
+        <script>
+            // Last setup of the page. Dynamic setup
+            author = localStorage.getItem("author");
             if (!author) author = requestAuthor();
+            setAvatar();
 
-            let result = await fetch("/cheep", {
-                method: "POST",
-                body: JSON.stringify({ message: message, author: author }),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
+            async function sendCheep() {
+                const message = document.getElementById("cheepMessage").value;
+                if (message.length <= 0 || message.length >= 160) {
+                    return;
                 }
-            })
-            if (result.ok) {
-                window.location.reload();
+                let author = localStorage.getItem("author");
+                if (!author) author = requestAuthor();
+
+                let result = await fetch("/cheep", {
+                    method: "POST",
+                    body: JSON.stringify({ message: message, author: author }),
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                })
+                if (result.ok) {
+                    window.location.reload();
+                }
             }
-        }
 
-        function requestAuthor() {
-            let author = prompt("whats your name?");
-            if (!author || author.length < 2) return requestAuthor();
-            localStorage.setItem("author", author);
-            return author;
-        }
+            // Asks the user what their name is (through a prompt) and returns it
+            function requestAuthor() {
+                let author = prompt("whats your name?");
+                if (!author || author.length < 2) return requestAuthor();
+                localStorage.setItem("author", author);
+                return author;
+            }
 
-        function skipPages(pagesToSkip) {
-            if (pagesToSkip == 0) throw new Error("pagesToSkip cannot be 0");
-            const urlParams = new URLSearchParams(window.location.search);
-            const currentPageNum = parseInt(urlParams.get("page")) || 1;
-            const newPageNum = currentPageNum + pagesToSkip;
-            if (newPageNum < 1) return;
+            // Sets the profile name on every avatar on the site
+            function setAvatar() {
+                if (!author) author = requestAuthor();
+                const el = document.getElementsByClassName("profile-avatar");
+                for (let i = 0; i < el.length; i++) {
+                    el.item(i).innerText = " " + author.charAt(0) + " ";
+                }
+            }
 
-            // if root page or individual author page
-            if (!urlParams.has("SearchQuery")) {
-                // string manipulation to remove leading slash for authors page
-                window.location.href = `${window.location.pathname.replace("/", "")}?page=${newPageNum}`;
-                return;
-            };
-            // For Search page
-            const searchQuery = urlParams.get("SearchQuery") || "";
-            window.location.href = `/search?SearchQuery=${searchQuery}&page=${newPageNum}`;
-        }
+            function skipPages(pagesToSkip) {
+                if (pagesToSkip == 0) throw new Error("pagesToSkip cannot be 0");
+                const urlParams = new URLSearchParams(window.location.search);
+                const currentPageNum = parseInt(urlParams.get("page")) || 1;
+                const newPageNum = currentPageNum + pagesToSkip;
+                if (newPageNum < 1) return;
 
-        window.addEventListener("DOMContentLoaded", () => {
-            const cheepInputField = document.querySelector("#cheepMessage");
-            ['keyup', 'change'].forEach((type) => {
-                cheepInputField.addEventListener(type, (event) => {
-                    const inputFieldValue = document.getElementById("cheepMessage").value;
-                    if (inputFieldValue.length > 160) {
-                        document.getElementById("cheepMessage").style.color = "red";
-                    } else {
-                        document.getElementById("cheepMessage").style.color = "black";
+                // if root page or individual author page
+                if (!urlParams.has("SearchQuery")) {
+                    // string manipulation to remove leading slash for authors page
+                    window.location.href = `${window.location.pathname.replace("/", "")}?page=${newPageNum}`;
+                    return;
+                };
+                // For Search page
+                const searchQuery = urlParams.get("SearchQuery") || "";
+                window.location.href = `/search?SearchQuery=${searchQuery}&page=${newPageNum}`;
+            }
+
+            window.addEventListener("DOMContentLoaded", () => {
+                const cheepInputField = document.querySelector("#cheepMessage");
+                ['keyup', 'change'].forEach((type) => {
+                    cheepInputField.addEventListener(type, (event) => {
+                        const inputFieldValue = document.getElementById("cheepMessage").value;
+                        if (inputFieldValue.length >= 160) {
+                            document.getElementById("cheepMessage").style.color = "red";
+                        } else {
+                            document.getElementById("cheepMessage").style.color = "black";
+                        }
+                    })
+                })
+
+                document.getElementById("cheepMessage").addEventListener('keydown', e => {
+                    if (e.key == "Enter") {
+                        e.preventDefault();
+                        sendCheep();
                     }
                 })
             })
-        })
-    </script>
+
+        </script>
 </body>
 @await RenderSectionAsync("Scripts", required: false)
 
