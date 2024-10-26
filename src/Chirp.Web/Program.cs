@@ -16,6 +16,7 @@ builder.Services.AddDbContext<CheepDbContext>(options => options.UseSqlite(conne
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddSignInManager<CheeperSignInManager>()
     .AddEntityFrameworkStores<CheepDbContext>();
 
 builder.Services.Configure<IdentityOptions>(options =>
