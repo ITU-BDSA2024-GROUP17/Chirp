@@ -18,6 +18,8 @@ public class CheepDbContext : IdentityDbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        if (optionsBuilder.IsConfigured) return;
+
         optionsBuilder.UseSqlite("Data Source=SQLiteDB.db");
     }
 
