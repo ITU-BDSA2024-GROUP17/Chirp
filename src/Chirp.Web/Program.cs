@@ -21,7 +21,19 @@ builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireCon
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
+    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
     options.User.RequireUniqueEmail = true;
+});
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.SlidingExpiration = true;
 });
 
 builder.Services.AddRazorPages();
@@ -30,20 +42,12 @@ builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<CheepService>();
 
-builder.Services.AddAuthentication(options =>
-{
-    options.RequireAuthenticatedSignIn = true;
-    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultScheme = "Github";
-})
-.AddCookie()
-.AddGitHub(options =>
+builder.Services.AddAuthentication().AddGitHub(options =>
 {
     options.ClientId = builder.Configuration["GHUB_CLIENT_ID"] ?? throw new Exception("GitHub ClientId must be set in the configuration!");
     options.ClientSecret = builder.Configuration["GHUB_CLIENT_SECRET"] ?? throw new Exception("GitHub ClientSecret must be set in the configuration!");
 
-    options.ReturnUrlParameter = "/signin-github";
+    options.Scope.Add("user:email");
 });
 
 // Application setup
