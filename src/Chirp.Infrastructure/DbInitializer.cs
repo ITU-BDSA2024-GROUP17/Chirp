@@ -1,13 +1,18 @@
 using Chirp.Core.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Chirp.Infrastructure;
 
 public static class DbInitializer
 {
-    public static void SeedDatabase(CheepDbContext cheepDbContext)
+    public async static Task SeedDatabase(CheepDbContext cheepDbContext, IServiceProvider serviceProvider)
     {
         if (!(cheepDbContext.Authors.Any() && cheepDbContext.Cheeps.Any()))
         {
+            var userManager = serviceProvider.GetRequiredService<UserManager<Author>>();
+
             var a1 = new Author() { Id = "182cac86-ec77-417f-83bd-35c6dd7f9391", UserName = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = [] };
             var a2 = new Author() { Id = "4bf52408-b693-4ba6-a82d-6946ca4619c2", UserName = "Luanna Muro", Email = "Luanna-Muro@ku.dk", Cheeps = [] };
             var a3 = new Author() { Id = "5e7a3446-d9ca-438e-861e-eb09245429d2", UserName = "Wendell Ballan", Email = "Wendell-Ballan@gmail.com", Cheeps = [] };
@@ -21,7 +26,18 @@ public static class DbInitializer
             var a11 = new Author() { Id = "15c1bc9e-e64b-4ea0-aa49-19b85f5a5dd6", UserName = "Helge", Email = "ropf@itu.dk", Cheeps = [] };
             var a12 = new Author() { Id = "915ae556-b0d8-4c90-982f-ad0fa74ec85b", UserName = "Adrian", Email = "adho@itu.dk", Cheeps = [] };
 
-            var authors = new List<Author>() { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 };
+            await userManager.CreateAsync(a1);
+            await userManager.CreateAsync(a2);
+            await userManager.CreateAsync(a3);
+            await userManager.CreateAsync(a4);
+            await userManager.CreateAsync(a5);
+            await userManager.CreateAsync(a6);
+            await userManager.CreateAsync(a7);
+            await userManager.CreateAsync(a8);
+            await userManager.CreateAsync(a9);
+            await userManager.CreateAsync(a10);
+            await userManager.CreateAsync(a11, "LetM31n!");
+            await userManager.CreateAsync(a12, "M32Want_Access");
 
             var c1 = new Cheep() { Id = 1, AuthorId = a10.Id, Author = a10, Message = "They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", TimeStamp = DateTime.Parse("2023-08-01 13:14:37") };
             var c2 = new Cheep() { Id = 2, AuthorId = a10.Id, Author = a10, Message = "And then, as he listened to all that''s left o'' twenty-one people.", TimeStamp = DateTime.Parse("2023-08-01 13:15:21") };
@@ -695,7 +711,6 @@ public static class DbInitializer
             a11.Cheeps = [c656];
             a12.Cheeps = [c657];
 
-            cheepDbContext.Authors.AddRange(authors);
             cheepDbContext.Cheeps.AddRange(cheeps);
             cheepDbContext.SaveChanges();
         }

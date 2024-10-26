@@ -6,6 +6,7 @@ using Chirp.Web.Endpoints;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Chirp.Core.Entities;
 
 // Builder setup
 var builder = WebApplication.CreateBuilder(args);
@@ -14,8 +15,13 @@ string? connectionString = builder.Configuration.GetConnectionString("DefaultCon
 builder.Services.AddDbContext<CheepDbContext>(options => options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<CheepDbContext>();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.User.RequireUniqueEmail = true;
+});
 
 builder.Services.AddRazorPages();
 
@@ -47,7 +53,7 @@ using (var scope = app.Services.CreateScope())
     using var context = scope.ServiceProvider.GetService<CheepDbContext>() ?? throw new Exception("CheepDbContext not found!");
 
     context.Database.Migrate();
-    DbInitializer.SeedDatabase(context);
+    await DbInitializer.SeedDatabase(context, scope.ServiceProvider);
 }
 
 if (app.Environment.IsDevelopment())
