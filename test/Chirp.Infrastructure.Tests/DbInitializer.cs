@@ -8,10 +8,10 @@ public static class DbInitializer
     {
         if (cheepDbContext.Authors.Any() || cheepDbContext.Cheeps.Any()) return;
 
-        var a1 = new Author() { Id = 1, Name = "John Doe ", Email = "John-Doe@mail.com", Cheeps = [] };
-        var a2 = new Author() { Id = 2, Name = "Jane Doe", Email = "Jane-Doe@mail.dk", Cheeps = [] };
-        var a3 = new Author() { Id = 3, Name = "John Smith", Email = "John-Smith@mail.com", Cheeps = [] };
-        var a4 = new Author() { Id = 4, Name = "Jane Smith", Email = "Jane-Smith@mail.com", Cheeps = [] };
+        var a1 = new Author() { Id = "2bcf724c-b650-476c-ae11-d408eb2105a0", UserName = "John Doe ", Email = "John-Doe@mail.com", Cheeps = [] };
+        var a2 = new Author() { Id = "ac71fc84-62b9-4907-9b90-5305e1e25c96", UserName = "Jane Doe", Email = "Jane-Doe@mail.dk", Cheeps = [] };
+        var a3 = new Author() { Id = "797776e2-0ac8-4493-a9dd-526a24146a87", UserName = "John Smith", Email = "John-Smith@mail.com", Cheeps = [] };
+        var a4 = new Author() { Id = "5ba7ed22-77c3-43da-899c-ac31e563d036", UserName = "Jane Smith", Email = "Jane-Smith@mail.com", Cheeps = [] };
 
         var authors = new List<Author>() { a1, a2, a3, a4 };
 

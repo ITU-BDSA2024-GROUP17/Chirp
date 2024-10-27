@@ -2,17 +2,19 @@
 @model IEnumerable<Cheep>
 @if (Model.Any())
 {
-    <h1>Cheeps</h1>
     <ul id="messagelist" class="cheeps-container">
-    @foreach (var cheep in Model)
+        @foreach (var cheep in Model)
         {
             <li class="cheep-wrapper">
-                <a href="/@cheep.Author.Name" class="cheep-avatar">
-                    @cheep.Author.Name.First()
-                </a>
+                @if (@cheep.Author.UserName != null)
+                {
+                    <a href="/@cheep.Author.UserName" class="cheep-avatar">
+                        @cheep.Author.UserName.First()
+                    </a>
+                }
                 <div class="cheep">
                     <div class="cheep-user">
-                        <a class="cheep-author" href="/@cheep.Author.Name">@cheep.Author.Name</a>
+                        <a class="cheep-author" href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
                         <div class="cheep-timestamp-tooltip">
                             &sdot;<span>@Chirp.Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.TimeStamp)</span>
                             <small class="cheep-timestamp">

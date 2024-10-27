@@ -9,12 +9,15 @@
 
         {
             <li class="cheep-wrapper">
-                <a href="/@author.Name" class="cheep-avatar">
-                    @author.Name.First()
-                </a>
+                @if (@author.UserName != null)
+                {
+                    <a href="/@author.UserName" class="cheep-avatar">
+                        @author.UserName.First()
+                    </a>
+                }
                 <div class="cheep">
                     <div class="cheep-user">
-                        <a class="cheep-author" href="/@author.Name">@author.Name</a>
+                        <a class="cheep-author" href="/@author.UserName">@author.UserName</a>
                     </div>
                 </div>
             </li>
