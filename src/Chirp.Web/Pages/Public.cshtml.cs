@@ -32,10 +32,7 @@ public class PublicModel(CheepService service) : PageModel
         var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
         var author = await _cheepService.GetAuthor(UserId) ?? throw new Exception("User not found!");
 
-        Console.WriteLine(UserId);
-        Console.WriteLine(CheepMessage);
-        Console.WriteLine(DateTime.Now);
-        Console.WriteLine(author);
+        if (CheepMessage == null || CheepMessage.Length > 160) return LocalRedirect(Url.Content("~/"));
 
         Cheep cheep = new()
         {
