@@ -20,7 +20,20 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         return authors;
     }
 
-    public Task<Author?> GetAuthor(string name)
+    public Task<Author?> GetAuthor(string id)
+    {
+        try
+        {
+            var author = _context.Authors.Find(id);
+            return Task.FromResult<Author?>(author);
+        }
+        catch (InvalidOperationException)
+        {
+            return Task.FromResult<Author?>(null);
+        }
+    }
+
+    public Task<Author?> GetAuthorByName(string name)
     {
         try
         {
@@ -31,7 +44,6 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         {
             return Task.FromResult<Author?>(null);
         }
-
     }
 
     public Task<List<Author>> SearchAuthors(string searchQuery, int page)

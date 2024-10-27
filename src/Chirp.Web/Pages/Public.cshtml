@@ -12,9 +12,9 @@
     <div class="cheep-avatar">
         @User.Identity.Name?.First()
     </div>
-    <form class="flex-grow-1" onsubmit="sendCheep()" method="dialog">
-        <textarea id="cheepMessage" class="text-box cheep-input" name="message" placeholder="Whats on your mind?"
-            autocomplete="off"></textarea>
+    <form class="flex-grow-1 d-flex flex-column gap-2" asp-page-handler="Cheep" method="post">
+        <input asp-for="CheepMessage" id="cheepMessage" class="text-box cheep-input" placeholder="Whats on your mind?"
+            autocomplete="off" />
         <div class="d-flex justify-content-end">
             <button class="btn btn-primary" type="submit">Cheep</button>
         </div>
@@ -32,7 +32,7 @@
         ['keyup', 'change'].forEach((type) => {
             cheepInputField.addEventListener(type, (event) => {
                 const inputFieldValue = document.getElementById("cheepMessage").value;
-                if (inputFieldValue.length >= 160) {
+                if (inputFieldValue.length > 160) {
                     document.getElementById("cheepMessage").style.color = "red";
                 } else {
                     document.getElementById("cheepMessage").style.color = "black";
