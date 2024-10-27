@@ -167,7 +167,8 @@ Cheeps
     text-decoration: none;
 }
 
-.cheep-wrapper {
+.cheep-wrapper,
+.cheep-wrapper-mini {
     display: flex;
     margin-bottom: 1rem;
     list-style-type: none;
@@ -262,6 +263,66 @@ Cheeps
 .cheep-timestamp-tooltip:hover .cheep-timestamp {
     visibility: visible;
     transition: visibility 0s ease-out 0.5s;
+}
+
+/*
+mini version of cheep wrapper
+*/
+.navSearchOutputWrapper {
+    position: absolute;
+    background-color: white;
+    display: none;
+    border: 1px solid var(--gray-300);
+    border-radius: 0.25em;
+    width: 100%;
+    max-height: 20rem;
+    overflow-y: auto;
+    z-index: 1;
+}
+
+#navSearchOutput {
+    padding: unset;
+    margin: unset;
+}
+
+.cheep-wrapper-mini:first-child:last-child {
+    padding: 0 0 10px 10px;
+}
+
+.cheep-wrapper-mini {
+    padding: 10px 0 10px 10px;
+    margin: unset;
+    text-decoration: none;
+}
+
+.cheep-wrapper-mini:hover {
+    background-color: var(--gray-100);
+}
+
+.cheep-wrapper-mini .cheep-avatar {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-color: var(--gray-200);
+    text-align: center;
+    font-weight: 500;
+    font-size: 11px;
+    align-content: center;
+    text-decoration: none;
+    color: var(--text);
+    align-self: center;
+}
+.cheep-wrapper-mini .cheep {
+    padding: unset;
+}
+
+.cheep-wrapper-mini .cheep {
+    padding: unset;
+}
+
+.cheep-wrapper-mini .cheep-author {
+    font-weight: 400;
 }
 
 /*
