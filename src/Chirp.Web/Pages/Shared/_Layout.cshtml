@@ -19,9 +19,7 @@
         </form>
         @if (User.Identity != null && User.Identity.IsAuthenticated)
         {
-            <p>@User.Identity.Name</p>
-
-            <a href="/Identity/Account/Logout">Logout</a>
+            <a class="btn" href="/Identity/Account/Logout">@User.Identity.Name</a>
         }
         else
         {

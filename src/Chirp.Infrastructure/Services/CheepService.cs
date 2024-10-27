@@ -50,9 +50,14 @@ public class CheepService(ICheepRepository cheepRepo, IAuthorRepository authorRe
         return _cheepRepo.CreateCheep(cheep);
     }
 
-    public Task<Author?> GetAuthor(string name)
+    public Task<Author?> GetAuthor(string id)
     {
-        return _authorRepo.GetAuthor(name);
+        return _authorRepo.GetAuthor(id);
+    }
+
+    public Task<Author?> GetAuthorByName(string name)
+    {
+        return _authorRepo.GetAuthorByName(name);
     }
 
     /// <summary>
