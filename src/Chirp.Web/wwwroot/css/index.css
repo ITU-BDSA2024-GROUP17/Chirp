@@ -87,6 +87,7 @@ header {
     gap: 1em;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 10px;
 }
 
 .root {
@@ -109,7 +110,7 @@ header {
     width: -webkit-fill-available;
     width: -moz-available;
     max-width: 32rem;
-    width: 12rem;
+    width: 32rem;
 }
 
 .text-box {
@@ -235,13 +236,13 @@ Cheeps
 
 .cheep-timestamp-tooltip .cheep-timestamp {
     visibility: hidden;
-    width: 90px;
+    width: 95px;
     text-align: center;
     padding: 5px 0;
     border-radius: 5px;
     position: absolute;
     z-index: 1;
-    top: -35px;
+    top: -45px;
     left: 0;
     background-color: var(--border);
     text-wrap: wrap;
@@ -274,19 +275,15 @@ mini version of cheep wrapper
     display: none;
     border: 1px solid var(--gray-300);
     border-radius: 0.25em;
-    width: 100%;
+    width: inherit;
     max-height: 20rem;
     overflow-y: auto;
     z-index: 1;
 }
 
 #navSearchOutput {
-    padding: unset;
+    padding: 5px;
     margin: unset;
-}
-
-.cheep-wrapper-mini:first-child:last-child {
-    padding: 0 0 10px 10px;
 }
 
 .cheep-wrapper-mini {
