@@ -1,3 +1,8 @@
+* {
+    padding:0;
+    margin:0;
+}
+
 body {
     font-family: "Trebuchet MS", sans-serif;
     font-size: 14px;
@@ -74,6 +79,16 @@ body {
     margin: unset;
 }
 
+header {
+    display: flex;
+    margin: auto;
+    max-width: 72rem;
+    display: flex;
+    gap: 1em;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .root {
     margin: auto;
     max-width: 72rem;
@@ -81,14 +96,6 @@ body {
 
 .line {
     border-bottom: 1px solid var(--gray-300);
-}
-
-.header {
-    margin: auto;
-    max-width: 72rem;
-    display: flex;
-    gap: 1em;
-    justify-content: space-between;
 }
 
 .logo {
@@ -105,7 +112,6 @@ body {
 .text-box {
     width: -webkit-fill-available;
     width: -moz-available;
-    margin: 20px 0px 20px 0;
     padding: 10px;
     border: 1px solid black;
     border-radius: 0.25em;
@@ -153,7 +159,7 @@ Cheeps
 
 .cheeps-container {
     border-radius: 5px;
-    padding: 10px;
+    padding: 0px;
     margin-bottom: 10px;
     text-decoration: none;
 }
@@ -171,14 +177,11 @@ Cheeps
     margin-right: 10px;
     background-color: var(--gray-200);
     text-align: center;
-    align-self: center;
     font-weight: bold;
     font-size: 16px;
     align-content: center;
-    cursor: default;
     text-decoration: none;
     color: var(--text);
-    cursor: pointer;
 }
 
 .cheep {
@@ -246,24 +249,22 @@ Interface
 }
 
 .send-box {
-    width: 27rem;
+    width: 100%;
     display: flex;
+    align-items: flex-start;
 }
 
 .cheep-input {
     flex-grow: 1;
-    border-right: none;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    resize: none;
 }
 
 .cheep-submit {
-    margin: 20px 0px 20px 0;
     padding: 10px;
     border: 1px solid black;
     border-radius: 0.25em;
-    border-left: none;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+}
 
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }

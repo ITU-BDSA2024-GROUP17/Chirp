@@ -13,33 +13,45 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
     {
         var authors = _context.Authors
             .Select(a => a)
-            .OrderBy(a => a.Name)
+            .OrderBy(a => a.UserName)
             .Paginate(page)
             .ToListAsync();
 
         return authors;
     }
 
-    public Task<Author?> GetAuthor(string name)
+    public Task<Author?> GetAuthor(string id)
     {
         try
         {
-            var author = _context.Authors.Where(a => a.Name == name).First();
+            var author = _context.Authors.Find(id);
             return Task.FromResult<Author?>(author);
         }
         catch (InvalidOperationException)
         {
             return Task.FromResult<Author?>(null);
         }
+    }
 
+    public Task<Author?> GetAuthorByName(string name)
+    {
+        try
+        {
+            var author = _context.Authors.Where(a => a.UserName == name).First();
+            return Task.FromResult<Author?>(author);
+        }
+        catch (InvalidOperationException)
+        {
+            return Task.FromResult<Author?>(null);
+        }
     }
 
     public Task<List<Author>> SearchAuthors(string searchQuery, int page)
     {
         var authors = _context.Authors
             .Select(a => a)
-            .Search(searchQuery, x => x.Name)
-            .OrderBy(a => a.Name)
+            .Search(searchQuery, x => x.UserName ?? "")
+            .OrderBy(a => a.UserName)
             .Paginate(page)
             .ToList();
 
@@ -49,7 +61,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
     public Task<List<Cheep>> GetCheeps(string author, int page)
     {
         var cheeps = _context.Authors
-          .Where(a => a.Name == author)
+          .Where(a => a.UserName == author)
           .SelectMany(a => a.Cheeps)
           .Include(c => c.Author)
           .OrderByDescending(c => c.TimeStamp)

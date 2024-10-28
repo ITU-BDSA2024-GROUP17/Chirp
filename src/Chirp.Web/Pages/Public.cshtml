@@ -6,7 +6,45 @@
     ViewData["Title"] = "Public Timeline";
 }
 
-<link href="/css/pages/public.css" rel="stylesheet" type="text/css" />
-<div>
-    @await Html.PartialAsync("_CheepsPartial", Model.Cheeps)
+@if (User.Identity != null && User.Identity.IsAuthenticated)
+{
+    <div class="send-box">
+    <div class="cheep-avatar">
+        @User.Identity.Name?.First()
+    </div>
+    <form class="flex-grow-1 d-flex flex-column gap-2" asp-page-handler="Cheep" method="post">
+        <input asp-for="CheepMessage" id="cheepMessage" class="text-box cheep-input" placeholder="Whats on your mind?"
+            autocomplete="off" />
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-primary" type="submit">Cheep</button>
+        </div>
+    </form>
 </div>
+}
+
+<hr />
+
+@await Html.PartialAsync("_CheepsPartial", Model.Cheeps)
+
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const cheepInputField = document.querySelector("#cheepMessage");
+        ['keyup', 'change'].forEach((type) => {
+            cheepInputField.addEventListener(type, (event) => {
+                const inputFieldValue = document.getElementById("cheepMessage").value;
+                if (inputFieldValue.length > 160) {
+                    document.getElementById("cheepMessage").style.color = "red";
+                } else {
+                    document.getElementById("cheepMessage").style.color = "black";
+                }
+            })
+        })
+
+        document.getElementById("cheepMessage").addEventListener('keydown', e => {
+            if (e.key == "Enter") {
+                e.preventDefault();
+                sendCheep();
+            }
+        })
+    })
+</script>

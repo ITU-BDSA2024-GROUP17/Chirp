@@ -5,21 +5,30 @@
 
 <head>
     <title>@ViewData["Title"]</title>
-    <link href="/css/index.css" rel="stylesheet" type="text/css" />
-    <link rel="icon" type="image/png" href="/favicon/favicon.ico">
+    <link rel="icon" type="image/png" href="/favicon/favicon.ico" />
+    <link rel="stylesheet" href="/css/index.css" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
 <body>
-    <div class="header">
-        <a style="justify-self: center" href="/"><img class="logo" src="/images/icon1.png" alt="Icon1" /></a>
+    <header>
+        <a href="/"><img class="logo" src="/images/icon1.png" alt="Icon1" /></a>
         <form id="navSearchForm" action="search" style="width: 100%;">
             <input id="navSearchInput" class="text-box" name="SearchQuery" type="text" placeholder="Search...">
         </form>
-        <div class="nav-wrapper">
-            <span class="nav-link"><a href="/">Public Timeline</a></span>
-            <span class="nav-link"><a href="/cheep">Cheeps</a></span>
-        </div>
-    </div>
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <a class="btn" href="/Identity/Account/Logout">@User.Identity.Name</a>
+        }
+        else
+        {
+            <div style="display: flex; gap: 1.5rem;">
+                <a class="btn" role="button" href="/Identity/Account/Login">Login</a>
+                <a class="btn btn-primary" role="button" href="/Identity/Account/Register">Register</a>
+            </div>
+        }
+    </header>
     <div class="line"></div>
     <div class=root>
         <div class=container>
@@ -31,107 +40,34 @@
                 </div>
             </div>
 
-            <div class="send-box" style="width: 100%; height: 10%">
-                <a class="profile-avatar cheep-avatar" href="/?page=1"></a>
-                <form onsubmit="sendCheep()" method="dialog" style="display: contents;">
-                    <textarea id="cheepMessage" class="text-box cheep-input" name="message"
-                        placeholder="Whats on your mind?" autocomplete="off" style="resize: none;"></textarea>
-                    <button class="cheep-submit" type="submit">Cheep</button>
-                </form>
-            </div>
-
             @RenderBody()
         </div>
-        <div class=footer>
+        <footer>
             Chirp &mdash; An ASP.NET Application
-        </div>
-    </div>
+        </footer>
 
-    <script>
-        // Last setup of the page. Dynamic setup
-        author = localStorage.getItem("author");
-        if (!author) author = requestAuthor();
-        setAvatar();
+        <script>
+            function skipPages(pagesToSkip) {
+                if (pagesToSkip == 0) throw new Error("pagesToSkip cannot be 0");
+                const urlParams = new URLSearchParams(window.location.search);
+                const currentPageNum = parseInt(urlParams.get("page")) || 1;
+                const newPageNum = currentPageNum + pagesToSkip;
+                if (newPageNum < 1) return;
 
-        async function sendCheep() {
-            const message = document.getElementById("cheepMessage").value;
-            if (message.length <= 0 || message.length >= 160) {
-                return;
+                // if root page or individual author page
+                if (!urlParams.has("SearchQuery")) {
+                    // string manipulation to remove leading slash for authors page
+                    window.location.href = `${window.location.pathname.replace("/", "")}?page=${newPageNum}`;
+                    return;
+                };
+                // For Search page
+                const searchQuery = urlParams.get("SearchQuery") || "";
+                window.location.href = `/search?SearchQuery=${searchQuery}&page=${newPageNum}`;
             }
-            let author = localStorage.getItem("author");
-            if (!author) author = requestAuthor();
-
-            let result = await fetch("/cheep", {
-                method: "POST",
-                body: JSON.stringify({ message: message, author: author }),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                }
-            })
-            if (result.ok) {
-                window.location.reload();
-            }
-        }
-
-        // Asks the user what their name is (through a prompt) and returns it
-        function requestAuthor() {
-            let author = prompt("whats your name?");
-            if (!author || author.length < 2) return requestAuthor();
-            localStorage.setItem("author", author);
-            return author;
-        }
-
-        // Sets the profile name on every avatar on the site
-        function setAvatar() {
-            if (!author) author = requestAuthor();
-            const el = document.getElementsByClassName("profile-avatar");
-            for (let i = 0; i < el.length; i++){
-                el.item(i).innerText = " " + author.charAt(0) + " ";
-            }
-        }
-
-        function skipPages(pagesToSkip) {
-            if (pagesToSkip == 0) throw new Error("pagesToSkip cannot be 0");
-            const urlParams = new URLSearchParams(window.location.search);
-            const currentPageNum = parseInt(urlParams.get("page")) || 1;
-            const newPageNum = currentPageNum + pagesToSkip;
-            if (newPageNum < 1) return;
-
-            // if root page or individual author page
-            if (!urlParams.has("SearchQuery")) {
-                // string manipulation to remove leading slash for authors page
-                window.location.href = `${window.location.pathname.replace("/", "")}?page=${newPageNum}`;
-                return;
-            };
-            // For Search page
-            const searchQuery = urlParams.get("SearchQuery") || "";
-            window.location.href = `/search?SearchQuery=${searchQuery}&page=${newPageNum}`;
-        }
-
-        window.addEventListener("DOMContentLoaded", () => {
-            const cheepInputField = document.querySelector("#cheepMessage");
-            ['keyup', 'change'].forEach((type) => {
-                cheepInputField.addEventListener(type, (event) => {
-                    const inputFieldValue = document.getElementById("cheepMessage").value;
-                    if (inputFieldValue.length >= 160) {
-                        document.getElementById("cheepMessage").style.color = "red";
-                    } else {
-                        document.getElementById("cheepMessage").style.color = "black";
-                    }
-
-
-                })
-            })
-
-            document.getElementById("cheepMessage").addEventListener('keydown', e => {
-                if (e.key == "Enter") {
-                    e.preventDefault();
-                    sendCheep();
-                }
-            })
-        })
-
-    </script>
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
 </body>
 @await RenderSectionAsync("Scripts", required: false)
 

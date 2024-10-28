@@ -6,7 +6,7 @@ public class Cheep
 {
     [Key]
     public int Id { get; set; }
-    public required int AuthorId { get; set; }
+    public required string AuthorId { get; set; }
     [StringLength(160)]
     public required string Message { get; set; }
     public required DateTime TimeStamp { get; set; }
