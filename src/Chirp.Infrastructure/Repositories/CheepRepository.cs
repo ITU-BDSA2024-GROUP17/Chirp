@@ -2,7 +2,6 @@ using Chirp.Core.Interfaces;
 using Chirp.Core.Entities;
 using Chirp.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Chirp.Core.DTOs;
 
 namespace Chirp.Infrastructure.Repositories;
 
@@ -16,6 +15,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
             .Include(c => c.Author)
             .Select(c => c)
             .OrderByDescending(c => c.TimeStamp)
+            .Paginate(page)
             .ToListAsync();
 
         return cheeps;
