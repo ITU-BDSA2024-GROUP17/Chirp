@@ -20,18 +20,21 @@ public class CheepRepositoryTests
         _cheepRepository = new CheepRepository(_cheepDbContext);
     }
 
-    [Fact]
-    public async Task GetAllCheeps()
+    [Theory]
+    [InlineData(1, 32)]
+    [InlineData(2, 32)]
+    [InlineData(3, 0)]
+    public async Task GetCheeps(int page, int expected)
     {
-        var cheeps = await _cheepRepository.GetCheeps(1);
+        var cheeps = await _cheepRepository.GetCheeps(page);
 
-        Assert.Equal(10, cheeps.Count);
+        Assert.Equal(expected, cheeps.Count);
     }
 
     [Theory]
     [InlineData("first", 1, 2)]
-    [InlineData("watch", 1, 1)]
-    [InlineData("at", 1, 6)]
+    [InlineData("watch", 1, 2)]
+    [InlineData("at", 1, 32)]
     public async Task SearchCheeps(string search, int page, int expected)
     {
         var cheeps = (await _cheepRepository.SearchCheeps(search, page)).ToList();
