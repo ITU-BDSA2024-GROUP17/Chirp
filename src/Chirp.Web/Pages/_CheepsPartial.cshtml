@@ -3,7 +3,7 @@
 @if (Model.Any())
 {
     <ul id="messagelist" class="cheeps-container">
-    @foreach (var cheep in Model)
+        @foreach (var cheep in Model)
         {
             <li class="cheep-wrapper">
                 @if (@cheep.Author.UserName != null)
@@ -15,8 +15,11 @@
                 <div class="cheep">
                     <div class="cheep-user">
                         <a class="cheep-author" href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
-                        <small onmouseover="" class="cheep-timestamp">&sdot;
-                            @Chirp.Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.TimeStamp)</small>
+                        <div class="cheep-timestamp-tooltip">
+                            &sdot;<span>@Chirp.Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.TimeStamp)</span>
+                            <small class="cheep-timestamp">
+                                @Chirp.Web.Utilities.TimeUtilties.FormatUnixTimeRaw(@cheep.TimeStamp)</small>
+                        </div>
                     </div>
                     @cheep.Message
                 </div>
