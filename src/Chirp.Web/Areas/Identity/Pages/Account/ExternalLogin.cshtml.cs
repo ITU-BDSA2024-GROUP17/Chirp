@@ -155,6 +155,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 var user = CreateUser();
 
                 var username = info.Principal.FindFirstValue(ClaimTypes.Name);
+                user.Avatar = $"{username}.png";
 
                 await _userStore.SetUserNameAsync(user, username, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
