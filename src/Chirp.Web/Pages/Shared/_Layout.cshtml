@@ -5,28 +5,28 @@
 
 <head>
     <title>@ViewData["Title"]</title>
-    <link rel="icon" type="image/png" href="/favicon/favicon.ico" />
-    <link rel="stylesheet" href="/css/index.css" type="text/css" />
+    <link rel="icon" type="image/png" href="~/favicon/favicon.ico" />
+    <link rel="stylesheet" href="~/css/index.css" type="text/css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
 <body>
     <header>
-        <a href="/"><img class="logo" src="/images/icon1.png" alt="Icon1" /></a>
+        <a href="/"><img class="logo" src="~/images/icon1.png" alt="Icon1" /></a>
         <form id="navSearchForm" action="search" style="width: 100%;">
             <input id="navSearchInput" class="text-box" name="SearchQuery" type="text" placeholder="Search...">
         </form>
         @if (User.Identity != null && User.Identity.IsAuthenticated)
         {
-            <a class="btn" href="/Identity/Account/Logout">@User.Identity.Name</a>
+                        <a class="btn" href="/Identity/Account/Logout">@User.Identity.Name</a>
         }
         else
         {
-            <div style="display: flex; gap: 1.5rem;">
-                <a class="btn" role="button" href="/Identity/Account/Login">Login</a>
-                <a class="btn btn-primary" role="button" href="/Identity/Account/Register">Register</a>
-            </div>
+                        <div style="display: flex; gap: 1.5rem;">
+                            <a class="btn" role="button" href="/Identity/Account/Login">Login</a>
+                            <a class="btn btn-primary" role="button" href="/Identity/Account/Register">Register</a>
+                        </div>
         }
     </header>
     <div class="line"></div>
