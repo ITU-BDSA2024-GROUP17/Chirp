@@ -1,43 +1,71 @@
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
+
 namespace Chirp.Web.Utilities;
 
 public static class TimeUtilties
 {
-    private static readonly long unixMin = 60;
-    private static readonly long unixHour = 3600;
-    private static readonly long unixDay = 86400;
-    private static readonly long unixYear = 31536000;
+    public enum TimeSpanRoundType
+    {
+        Second,
+        QuarterMinute,
+        HalfMinute,
+        Minute,
+        QuarterHour,
+        HalfHour,
+        Hour,
+    }
 
-    /// <summary>
-    /// Truns a DateTime object into a formatted string.
-    /// </summary>
-    /// <param name="timestamp">The DateTime timstamp to format</param>
-    /// <returns>A pretty formated string</returns>
+    public static TimeSpan Round(this TimeSpan span, TimeSpanRoundType type, MidpointRounding mode = MidpointRounding.ToEven) =>
+        type switch
+        {
+            TimeSpanRoundType.Second => TimeSpan.FromSeconds(Math.Round(span.TotalSeconds)),
+            TimeSpanRoundType.QuarterMinute => TimeSpan.FromSeconds(Math.Round(span.TotalSeconds / 15, 0, mode) * 15),
+            TimeSpanRoundType.HalfMinute => TimeSpan.FromSeconds(Math.Round(span.TotalSeconds / 30, 0, mode) * 30),
+            TimeSpanRoundType.Minute => TimeSpan.FromSeconds(Math.Round(span.TotalSeconds / 60, 0, mode) * 60),
+            TimeSpanRoundType.QuarterHour => TimeSpan.FromMinutes(Math.Round(span.TotalMinutes / 15, 0, mode) * 15),
+            TimeSpanRoundType.HalfHour => TimeSpan.FromMinutes(Math.Round(span.TotalMinutes / 30, 0, mode) * 30),
+            TimeSpanRoundType.Hour => TimeSpan.FromMinutes(Math.Round(span.TotalMinutes / 60, 0, mode) * 60),
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+
+    public static TimeSpan DateTimeDiffFromNow(DateTime date, TimeSpanRoundType type)
+    {
+        return (DateTime.UtcNow - date).Round(type);
+    }
+
     public static string FormatDateTimePretty(DateTime timestamp)
     {
-        long unixTimeStamp = ((DateTimeOffset)timestamp).ToUnixTimeSeconds();
-        long TimeDiff = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - unixTimeStamp;
+        TimeSpan roundedDiff = DateTimeDiffFromNow(timestamp, TimeSpanRoundType.Minute);
+        long timeDiffMinutes = (long)Math.Round(Math.Abs(roundedDiff.TotalMinutes), MidpointRounding.AwayFromZero);
+        long timeDiffHours = (long)Math.Round(Math.Abs(roundedDiff.TotalHours), MidpointRounding.AwayFromZero);
+        long timeDiffDays = (long)Math.Round(Math.Abs(roundedDiff.TotalDays), MidpointRounding.AwayFromZero);
 
-        if (TimeDiff < unixHour)
+
+        if (timeDiffMinutes < 60 && timeDiffHours == 0 && timeDiffDays == 0)
         {
-            if (TimeDiff / unixMin > 1) // if a 2 mins has passed
+            if (timeDiffMinutes <= 1)
             {
-                return $"{TimeDiff / unixMin} mins ago";
+                return "Just now";
             }
-            return "Just now";
+            return $"{timeDiffMinutes} min{(timeDiffMinutes > 1 ? "s" : "")} ago";
         }
-        else if (TimeDiff < unixDay)
+        else if (timeDiffHours < 24 && timeDiffDays == 0)
         {
-            return $"{TimeDiff / unixHour} hours ago";
+            return $"{timeDiffHours} hour{(timeDiffHours > 1 ? "s" : "")} ago";
         }
-        else if (TimeDiff < unixYear)
+        else if (timeDiffDays < 365)
         {
-            return $"{TimeDiff / unixDay} days ago";
+            return $"{timeDiffDays} day{(timeDiffDays > 1 ? "s" : "")} ago";
         }
         else
         {
-            return $"Over {TimeDiff / unixYear} years ago";
+            int years = (int)(timeDiffDays / 365);
+            return $"Over {years} year{(years > 1 ? "s" : "")} ago";
         }
     }
+
+
 
     /// <summary>
     /// Turns a Unix timestamp into a formatted string.
