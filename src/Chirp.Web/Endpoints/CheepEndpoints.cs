@@ -6,36 +6,13 @@ namespace Chirp.Web.Endpoints;
 
 public static class CheepEndpoints
 {
-    public static void MapCheepEndpoints(this WebApplication app, CheepService cheepService)
+    public static void MapCheepEndpoints(this WebApplication app)
     {
-        app.MapPost("/cheep", (CreateCheepDto cheepDto) =>
-        {
-
-            var author = cheepService.GetAuthor(cheepDto.Author).Result;
-            if (author == null)
-            {
-                author = new Author
-                {
-                    UserName = cheepDto.Author,
-                    Email = ""
-                };
-                cheepService.CreateAuthor(author);
-            }
-            var cheep = new Cheep()
-            {
-                AuthorId = author.Id,
-                Message = cheepDto.Message,
-                TimeStamp = DateTime.Now,
-                Author = author
-            };
-            cheepService.CreateCheep(cheep);
-
-            return cheepDto;
-        }).WithSummary("Sends a cheep");
+        var _authorService = app.Services.CreateScope().ServiceProvider.GetService<AuthorService>() ?? throw new Exception("AuthorService not found!");
 
         app.MapGet("/searchField", async (string SearchQuery) =>
         {
-            List<Author> authors = await cheepService.SearchAuthors(SearchQuery, 1);
+            List<Author> authors = await _authorService.SearchAuthors(SearchQuery, 1);
 
             List<CreateAuthorDto> authorDtos = new List<CreateAuthorDto>();
             foreach (var author in authors)
@@ -46,7 +23,6 @@ public static class CheepEndpoints
                     UserName = author.UserName ?? "",
                 });
             }
-
 
             return authorDtos;
         }).WithSummary("Gets all authors");

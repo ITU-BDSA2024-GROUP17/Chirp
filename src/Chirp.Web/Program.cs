@@ -40,6 +40,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<AuthorService>();
 builder.Services.AddScoped<CheepService>();
 
 builder.Services.AddAuthentication().AddGitHub(options =>
@@ -78,7 +79,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapCheepEndpoints(app.Services.CreateScope().ServiceProvider.GetService<CheepService>() ?? throw new Exception("CheepService not found!"));
+app.MapCheepEndpoints();
 app.MapRazorPages();
 
 app.Run();
