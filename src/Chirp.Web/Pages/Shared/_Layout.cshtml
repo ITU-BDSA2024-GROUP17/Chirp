@@ -26,6 +26,16 @@
         </div>
         @if (User.Identity != null && User.Identity.IsAuthenticated)
         {
+            <!--
+                The username is passed to github, and the new string leads to an avatar on githubs server
+                If the user does not exist, a gravatar is displayed based on the username
+                This is only true for the public timeline and the top of the page next to the username
+            -->
+            string avatarUrl = "https://github.com/" + User.Identity.Name + ".png";
+            if (avatarUrl != "https://github.com/.png")
+            {
+                <img class="avatar" src="@avatarUrl" />
+            }
             <a class="btn" href="/Identity/Account/Logout">@User.Identity.Name</a>
         }
         else
