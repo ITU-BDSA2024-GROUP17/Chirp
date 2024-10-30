@@ -1,7 +1,16 @@
 # Chirp
 Twitter Clone made from ITU course BDSA
 
-## Deployment
+## Usage
+
+### Deployment
+Chirp can be ran directly from the terminal.
+```bash
+dotnet example-file.dll
+```
+
+Or by being deployed to a cloud service provider.
+A example for an Azure pipeline can be seen in this repo.
 
 ### Environment variables
 
