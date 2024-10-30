@@ -33,19 +33,25 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
         var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
 
-        if (CheepMessage == null || CheepMessage.Length > 160) return LocalRedirect(Url.Content("~/"));
-
-        Cheep cheep = new()
+        try
         {
-            AuthorId = UserId,
-            Message = CheepMessage,
-            TimeStamp = DateTime.Now,
-            Author = author,
-        };
 
-        await _cheepService.CreateCheep(cheep);
+            Cheep cheep = new()
+            {
+                AuthorId = UserId,
+                Message = CheepMessage,
+                TimeStamp = DateTime.Now,
+                Author = author,
+            };
 
-        // Reload page
-        return LocalRedirect(Url.Content("~/"));
+            await _cheepService.CreateCheep(cheep);
+
+            // Reload page
+            return LocalRedirect(Url.Content("~/"));
+        }
+        catch (InvalidDataException)
+        {
+            return LocalRedirect(Url.Content("~/"));
+        }
     }
 }

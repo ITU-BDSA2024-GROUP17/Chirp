@@ -41,6 +41,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
 
     public Task<Cheep> CreateCheep(Cheep cheep)
     {
+        if (cheep.Message.Length > 160) throw new InvalidDataException("Message is too long");
         _context.Cheeps.Add(cheep);
         _context.SaveChanges();
 
