@@ -2,6 +2,7 @@ namespace Chirp.Web.Utilities;
 
 public static class TimeUtilties
 {
+    private static readonly long unixMin = 60;
     private static readonly long unixHour = 3600;
     private static readonly long unixDay = 86400;
     private static readonly long unixYear = 31536000;
@@ -18,6 +19,10 @@ public static class TimeUtilties
 
         if (TimeDiff < unixHour)
         {
+            if (TimeDiff / unixMin > 1) // if a 2 mins has passed
+            {
+                return $"{TimeDiff / unixMin} mins ago";
+            }
             return "Just now";
         }
         else if (TimeDiff < unixDay)
@@ -39,8 +44,8 @@ public static class TimeUtilties
     /// </summary>
     /// <param name="timestamp">The Unix timestamp to format</param>
     /// <returns>A pretty formatted string</returns>
-    public static string FormatUnixTimeRaw(long timestamp)
+    public static string FormatUnixTimeRaw(DateTime timestamp)
     {
-        return DateTimeOffset.FromUnixTimeSeconds(timestamp).ToString("yyyy-MM-dd HH:mm:ss");
+        return timestamp.ToString("yyyy-MM-dd HH:mm:ss");
     }
 }

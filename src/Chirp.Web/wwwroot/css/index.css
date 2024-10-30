@@ -1,6 +1,6 @@
 * {
-    padding:0;
-    margin:0;
+    padding: 0;
+    margin: 0;
 }
 
 body {
@@ -87,6 +87,7 @@ header {
     gap: 1em;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 10px;
 }
 
 .root {
@@ -106,7 +107,10 @@ header {
 }
 
 #navSearchForm {
-    width: 12rem;
+    width: -webkit-fill-available;
+    width: -moz-available;
+    max-width: 32rem;
+    width: 32rem;
 }
 
 .text-box {
@@ -164,7 +168,8 @@ Cheeps
     text-decoration: none;
 }
 
-.cheep-wrapper {
+.cheep-wrapper,
+.cheep-wrapper-mini {
     display: flex;
     margin-bottom: 1rem;
     list-style-type: none;
@@ -215,9 +220,105 @@ Cheeps
     width: 100%;
 }
 
-.cheep-timestamp {
+.cheep-timestamp-tooltip {
+    position: relative;
+    display: inline-block;
+    bottom: 1px dotted var(--border);
     color: var(--gray-700);
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 400;
+    cursor: default;
+}
+
+.cheep-timestamp-tooltip > span {
+    padding-left: 4px;
+}
+
+.cheep-timestamp-tooltip .cheep-timestamp {
+    visibility: hidden;
+    width: 95px;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 1;
+    top: -45px;
+    left: 0;
+    background-color: var(--border);
+    text-wrap: wrap;
+    padding: 3px 4px 3px 4px;
+    cursor: default;
+}
+
+.cheep-timestamp-tooltip .cheep-timestamp::after {
+    content: " ";
+    position: absolute;
+    top: 100%; /* At the bottom of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--border) transparent transparent transparent;
+}
+
+.cheep-timestamp-tooltip:hover .cheep-timestamp {
+    visibility: visible;
+    transition: visibility 0s ease-out 0.5s;
+}
+
+/*
+mini version of cheep wrapper
+*/
+.navSearchOutputWrapper {
+    position: absolute;
+    background-color: white;
+    display: none;
+    border: 1px solid var(--gray-300);
+    border-radius: 0.25em;
+    width: inherit;
+    max-height: 20rem;
+    overflow-y: auto;
+    z-index: 1;
+}
+
+#navSearchOutput {
+    padding: 5px;
+    margin: unset;
+}
+
+.cheep-wrapper-mini {
+    padding: 10px 0 10px 10px;
+    margin: unset;
+    text-decoration: none;
+}
+
+.cheep-wrapper-mini:hover {
+    background-color: var(--gray-100);
+}
+
+.cheep-wrapper-mini .cheep-avatar {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-color: var(--gray-200);
+    text-align: center;
+    font-weight: 500;
+    font-size: 11px;
+    align-content: center;
+    text-decoration: none;
+    color: var(--text);
+    align-self: center;
+}
+.cheep-wrapper-mini .cheep {
+    padding: unset;
+}
+
+.cheep-wrapper-mini .cheep {
+    padding: unset;
+}
+
+.cheep-wrapper-mini .cheep-author {
     font-weight: 400;
 }
 
@@ -265,6 +366,10 @@ Interface
     border-radius: 0.25em;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
