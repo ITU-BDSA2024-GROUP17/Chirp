@@ -7,6 +7,7 @@ public class CheepRepositoryTests
 {
     private readonly CheepDbContext _cheepDbContext;
     private readonly CheepRepository _cheepRepository;
+    private readonly AuthorRepository _authorRepository;
 
     public CheepRepositoryTests()
     {
@@ -18,6 +19,8 @@ public class CheepRepositoryTests
         DbInitializer.SeedDatabase(_cheepDbContext);
 
         _cheepRepository = new CheepRepository(_cheepDbContext);
+
+        _authorRepository = new AuthorRepository(_cheepDbContext);
     }
 
     [Theory]
