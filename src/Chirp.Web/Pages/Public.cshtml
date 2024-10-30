@@ -28,6 +28,9 @@
 @await Html.PartialAsync("_CheepsPartial", Model.Cheeps)
 
 <script>
+
+    auto_grow(document.getElementById("cheepMessage"));
+
     window.addEventListener("DOMContentLoaded", () => {
         const cheepInputField = document.querySelector("#cheepMessage");
         ['keyup', 'change'].forEach((type) => {
@@ -50,5 +53,9 @@
         }
     });
 
+    function auto_grow(element) {
+        element.style.height = "5px";
+        element.style.height = (element.scrollHeight) + "px";
+    }
 
 </script>
