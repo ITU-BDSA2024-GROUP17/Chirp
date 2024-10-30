@@ -1,36 +1,53 @@
 # Chirp
 Twitter Clone made from ITU course BDSA
 
+## Usage
 
-# Contribute to the project
-## Branches
-### Naming convention
-#### Feature Branches
+### Deployment
+Chirp can be ran directly from the terminal.
+```bash
+dotnet example-file.dll
+```
+
+Or by being deployed to a cloud service provider.
+A example for an Azure pipeline can be seen in this repo.
+
+### Environment variables
+
+| Environment variable | Description                            |
+|:--------------------:|----------------------------------------|
+|    GHUB_CLIENT_ID    | Id of the GitHub OAuth application     |
+|  GHUB_CLIENT_SECRET  | Secret of the GitHub OAuth application |
+
+## Contribute to the project
+### Branches
+#### Naming convention
+##### Feature Branches
 if the branch is a feature branch, use the following naming convention:
 `feature/<issueID>/<issue-title>`
 - Example: `feature/1/Implement-Login-Page`
-#### Bug Branches
+##### Bug Branches
 if the branch is a bugfix branch, use the following naming convention:
 `fix/<issueID>/<issue-title>`
 - Example: `fix/2/fix-login-page`
-#### Independent Branches
+##### Independent Branches
 _If the branch has **no**_ issue, use the following naming convention:
 `fix/<branch-name>`
 or `feature/<branch-title>` depending on the branch type.
 
 
-## Posting Issues
+### Posting Issues
 - Use the issue template
 - Use the correct user story format: `As a <role>, I want <goal> [, so that <benefit>].`
 - Use the correct labels
 - Link the issue to the correct milestone & branch
 - If the issue is a `requirement` link it to the correct requirement, and use the right nameing convention.
-### Naming convention for issue title
+#### Naming convention for issue title
 - Reqirement: `<reqID>/<Requirement Title>`
     - Example: `2d/A user can create a tweet`
 - Normal Issue: `<Issue Title>`
 
-### Issue Description template
+#### Issue Description template
 ```markdown
 # Description
 
