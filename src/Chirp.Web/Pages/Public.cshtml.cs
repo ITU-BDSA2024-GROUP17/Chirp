@@ -6,9 +6,10 @@ using System.Security.Claims;
 
 namespace Chirp.Web.Pages;
 
-public class PublicModel(CheepService service) : PageModel
+public class PublicModel(AuthorService authorService, CheepService cheepService) : PageModel
 {
-    private readonly CheepService _cheepService = service;
+    private readonly AuthorService _authorService = authorService;
+    private readonly CheepService _cheepService = cheepService;
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
 
     [BindProperty]
@@ -30,7 +31,7 @@ public class PublicModel(CheepService service) : PageModel
         if (User.Identity == null || !User.Identity.IsAuthenticated) throw new UnauthorizedAccessException("User is not logged in!");
 
         var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
-        var author = await _cheepService.GetAuthor(UserId) ?? throw new Exception("User not found!");
+        var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
 
         if (CheepMessage == null || CheepMessage.Length > 160) return LocalRedirect(Url.Content("~/"));
 

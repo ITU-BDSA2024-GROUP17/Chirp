@@ -5,9 +5,9 @@ using Chirp.Infrastructure.Services;
 
 namespace Chirp.Web.Pages;
 
-public class UserTimelineModel(CheepService service) : PageModel
+public class UserTimelineModel(AuthorService authorService) : PageModel
 {
-    private readonly CheepService _service = service;
+    private readonly AuthorService _authorService = authorService;
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
 
     public async Task<IActionResult> OnGet(string author, [FromQuery] int page = 1)
@@ -16,7 +16,7 @@ public class UserTimelineModel(CheepService service) : PageModel
         {
             return Redirect($"/{author}?page=1");
         }
-        Cheeps = await _service.GetCheeps(author, page);
+        Cheeps = await _authorService.GetCheeps(author, page);
         return Page();
     }
 }
