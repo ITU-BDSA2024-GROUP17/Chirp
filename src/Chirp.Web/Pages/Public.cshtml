@@ -12,11 +12,12 @@
         <div class="cheep-avatar">
             @User.Identity.Name?.First()
         </div>
-        <form class="flex-grow-1 d-flex flex-row gap-2" asp-page-handler="Cheep" method="post">
-            <input asp-for="CheepMessage" id="cheepMessage" class="text-box cheep-input" placeholder="Whats on your mind?"
+        <form class="flex-grow-1 d-flex flex-row gap-2" asp-page-handler="Cheep" method="post" defaultbutton="sendCheepButton">
+            <input type="text" asp-for="CheepMessage" id="cheepMessage" class="text-box cheep-input" placeholder="Whats on your mind?"
                 autocomplete="off" />
+
             <div class="d-flex justify-content-end">
-                <button class="btn btn-primary" type="submit">Cheep</button>
+                <button class="btn btn-primary" id="sendCheepButton" type="submit">Cheep</button>
             </div>
         </form>
     </div>
@@ -38,13 +39,6 @@
                     document.getElementById("cheepMessage").style.color = "black";
                 }
             })
-        })
-
-        document.getElementById("cheepMessage").addEventListener('keydown', e => {
-            if (e.key == "Enter") {
-                e.preventDefault();
-                sendCheep();
-            }
         })
     })
 </script>
