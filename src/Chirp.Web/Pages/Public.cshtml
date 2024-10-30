@@ -12,12 +12,12 @@
         <div class="cheep-avatar">
             @User.Identity.Name?.First()
         </div>
-        <form class="flex-grow-1 d-flex flex-row gap-2" asp-page-handler="Cheep" method="post" defaultbutton="submitButton">
+        <form class="flex-grow-1 d-flex flex-row gap-2" asp-page-handler="Cheep" method="post" defaultbutton="sendCheepButtonButton">
             <input type="text" asp-for="CheepMessage" id="cheepMessage" class="text-box cheep-input" placeholder="Whats on your mind?"
                 autocomplete="off" />
 
             <div class="d-flex justify-content-end">
-                <button class="btn btn-primary" id="submitButton" type="submit">Cheep</button>
+                <button class="btn btn-primary" id="sendCheepButton" type="submit">Cheep</button>
             </div>
         </form>
     </div>
