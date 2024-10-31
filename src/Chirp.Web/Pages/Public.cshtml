@@ -12,13 +12,8 @@
         <div class="cheep-avatar">
             @if (User.Identity.Name != null)
             {
-                <!--
-                    The username is passed to github, and the new string leads to an avatar on githubs server
-                    If the user does not exist, a gravatar is displayed based on the username
-                    This is only true for the public timeline and the top of the page next to the username
-                -->
-                string avatarUrl = "https://github.com/" + User.Identity.Name + ".png";
-                if (avatarUrl != "https://github.com/.png")
+                string avatarUrl = "" + User.FindFirst("Avatar")?.Value;
+                if (avatarUrl != "")
                 {
                     <img src="@avatarUrl" class="avatar" />
                 }

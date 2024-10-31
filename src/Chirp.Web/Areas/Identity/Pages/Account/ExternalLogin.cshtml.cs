@@ -156,7 +156,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
 
                 var username = info.Principal.FindFirstValue(ClaimTypes.Name);
                 // only supports github currently
-                user.Avatar = $"https://github.com/{username}.png";
+                var avatarUrl = $"https://github.com/{username}.png";
+                user.Avatar = avatarUrl;
 
                 await _userStore.SetUserNameAsync(user, username, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -169,6 +170,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                     {
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 
+                        // Access the avatar with User.FindFirst("Avatar")?.Value
+                        await _userManager.AddClaimAsync(user, new Claim("Avatar", avatarUrl));
                         var userId = await _userManager.GetUserIdAsync(user);
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
