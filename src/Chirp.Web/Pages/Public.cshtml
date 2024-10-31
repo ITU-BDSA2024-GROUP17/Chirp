@@ -12,8 +12,8 @@
         <div class="cheep-avatar">
             @if (User.Identity.Name != null)
             {
-                string avatarUrl = "" + User.FindFirst("Avatar")?.Value;
-                if (avatarUrl != "")
+                var avatarUrl = User.FindFirst("Avatar")?.Value;
+                if (avatarUrl != null)
                 {
                     <img src="@avatarUrl" class="avatar" />
                 }

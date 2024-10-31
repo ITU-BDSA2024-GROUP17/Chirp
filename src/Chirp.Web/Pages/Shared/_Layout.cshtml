@@ -26,8 +26,8 @@
         </div>
         @if (User.Identity != null && User.Identity.IsAuthenticated)
         {
-            string avatarUrl = "" + User.FindFirst("Avatar")?.Value;
-            if (avatarUrl != "")
+            var avatarUrl = User.FindFirst("Avatar")?.Value;
+            if (avatarUrl != null)
             {
                 <a class="btn" href="/Identity/Account/Logout">
                     <img class="avatar" src="@avatarUrl" />
