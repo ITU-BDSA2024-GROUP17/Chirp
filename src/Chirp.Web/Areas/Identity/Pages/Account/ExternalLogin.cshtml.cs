@@ -155,9 +155,14 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 var user = CreateUser();
 
                 var username = info.Principal.FindFirstValue(ClaimTypes.Name);
-                // only supports github currently
-                var avatarUrl = $"https://github.com/{username}.png";
-                user.Avatar = avatarUrl;
+                string avatarUrl = null;
+
+                // Check which OAuth provider the user is signing in with
+                if (info.LoginProvider == "GitHub")
+                {
+                    avatarUrl = $"https://github.com/{username}.png";
+                    user.Avatar = avatarUrl;
+                }
 
                 await _userStore.SetUserNameAsync(user, username, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
