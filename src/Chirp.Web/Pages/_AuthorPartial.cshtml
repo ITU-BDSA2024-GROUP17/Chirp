@@ -11,9 +11,17 @@
             <li class="cheep-wrapper">
                 @if (@author.UserName != null)
                 {
-                    <a href="/@author.UserName" class="cheep-avatar">
-                        @author.UserName.First()
-                    </a>
+                    <!--If the author has an avatar, display it instead of just a letter-->
+                    @if (author.Avatar != null)
+                    {
+                        <img src="@author.Avatar" class="avatar" />
+                    }
+                    else
+                    {
+                        <a href="/@author.UserName" class="cheep-avatar">
+                            @author.UserName.First()
+                        </a>
+                    }
                 }
                 <div class="cheep">
                     <div class="cheep-user">

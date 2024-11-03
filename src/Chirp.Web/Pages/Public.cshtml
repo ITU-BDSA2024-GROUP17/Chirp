@@ -10,11 +10,24 @@
 {
     <div class="send-box">
         <div class="cheep-avatar">
-            @User.Identity.Name?.First()
+            @if (User.Identity.Name != null)
+            {
+                var avatarUrl = User.FindFirst("Avatar")?.Value;
+                if (avatarUrl != null)
+                {
+                    <img src="@avatarUrl" class="avatar" />
+                }
+                else
+                {
+                    @User.Identity.Name?.First()
+                }
+            }
         </div>
-        <form class="flex-grow-1 d-flex flex-row gap-2" id="cheepInputForm" asp-page-handler="Cheep" method="post" defaultbutton="sendCheepButton">
-            <textarea type="text" asp-for="CheepMessage" id="cheepMessage" class="text-box cheep-input" placeholder="Whats on your mind?"
-                autocomplete="off" style="resize: none; overflow: hidden;" oninput="auto_grow(this)"> </textarea>
+        <form class="flex-grow-1 d-flex flex-row gap-2" id="cheepInputForm" asp-page-handler="Cheep" method="post"
+            defaultbutton="sendCheepButton">
+            <textarea type="text" asp-for="CheepMessage" id="cheepMessage" class="text-box cheep-input"
+                placeholder="Whats on your mind?" autocomplete="off" style="resize: none; overflow: hidden;"
+                oninput="auto_grow(this)"> </textarea>
 
             <div class="d-flex justify-content-end">
                 <button class="btn btn-primary" id="sendCheepButton" type="submit">Cheep</button>
@@ -47,7 +60,7 @@
 
     const textA = document.getElementById("cheepMessage");
     textA.addEventListener("keypress", event => {
-        if (!event.shiftKey && event.key == "Enter"){
+        if (!event.shiftKey && event.key == "Enter") {
             event.preventDefault();
             document.getElementById("cheepInputForm").submit();
         }
