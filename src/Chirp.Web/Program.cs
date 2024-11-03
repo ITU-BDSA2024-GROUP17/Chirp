@@ -80,5 +80,5 @@ app.UseAuthorization();
 
 app.MapCheepEndpoints(app.Services.CreateScope().ServiceProvider.GetService<CheepService>() ?? throw new Exception("CheepService not found!"));
 app.MapRazorPages();
-
 app.Run();
+public partial class Program { };
