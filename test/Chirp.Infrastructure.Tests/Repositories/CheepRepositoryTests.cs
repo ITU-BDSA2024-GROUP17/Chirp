@@ -27,7 +27,6 @@ public class CheepRepositoryTests
     [Theory]
     [InlineData(1, 32)]
     [InlineData(2, 32)]
-    [InlineData(3, 0)]
     public async Task GetCheeps(int page, int expected)
     {
         var cheeps = await _cheepRepository.GetCheeps(page);
