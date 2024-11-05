@@ -39,12 +39,12 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
         return Task.FromResult(cheeps);
     }
 
-    public Task<Cheep> CreateCheep(Cheep cheep)
+    public async Task<Cheep> CreateCheep(Cheep cheep)
     {
         _context.Cheeps.Add(cheep);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
-        return Task.FromResult(cheep);
+        return cheep;
     }
 
     public Task<Cheep> UpdateCheep(Cheep newCheep)
