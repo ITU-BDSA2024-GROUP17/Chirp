@@ -1,5 +1,10 @@
-using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.TestHost;
+using Xunit;
+using AngleSharp;
 
 namespace Chirp.Web.Tests.Integration;
 public class PageSetupTests
@@ -10,6 +15,14 @@ public class PageSetupTests
     public PageSetupTests(WebApplicationFactory<Program> factory)
     {
         _factory = factory;
+    }
+
+    private static AngleSharp.Dom.IDocument LoadDocument(HttpResponseMessage request)
+    {
+        var html = request.Content.ReadAsStringAsync().Result;
+        var config = Configuration.Default.WithDefaultLoader();
+        var context = BrowsingContext.New(config);
+        return context.OpenAsync(req => req.Content(html)).Result;
     }
 
     [Theory]
@@ -27,8 +40,36 @@ public class PageSetupTests
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var page = LoadDocument(response);
+        var pageTitle = page.QuerySelector("title")?.TextContent;
+        if (url == "/")
+        {
+            Assert.Contains("Public Timeline", pageTitle);
+            return;
+        }
+        else
+        {
+            Assert.Contains(url.Split("/")[1], pageTitle);
+        }
+    }
+    [Theory]
+    [InlineData("/")]
+    [InlineData("/RandomUser")]
+    [InlineData("/Helge")]
+    [InlineData("/NonExistingPage")]
+    public async Task Get_IdentityEndpointsReturnSuccessAndCorrectContentType(string url)
+    {
+        // Arrange
+        var client = _factory.CreateClient();
+
+        // Act
+        var response = await client.GetAsync(url);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var pageContent = await response.Content.ReadAsStringAsync();
         Assert.Contains(url.Split("/")[1], pageContent);
-
     }
+
 }
