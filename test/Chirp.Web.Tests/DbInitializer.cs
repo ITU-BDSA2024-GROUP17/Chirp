@@ -9,12 +9,19 @@ public static class DbInitializer
     {
         if (cheepDbContext.Authors.Any() || cheepDbContext.Cheeps.Any()) return;
 
-        var a1 = new Author() { Id = "2bcf724c-b650-476c-ae11-d408eb2105a0", UserName = "John Doe ", Email = "John-Doe@mail.com", Cheeps = [] };
-        var a3 = new Author() { Id = "797776e2-0ac8-4493-a9dd-526a24146a87", UserName = "John Smith", Email = "John-Smith@mail.com", Cheeps = [] };
+        var a1 = new Author() { Id = "2bcf724c-b650-476c-ae11-d408eb2105a0", UserName = "John Doe", Email = "John-Doe@mail.com", Cheeps = [] };
         var a2 = new Author() { Id = "ac71fc84-62b9-4907-9b90-5305e1e25c96", UserName = "Jane Doe", Email = "Jane-Doe@mail.dk", Cheeps = [] };
+        var a3 = new Author() { Id = "797776e2-0ac8-4493-a9dd-526a24146a87", UserName = "John Smith", Email = "John-Smith@mail.com", Cheeps = [] };
         var a4 = new Author() { Id = "5ba7ed22-77c3-43da-899c-ac31e563d036", UserName = "Jane Smith", Email = "Jane-Smith@mail.com", Cheeps = [] };
 
         var authors = new List<Author>() { a1, a2, a3, a4 };
+
+        var tc1 = new Cheep() { Id = 101, AuthorId = a1.Id, Author = a1, Message = "I love my wife Jane Doe", TimeStamp = DateTime.Parse("2022-08-01 12:14:37") };
+        var tc2 = new Cheep() { Id = 102, AuthorId = a2.Id, Author = a2, Message = "I love my husband John Doe", TimeStamp = DateTime.Parse("2022-09-01 10:14:37") };
+        var tc3 = new Cheep() { Id = 103, AuthorId = a3.Id, Author = a3, Message = "I love my wife Jane Smith", TimeStamp = DateTime.Parse("2022-07-01 13:14:37") };
+        var tc4 = new Cheep() { Id = 104, AuthorId = a4.Id, Author = a4, Message = "I love my husband John Smith", TimeStamp = DateTime.Parse("2023-08-01 07:14:37") };
+
+
 
         var c1 = new Cheep() { Id = 1, AuthorId = a1.Id, Author = a1, Message = "They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", TimeStamp = DateTime.Parse("2023-08-01 13:14:37") };
         var c2 = new Cheep() { Id = 2, AuthorId = a2.Id, Author = a2, Message = "And then, as he listened to all that''s left o'' twenty-one people.", TimeStamp = DateTime.Parse("2023-08-01 13:15:21") };
@@ -81,7 +88,7 @@ public static class DbInitializer
         var c63 = new Cheep() { Id = 63, AuthorId = a4.Id, Author = a4, Message = "It came from a grove of Scotch firs, and I were strolling on the soft gravel, and finally the dining-room.", TimeStamp = DateTime.Parse("2023-08-01 13:14:04") };
         var c64 = new Cheep() { Id = 64, AuthorId = a1.Id, Author = a1, Message = "Nor can piety itself, at such a pair of as a lobster if he had needed it; but no, it''s like that, does he?", TimeStamp = DateTime.Parse("2023-08-01 13:15:42") };
 
-        var cheeps = new List<Cheep> { c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29, c30, c31, c32, c33, c34, c35, c36, c37, c38, c39, c40, c41, c42, c43, c44, c45, c46, c47, c48, c49, c50, c51, c52, c53, c54, c55, c56, c57, c58, c59, c60, c61, c62, c63, c64 };
+        var cheeps = new List<Cheep> { tc1, tc2, tc3, tc4, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29, c30, c31, c32, c33, c34, c35, c36, c37, c38, c39, c40, c41, c42, c43, c44, c45, c46, c47, c48, c49, c50, c51, c52, c53, c54, c55, c56, c57, c58, c59, c60, c61, c62, c63, c64 };
 
         cheepDbContext.Authors.AddRange(authors);
         cheepDbContext.Cheeps.AddRange(cheeps);
