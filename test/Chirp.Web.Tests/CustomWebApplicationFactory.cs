@@ -1,14 +1,8 @@
-// test/Chirp.Web.Tests/CustomWebApplicationFactory.cs
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Chirp.Core.Interfaces;
-using Moq;
 using Chirp.Infrastructure;
-using Chirp.Infrastructure.Repositories;
-using Chirp.Core.Entities;
 
 namespace Chirp.Web.Tests.Integration
 {
@@ -19,22 +13,22 @@ namespace Chirp.Web.Tests.Integration
             builder.ConfigureServices(services =>
             {
                 // Remove old DbContext
-                var dbContextDescriptor = services.SingleOrDefault(
-               d => d.ServiceType ==
-                   typeof(DbContextOptions<CheepDbContext>));
+                var dbContextDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<CheepDbContext>));
+                if (dbContextDescriptor != null) services.Remove(dbContextDescriptor);
 
-                services.Remove(dbContextDescriptor);
+                var dbConnectionDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(CheepDbContext));
+                if (dbConnectionDescriptor != null) services.Remove(dbConnectionDescriptor);
 
-                var dbConnectionDescriptor = services.SingleOrDefault(
-                    d => d.ServiceType ==
-                        typeof(CheepDbContext));
-
-                services.Remove(dbConnectionDescriptor);
-
+                // Add nex in Memory test database
                 services.AddDbContext<CheepDbContext>(options => options.UseInMemoryDatabase(databaseName: "WebTestDb"));
             });
         }
-        public static async Task TestSeedDatabase(CustomWebApplicationFactory<Program> factory)
+        /// <summary>
+        /// Seed the test database
+        /// </summary>
+        /// <param name="factory"></param>
+        /// <exception cref="Exception"></exception>
+        public static void TestSeedDatabase(CustomWebApplicationFactory<Program> factory)
         {
             using var scope = factory.Services.CreateScope();
             using var context = scope.ServiceProvider.GetService<CheepDbContext>() ?? throw new Exception("TestCheepDbContext not found!");
