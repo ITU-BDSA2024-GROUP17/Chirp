@@ -34,8 +34,12 @@ public class SearchModel(AuthorService authorService, CheepService cheepService)
             case '@':
                 Authors = await _authorService.SearchAuthors(SearchQuery.Split("@")[1], page);
                 break;
-            case '&':
-                Cheeps = await _cheepService.SearchCheeps(SearchQuery.Split("&")[1], page);
+            case '#':
+                Cheeps = await _cheepService.SearchCheeps(SearchQuery.Split("#")[1], page);
+                foreach (var c in Cheeps)
+                {
+                    Authors.Append(await _authorService.GetAuthor(c.AuthorId));
+                }
                 break;
             default:
                 Authors = await _authorService.SearchAuthors(SearchQuery, page);
