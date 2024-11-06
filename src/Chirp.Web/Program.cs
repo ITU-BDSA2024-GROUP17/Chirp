@@ -43,13 +43,16 @@ builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<AuthorService>();
 builder.Services.AddScoped<CheepService>();
 
-builder.Services.AddAuthentication().AddGitHub(options =>
+if (builder.Configuration["GHUB_CLIENT_ID"] != null && builder.Configuration["GHUB_CLIENT_SECRET"] != null)
 {
-    options.ClientId = builder.Configuration["GHUB_CLIENT_ID"] ?? throw new Exception("GitHub ClientId must be set in the configuration!");
-    options.ClientSecret = builder.Configuration["GHUB_CLIENT_SECRET"] ?? throw new Exception("GitHub ClientSecret must be set in the configuration!");
+    builder.Services.AddAuthentication().AddGitHub(options =>
+    {
+        options.ClientId = builder.Configuration["GHUB_CLIENT_ID"] ?? throw new Exception("GitHub ClientId must be set in the configuration!");
+        options.ClientSecret = builder.Configuration["GHUB_CLIENT_SECRET"] ?? throw new Exception("GitHub ClientSecret must be set in the configuration!");
 
-    options.Scope.Add("user:email");
-});
+        options.Scope.Add("user:email");
+    });
+}
 
 // Application setup
 var app = builder.Build();
@@ -57,9 +60,11 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     using var context = scope.ServiceProvider.GetService<CheepDbContext>() ?? throw new Exception("CheepDbContext not found!");
-
-    context.Database.Migrate();
-    await DbInitializer.SeedDatabase(context, scope.ServiceProvider);
+    if (context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
+    {
+        context.Database.Migrate();
+        await DbInitializer.SeedDatabase(context, scope.ServiceProvider);
+    }
 }
 
 if (app.Environment.IsDevelopment())
@@ -81,5 +86,5 @@ app.UseAuthorization();
 
 app.MapCheepEndpoints();
 app.MapRazorPages();
-
 app.Run();
+public partial class Program { };
