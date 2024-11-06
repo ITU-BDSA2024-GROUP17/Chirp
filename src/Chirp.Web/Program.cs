@@ -42,13 +42,16 @@ builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<CheepService>();
 
-builder.Services.AddAuthentication().AddGitHub(options =>
+if (builder.Configuration["GHUB_CLIENT_ID"] != null && builder.Configuration["GHUB_CLIENT_SECRET"] != null)
 {
-    options.ClientId = builder.Configuration["GHUB_CLIENT_ID"] ?? throw new Exception("GitHub ClientId must be set in the configuration!");
-    options.ClientSecret = builder.Configuration["GHUB_CLIENT_SECRET"] ?? throw new Exception("GitHub ClientSecret must be set in the configuration!");
+    builder.Services.AddAuthentication().AddGitHub(options =>
+    {
+        options.ClientId = builder.Configuration["GHUB_CLIENT_ID"] ?? throw new Exception("GitHub ClientId must be set in the configuration!");
+        options.ClientSecret = builder.Configuration["GHUB_CLIENT_SECRET"] ?? throw new Exception("GitHub ClientSecret must be set in the configuration!");
 
-    options.Scope.Add("user:email");
-});
+        options.Scope.Add("user:email");
+    });
+}
 
 // Application setup
 var app = builder.Build();
