@@ -1,10 +1,7 @@
-using Chirp.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 namespace Chirp.Infrastructure.Extensions.Tests;
 
-public class CheepExtensionsTest{
-
-
+public class CheepExtensionsTest
+{
     [Fact]
     public void PaginateIEnumarableTest()
     {
@@ -17,7 +14,6 @@ public class CheepExtensionsTest{
 
         IEnumerable<int> returnedList = QueryableExtensions.Paginate(Ienum, 1);
 
-
         foreach (int nr in returnedList)
         {
             Assert.True(nr >= 0 && nr < 32);
@@ -25,5 +21,4 @@ public class CheepExtensionsTest{
 
         Assert.Equal(32, returnedList.Count());
     }
-
 }

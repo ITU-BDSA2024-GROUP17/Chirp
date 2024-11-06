@@ -4,5 +4,5 @@ namespace Chirp.Web.Tests.Endpoints;
 
 public class AuthorRepositoryTests
 {
-    
+
 }
