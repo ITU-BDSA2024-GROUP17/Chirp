@@ -5,33 +5,40 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Chirp.Core.Interfaces;
-using Chirp.Infrastructure;
 using Moq;
+using Chirp.Infrastructure;
+using Chirp.Infrastructure.Repositories;
+using Chirp.Core.Entities;
 
 namespace Chirp.Web.Tests.Integration
 {
     public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
-        public Mock<ICheepRepository> MockCheepRepository { get; } = new Mock<ICheepRepository>();
-        public Mock<IAuthorRepository> MockAuthorRepository { get; } = new Mock<IAuthorRepository>();
-
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureServices(services =>
             {
-                services.RemoveAll(typeof(CheepDbContext));
+                // Remove old DbContext
+                var dbContextDescriptor = services.SingleOrDefault(
+               d => d.ServiceType ==
+                   typeof(DbContextOptions<CheepDbContext>));
 
-                services.AddDbContext<CheepDbContext>(options =>
-                {
-                    options.UseInMemoryDatabase("InMemoryCheepDb");
-                });
+                services.Remove(dbContextDescriptor);
 
-                services.RemoveAll<ICheepRepository>();
-                services.AddSingleton(MockCheepRepository.Object);
+                var dbConnectionDescriptor = services.SingleOrDefault(
+                    d => d.ServiceType ==
+                        typeof(CheepDbContext));
 
-                services.RemoveAll<IAuthorRepository>();
-                services.AddSingleton(MockAuthorRepository.Object);
+                services.Remove(dbConnectionDescriptor);
+
+                services.AddDbContext<CheepDbContext>(options => options.UseInMemoryDatabase(databaseName: "WebTestDb"));
             });
+        }
+        public static async Task TestSeedDatabase(CustomWebApplicationFactory<Program> factory)
+        {
+            using var scope = factory.Services.CreateScope();
+            using var context = scope.ServiceProvider.GetService<CheepDbContext>() ?? throw new Exception("TestCheepDbContext not found!");
+            DbInitializer.SeedDatabase(context);
         }
     }
 }

@@ -56,9 +56,11 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     using var context = scope.ServiceProvider.GetService<CheepDbContext>() ?? throw new Exception("CheepDbContext not found!");
-
-    context.Database.Migrate();
-    await DbInitializer.SeedDatabase(context, scope.ServiceProvider);
+    if (context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
+    {
+        context.Database.Migrate();
+        await DbInitializer.SeedDatabase(context, scope.ServiceProvider);
+    }
 }
 
 if (app.Environment.IsDevelopment())
