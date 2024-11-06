@@ -15,7 +15,7 @@ namespace Chirp.Web.Tests.Integration
 
         public SearchIntegrationTests(CustomWebApplicationFactory<Program> factory)
         {
-            CustomWebApplicationFactory<Program>.TestSeedDatabase(factory).Wait();
+            CustomWebApplicationFactory<Program>.TestSeedDatabase(factory);
             _factory = factory;
         }
 
