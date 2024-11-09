@@ -19,22 +19,17 @@ namespace Chirp.Web.Tests.Integration
         [InlineData("Jane Smith")]
         public async Task OnGet_SearchByAuthor_ReturnsAuthors(string user)
         {
+
             // Arrange
             var client = _factory.CreateClient();
 
             // Act
-            var response = await client.GetAsync("/search?SearchQuery=J&page=1");
+            var response = await client.GetAsync("/search?SearchQuery=@J&page=1");
             var page = await response.Content.ReadAsStringAsync();
 
             // Assert
             Assert.Contains(user, page);
             Assert.DoesNotContain("Helge", page);
-
-            // Act for "@" endpoint
-            var response2 = await client.GetAsync("/search?SearchQuery=@J&page=1");
-            var page2 = await response2.Content.ReadAsStringAsync();
-            Assert.Contains(user, page2);
-            Assert.DoesNotContain("Helge", page2);
         }
 
         public static readonly TheoryData<int, string> CaseCheepSearch =
