@@ -68,8 +68,8 @@ namespace Chirp.Web.Tests.Integration
         public static readonly TheoryData<int, string> CaseCheepAndAuthorSearch =
         new()
         {
-            // { 0, "@Jane D" },
-            // { 1, "#I love my wife Jane" },
+            { 0, "@Jane D" },
+            { 1, "I love my wife Jane" },
             { 2, "I love my wife Jane Doe" },
             { 3, "I love my wife John Smith" },
         };
@@ -86,7 +86,7 @@ namespace Chirp.Web.Tests.Integration
             switch (index)
             {
                 case 0:
-                    Assert.Contains("John Doe", page);
+                    Assert.Contains("Jane Doe", page);
                     Assert.DoesNotContain("Jane Smith", page);
                     break;
                 case 1:
