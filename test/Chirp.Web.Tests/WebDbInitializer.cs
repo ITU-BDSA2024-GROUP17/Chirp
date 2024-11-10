@@ -3,7 +3,10 @@ using Chirp.Infrastructure;
 
 namespace Chirp.Web.Tests;
 
-public static class DbInitializer
+/// <summary>
+/// Test Database used for WebAppFactory tests
+/// </summary>
+public static class WebDbInitializer
 {
     public static void SeedDatabase(CheepDbContext cheepDbContext)
     {
