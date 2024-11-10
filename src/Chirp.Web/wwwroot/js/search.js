@@ -1,10 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
+    resetkeydownIndex();
+
     const searchInput = document.getElementById("navSearchInput");
     const navSearchOutputWrapper = document.getElementsByClassName(
         "navSearchOutputWrapper"
     );
 
     searchInput.addEventListener("focus", function () {
+        resetkeydownIndex();
+
         const navSearchOutputWrapper = document.getElementsByClassName(
             "navSearchOutputWrapper"
         );
@@ -17,6 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     searchInput.addEventListener("focusout", function () {
+        resetkeydownIndex();
+
         setTimeout(() => {
             const navSearchOutputWrapper = document.getElementsByClassName(
                 "navSearchOutputWrapper"
@@ -26,6 +32,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     searchInput.addEventListener("input", async function (event) {
+        resetkeydownIndex();
+
         const searchQuery = event.target.value;
         try {
             const response = await fetch(
@@ -55,6 +63,62 @@ document.addEventListener("DOMContentLoaded", function () {
             );
         }
     });
+    navSearchOutputWrapper[0].addEventListener("mouseover", function (event) {
+        listItems[currentLI].classList.remove("search-highlight");
+        resetkeydownIndex();
+    });
+
+    document.addEventListener("keydown", function (event) {
+        listItems = document.getElementsByClassName("cheep-wrapper-mini");
+        // Check for up/down key presses
+        switch (event.keyCode) {
+            case 38: // Up arrow
+                if (currentLI == 0 || currentLI == -1) {
+                    event.preventDefault();
+
+                    listItems[currentLI].classList.remove("search-highlight");
+                    currentLI = -1;
+                    break;
+                }
+                // Remove the highlighting from the previous element
+                listItems[currentLI].classList.remove("search-highlight");
+
+                currentLI = currentLI > 0 ? --currentLI : 0; // Decrease the counter
+                listItems[currentLI].classList.add("search-highlight"); // Highlight the new element
+                break;
+            case 40: // Down arrow
+                // Remove the highlighting from the previous element
+                if (currentLI == -1) {
+                    currentLI = 0;
+                    listItems[currentLI].classList.add("search-highlight"); // Highlight the new element
+                    break;
+                }
+                listItems[currentLI].classList.remove("search-highlight");
+
+                currentLI =
+                    currentLI < listItems.length - 1
+                        ? ++currentLI
+                        : listItems.length - 1; // Increase counter
+                listItems[currentLI].classList.add("search-highlight"); // Highlight the new element
+                break;
+            case 13: // Enter key
+                console.log(currentLI);
+                if (currentLI == -1) {
+                    const searchQuery = searchInput.value;
+                    window.location.href = `/search?SearchQuery=${encodeURIComponent(
+                        searchQuery
+                    )}`;
+                } else {
+                    window.location.href = `${listItems[currentLI].href}`;
+                }
+                break;
+        }
+    });
+
+    function resetkeydownIndex() {
+        currentLI = -1;
+        listItems = [];
+    }
 });
 
 function renderAuthorsInSeach(data) {
