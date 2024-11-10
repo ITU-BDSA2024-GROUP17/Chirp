@@ -37,7 +37,6 @@ namespace Chirp.Web.Tests.Integration
             using var scope = factory.Services.CreateScope();
             using var context = scope.ServiceProvider.GetService<CheepDbContext>() ?? throw new Exception("TestCheepDbContext not found!");
             DetachAllEntities(context);
-
             DbInitializer.SeedDatabase(context);
 
         }
