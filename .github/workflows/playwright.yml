@@ -10,21 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+    - uses: actions/setup-node@v4
       with:
-        dotnet-version: '8.0.x'
-
-    - name: Restore .NET dependencies
-      run: dotnet restore
-
+        node-version: lts/*
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
     - name: Install Playwright Browsers for .NET
       run: pwsh bin/Debug/net8.0/playwright.ps1 install
-
     - name: Run Playwright tests
-      run: dotnet test --filter "FullyQualifiedName~Playwright"
-
+      run: npx playwright test
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
