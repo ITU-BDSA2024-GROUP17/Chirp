@@ -21,6 +21,7 @@ public static class CheepEndpoints
                 {
                     Id = author.Id,
                     UserName = author.UserName ?? "",
+                    Avatar = author.Avatar,
                 });
             }
 
