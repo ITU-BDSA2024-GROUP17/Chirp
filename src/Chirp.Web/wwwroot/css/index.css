@@ -356,6 +356,11 @@ mini version of cheep wrapper
     font-weight: 400;
 }
 
+.cheep-wrapper-mini .avatar {
+    height: 20px;
+    width: 20px;
+}
+
 /*
 
 Interface
