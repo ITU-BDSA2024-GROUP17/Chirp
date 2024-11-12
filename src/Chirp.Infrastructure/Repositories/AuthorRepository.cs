@@ -64,6 +64,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
           .Where(a => a.UserName == author)
           .SelectMany(a => a.Cheeps)
           .Include(c => c.Author)
+          .Include(c => c.Likes)
           .OrderByDescending(c => c.TimeStamp)
           .Paginate(page)
           .ToList();

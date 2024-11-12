@@ -44,7 +44,16 @@ public class CheepService(ICheepRepository cheepRepo) : ICheepRepository
     /// <param name="cheep">The Cheep object to store.</param>
     public Task<Cheep> CreateCheep(Cheep cheep)
     {
-
         return _cheepRepo.CreateCheep(cheep);
+    }
+
+    public Task<Cheep> LikeCheep(int cheepId, string authorId)
+    {
+        return _cheepRepo.LikeCheep(cheepId, authorId);
+    }
+
+    public Task<Cheep> UnlikeCheep(int cheepId, string authorId)
+    {
+        return _cheepRepo.UnlikeCheep(cheepId, authorId);
     }
 }

@@ -13,6 +13,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     {
         var cheeps = _context.Cheeps
             .Include(c => c.Author)
+            .Include(c => c.Likes)
             .Select(c => c)
             .OrderByDescending(c => c.TimeStamp)
             .Paginate(page)
@@ -23,7 +24,10 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
 
     public Task<Cheep?> GetCheep(int id)
     {
-        var cheep = _context.Cheeps.Find(id);
+        var cheep = _context.Cheeps
+            .Include(c => c.Author)
+            .Include(c => c.Likes)
+            .FirstOrDefault(c => c.Id == id);
 
         return Task.FromResult(cheep);
     }
@@ -50,10 +54,38 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
 
     public Task<Cheep> UpdateCheep(Cheep newCheep)
     {
-        var cheep = _context.Cheeps.Find(newCheep.Id) ?? throw new InvalidDataException("Author does not exist!");
+        var cheep = _context.Cheeps.Find(newCheep.Id) ?? throw new InvalidDataException("Cheep does not exist!");
 
         cheep.Message = newCheep.Message;
         cheep.TimeStamp = newCheep.TimeStamp;
+
+        _context.SaveChanges();
+
+        return Task.FromResult(cheep);
+    }
+
+    public Task<Cheep> LikeCheep(int cheepId, string authorId)
+    {
+        var cheep = _context.Cheeps.Find(cheepId) ?? throw new InvalidDataException("Cheep does not exist!");
+        var author = _context.Authors.Find(authorId) ?? throw new InvalidDataException("Author does not exist!");
+
+        if (cheep.Likes.Contains(author)) throw new Exception("Cheep already liked!");
+
+        cheep.Likes.Add(author);
+
+        _context.SaveChanges();
+
+        return Task.FromResult(cheep);
+    }
+
+    public Task<Cheep> UnlikeCheep(int cheepId, string authorId)
+    {
+        var cheep = _context.Cheeps.Find(cheepId) ?? throw new InvalidDataException("Cheep does not exist!");
+        var author = _context.Authors.Find(authorId) ?? throw new InvalidDataException("Author does not exist!");
+
+        if (!cheep.Likes.Contains(author)) throw new Exception("Cheep not liked!");
+
+        cheep.Likes.Remove(author);
 
         _context.SaveChanges();
 

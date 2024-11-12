@@ -10,4 +10,6 @@ public interface ICheepRepository
     public Task<List<Cheep>> GetCheeps(int page);
     public Task<Cheep> UpdateCheep(Cheep cheep);
     public Task<List<Cheep>> SearchCheeps(string searchQuery, int page);
+    public Task<Cheep> LikeCheep(int cheepId, string authorId);
+    public Task<Cheep> UnlikeCheep(int cheepId, string authorId);
 }
