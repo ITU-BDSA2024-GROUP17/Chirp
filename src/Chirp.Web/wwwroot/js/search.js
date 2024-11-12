@@ -124,13 +124,25 @@ document.addEventListener("DOMContentLoaded", function () {
 function renderAuthorsInSeach(data) {
     data.forEach((user) => {
         let name = user.userName;
-
+        let avatar = user.avatar;
         const a = document.createElement("a");
         a.className = "cheep-wrapper-mini";
         a.href = `${name}`;
-        a.innerHTML = `
+        if (avatar == null) {
+            a.innerHTML = `
+                            <div class="cheep-avatar">
+                                ${name.charAt(0)}
+                            </div>
+                            <div class="cheep">
+                                <div class="cheep-user">
+                                    <div class="cheep-author">${name}</div>
+                                </div>
+                            </div>
+                        `;
+        } else {
+            a.innerHTML = `
                         <div class="cheep-avatar">
-                            ${name.charAt(0)}
+                            <img src="${avatar}" class="avatar"/>
                         </div>
                         <div class="cheep">
                             <div class="cheep-user">
@@ -138,6 +150,7 @@ function renderAuthorsInSeach(data) {
                             </div>
                         </div>
                     `;
+        }
         navSearchOutput.appendChild(a);
     });
 }
