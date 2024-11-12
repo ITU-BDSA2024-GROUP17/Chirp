@@ -162,16 +162,16 @@ Cheeps
 */
 
 .cheeps-container {
-    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
     padding: 0px;
-    margin-bottom: 10px;
     text-decoration: none;
 }
 
 .cheep-wrapper,
 .cheep-wrapper-mini {
     display: flex;
-    margin-bottom: 1rem;
     list-style-type: none;
 }
 
@@ -206,7 +206,6 @@ Cheeps
 .cheep {
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
 }
 
 .cheep-author {
