@@ -1,12 +1,12 @@
 using System.Net;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.TestHost;
-using Xunit;
 using AngleSharp;
 
 namespace Chirp.Web.Tests.Integration;
+
+/// <summary>
+/// General page endpoint tests and client load tests.
+/// </summary>
 public class PageSetupTests
     : IClassFixture<WebApplicationFactory<Program>>
 {
