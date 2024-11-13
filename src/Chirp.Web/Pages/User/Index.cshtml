@@ -8,6 +8,11 @@
     ViewData["Title"] = @routeName + "'s Timeline";
 }
 
+@if (User.Identity != null && User.Identity.IsAuthenticated && routeName?.ToString() == User.Identity.Name)
+{
+    @await Html.PartialAsync("_SendCheepPartial", Model)
+}
+
 <div>
     @if (Model.Cheeps.Any())
     {

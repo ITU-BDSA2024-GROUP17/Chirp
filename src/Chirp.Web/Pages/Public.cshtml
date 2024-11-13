@@ -9,87 +9,14 @@
 
 @if (User.Identity != null && User.Identity.IsAuthenticated)
 {
-    <div class="send-box">
-    <div class="cheep-avatar">
-        @if (User.Identity.Name != null)
-            {
-                var avatarUrl = User.FindFirst("Avatar")?.Value;
-                if (avatarUrl != null)
-                {
-                    <img src="@avatarUrl" class="avatar" />
-                }
-                else
-                {
-                    @User.Identity.Name?.First()
-                }
-            }
-        </div>
-        <form class="flex-grow-1 d-flex flex-row gap-2" id="cheepInputForm" asp-page-handler="Cheep" method="post"
-            defaultbutton="sendCheepButton">
-
-            <div class="text-box-container" oninput="auto_grow(this)">
-                <textarea type="text" asp-for="CheepMessage" class="text-box-cheep cheep-input" id="cheepMessage"
-                    placeholder="Whats on your mind?" autocomplete="off" oninput="auto_grow(this)"></textarea>
-                <span class="text-box-limit">
-                    0
-                </span>
-            </div>
-            <div class="d-flex justify-content-end">
-                <button class="btn btn-primary" id="sendCheepButton" type="submit">Cheep</button>
-            </div>
-
-
-        </form>
-    </div>
-
-    <hr />
+    @await Html.PartialAsync("_SendCheepPartial", Model)
 }
 
 <partial name="_CheepsPartial" model="@Model.Cheeps" />
 
 <partial name="_PaginationPartial" model="@(new Pagination()
     {
-    Current = Int32.Parse(Request.Query["page"].ToString()),
-    Pages=(int)Math.Ceiling(Model.TotalCheeps / 32.0)
-    })" />
-
-<script>
-    auto_grow(document.getElementById("cheepMessage"));
-
-    window.addEventListener("DOMContentLoaded", () => {
-        const textLengthLimit = 160;
-        const cheepInputFieldLimit = document.querySelector(".text-box-limit")
-        cheepInputFieldLimit.innerHTML = "0 / " + textLengthLimit; // init length
-
-
-        const cheepInputField = document.querySelector("#cheepMessage");
-        ['keyup', 'change'].forEach((type) => {
-            cheepInputField.addEventListener(type, (event) => {
-                const inputFieldValue = document.getElementById("cheepMessage").value;
-                cheepInputFieldLimit.innerHTML = inputFieldValue.length + " / " + textLengthLimit;
-                if (inputFieldValue.length > textLengthLimit) {
-                    cheepInputFieldLimit.style.color = "red"
-                    document.getElementById("cheepMessage").style.color = "red";
-                } else {
-                    document.getElementById("cheepMessage").style.color = "black";
-                    cheepInputFieldLimit.style.color = "var(--gray-600)"
-                }
-            })
-        })
-    })
-
-    const textA = document.getElementById("cheepMessage");
-    textA.addEventListener("keypress", event => {
-        if (!event.shiftKey && event.key == "Enter") {
-            event.preventDefault();
-            document.getElementById("cheepInputForm").submit();
-        }
-    });
-
-
-    function auto_grow(element) {
-        element.style.height = "5px";
-        element.style.height = (element.scrollHeight - 5) + "px";
+        Current = Int32.Parse(Request.Query["page"].ToString()),
+        Pages=(int)Math.Ceiling(Model.TotalCheeps / 32.0)
     }
-
-</script>
+)" />
