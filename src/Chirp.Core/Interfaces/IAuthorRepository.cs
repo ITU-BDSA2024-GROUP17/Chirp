@@ -10,5 +10,6 @@ public interface IAuthorRepository
     public Task<List<Author>> GetAuthors(int page);
     public Task<Author> GetAuthorByField(string author, Func<Author, string> field);
     public Task<List<Cheep>> GetCheeps(string author, int page);
+    public Task<int> CountCheeps(string author);
     public Task<List<Author>> SearchAuthors(string searchQuery, int page);
 }

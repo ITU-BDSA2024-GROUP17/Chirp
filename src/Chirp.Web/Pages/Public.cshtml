@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Chirp.Web.Models
 @model Chirp.Web.Pages.PublicModel
 @{
     Layout = "Shared/_Layout";
@@ -9,8 +10,8 @@
 @if (User.Identity != null && User.Identity.IsAuthenticated)
 {
     <div class="send-box">
-        <div class="cheep-avatar">
-            @if (User.Identity.Name != null)
+    <div class="cheep-avatar">
+        @if (User.Identity.Name != null)
             {
                 var avatarUrl = User.FindFirst("Avatar")?.Value;
                 if (avatarUrl != null)
@@ -40,11 +41,19 @@
 
         </form>
     </div>
+
+    <hr />
 }
 
-<hr />
 
 @await Html.PartialAsync("_CheepsPartial", Model.Cheeps)
+
+@await Html.PartialAsync("_PaginationPartial", new Pagination()
+{
+    Current =
+Int32.Parse(Request.Query["page"].ToString()),
+    Pages = (int)Math.Ceiling(Model.TotalCheeps / 32.0)
+})
 
 <script>
 

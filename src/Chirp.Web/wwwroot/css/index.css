@@ -95,6 +95,10 @@ header {
     max-width: 72rem;
 }
 
+.container {
+    padding-top: 1rem;
+}
+
 .line {
     border-bottom: 1px solid var(--gray-300);
 }
@@ -184,7 +188,7 @@ Cheeps
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    padding: 0px;
+    padding: 0;
     text-decoration: none;
 }
 

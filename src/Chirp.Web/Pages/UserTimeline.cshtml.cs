@@ -10,15 +10,18 @@ public class UserTimelineModel(AuthorService authorService, CheepService cheepSe
 {
     private readonly AuthorService _authorService = authorService;
     private readonly CheepService _cheepService = cheepService;
-    public IEnumerable<Cheep> Cheeps { get; set; } = [];
 
-    public async Task<IActionResult> OnGet(string author, [FromQuery] int page = 1)
+    public IEnumerable<Cheep> Cheeps { get; set; } = [];
+    public int TotalCheeps { get; set; }
+
+    public async Task<IActionResult> OnGet(string author, [FromQuery] int page)
     {
         if (page < 1)
         {
             return Redirect($"/{author}?page=1");
         }
         Cheeps = await _authorService.GetCheeps(author, page);
+        TotalCheeps = await _authorService.CountCheeps(author);
         return Page();
     }
 
@@ -39,5 +42,10 @@ public class UserTimelineModel(AuthorService authorService, CheepService cheepSe
         }
 
         return LocalRedirect(Request.Path.ToString());
+    }
+
+    public IActionResult OnPostPaginationAsync(int newPage)
+    {
+        return Redirect($"{Request.Path}?page={newPage}");
     }
 }

@@ -22,6 +22,13 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
         return cheeps;
     }
 
+    public Task<int> CountCheeps()
+    {
+        var cheeps = _context.Cheeps.CountAsync();
+
+        return cheeps;
+    }
+
     public Task<Cheep?> GetCheep(int id)
     {
         var cheep = _context.Cheeps
