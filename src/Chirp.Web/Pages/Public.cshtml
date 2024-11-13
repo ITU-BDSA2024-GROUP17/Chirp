@@ -26,13 +26,19 @@
         </div>
         <form class="flex-grow-1 d-flex flex-row gap-2" id="cheepInputForm" asp-page-handler="Cheep" method="post"
             defaultbutton="sendCheepButton">
-            <textarea type="text" asp-for="CheepMessage" id="cheepMessage" class="text-box cheep-input"
-                placeholder="Whats on your mind?" autocomplete="off" style="resize: none; overflow: hidden;"
-                oninput="auto_grow(this)"> </textarea>
 
+            <div class="text-box-container" oninput="auto_grow(this)">
+                <textarea type="text" asp-for="CheepMessage" class="text-box-cheep cheep-input" id="cheepMessage"
+                    placeholder="Whats on your mind?" autocomplete="off" oninput="auto_grow(this)"></textarea>
+                <span class="text-box-limit">
+                    0
+                </span>
+            </div>
             <div class="d-flex justify-content-end">
                 <button class="btn btn-primary" id="sendCheepButton" type="submit">Cheep</button>
             </div>
+
+
         </form>
     </div>
 
@@ -54,14 +60,22 @@ Int32.Parse(Request.Query["page"].ToString()),
     auto_grow(document.getElementById("cheepMessage"));
 
     window.addEventListener("DOMContentLoaded", () => {
+        const textLengthLimit = 160;
+        const cheepInputFieldLimit = document.querySelector(".text-box-limit")
+        cheepInputFieldLimit.innerHTML = "0 / " + textLengthLimit; // init length
+
+
         const cheepInputField = document.querySelector("#cheepMessage");
         ['keyup', 'change'].forEach((type) => {
             cheepInputField.addEventListener(type, (event) => {
                 const inputFieldValue = document.getElementById("cheepMessage").value;
-                if (inputFieldValue.length > 160) {
+                cheepInputFieldLimit.innerHTML = inputFieldValue.length + " / " + textLengthLimit;
+                if (inputFieldValue.length > textLengthLimit) {
+                    cheepInputFieldLimit.style.color = "red"
                     document.getElementById("cheepMessage").style.color = "red";
                 } else {
                     document.getElementById("cheepMessage").style.color = "black";
+                    cheepInputFieldLimit.style.color = "var(--gray-600)"
                 }
             })
         })
@@ -78,7 +92,7 @@ Int32.Parse(Request.Query["page"].ToString()),
 
     function auto_grow(element) {
         element.style.height = "5px";
-        element.style.height = (element.scrollHeight) + "px";
+        element.style.height = (element.scrollHeight - 5) + "px";
     }
 
 </script>

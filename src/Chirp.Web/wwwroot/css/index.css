@@ -117,12 +117,31 @@ header {
     width: 32rem;
 }
 
-.text-box {
+.text-box-container {
+    position: relative;
+    width: 100%;
+}
+.text-box,
+.text-box-cheep {
     width: -webkit-fill-available;
     width: -moz-available;
     padding: 10px;
     border: 1px solid black;
     border-radius: 0.25em;
+    height: 100%;
+    overflow: hidden;
+    resize: none;
+}
+.text-box-cheep {
+    padding: 10px 10px 20px 10px !important;
+}
+.text-box-limit {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-size: 12px;
+    color: var(--gray-600);
+    margin: 0px 10px 9px 4px;
 }
 
 .nav-wrapper {
@@ -176,6 +195,8 @@ Cheeps
 .cheep-wrapper,
 .cheep-wrapper-mini {
     display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
     list-style-type: none;
 }
 
@@ -310,7 +331,7 @@ mini version of cheep wrapper
 }
 
 .cheep-wrapper-mini:hover {
-    background-color: var(--gray-100);
+    background-color: var(--gray-200);
 }
 
 .cheep-wrapper-mini .cheep-avatar {
@@ -394,4 +415,8 @@ Interface
 .form-control:focus,
 .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+.search-highlight {
+    background-color: var(--gray-200);
 }

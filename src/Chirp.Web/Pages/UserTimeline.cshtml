@@ -6,8 +6,6 @@
     var routeName = HttpContext.GetRouteValue("author");
     ViewData["Title"] = @routeName + "'s Timeline";
 }
-
-<link href="/css/pages/userTimeline.css" rel="stylesheet" type="text/css" />
 <div>
     @if (Model.Cheeps.Any())
     {
