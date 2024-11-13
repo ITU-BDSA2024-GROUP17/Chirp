@@ -63,6 +63,11 @@ public class AuthorService(IAuthorRepository authorRepo) : IAuthorRepository
         return _authorRepo.GetCheeps(author, page);
     }
 
+    public Task<int> CountCheeps(string author)
+    {
+        return _authorRepo.CountCheeps(author);
+    }
+
     /// <summary>
     /// Creates a new Author.
     /// </summary>

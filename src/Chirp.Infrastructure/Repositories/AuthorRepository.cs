@@ -72,6 +72,13 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         return Task.FromResult(cheeps);
     }
 
+    public Task<int> CountCheeps(string author)
+    {
+        var cheeps = _context.Authors.Where(a => a.UserName == author).SelectMany(a => a.Cheeps).CountAsync();
+
+        return cheeps;
+    }
+
     public Task<Author> GetAuthorByField(string author, Func<Author, string> field)
     {
         var FoundAuthor = _context.Authors

@@ -27,6 +27,11 @@ public class CheepService(ICheepRepository cheepRepo) : ICheepRepository
         return _cheepRepo.GetCheeps(page);
     }
 
+    public Task<int> CountCheeps()
+    {
+        return _cheepRepo.CountCheeps();
+    }
+
     /// <summary>
     /// Searches for Cheeps based on a search query and retrieves a paginated list of results.
     /// </summary>
