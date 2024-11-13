@@ -231,6 +231,7 @@ Cheeps
 .cheep {
     align-items: center;
     justify-content: space-between;
+    word-break: break-word;
 }
 
 .cheep-author {
