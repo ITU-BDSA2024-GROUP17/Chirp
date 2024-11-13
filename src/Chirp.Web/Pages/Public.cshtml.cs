@@ -35,13 +35,13 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
 
         try
         {
-
             Cheep cheep = new()
             {
                 AuthorId = UserId,
                 Message = CheepMessage,
                 TimeStamp = DateTime.Now,
                 Author = author,
+                Likes = []
             };
 
             await _cheepService.CreateCheep(cheep);
@@ -53,5 +53,24 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         {
             return LocalRedirect(Url.Content("~/"));
         }
+    }
+
+    public async Task<IActionResult> OnPostLikeAsync(int cheepId)
+    {
+        var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found!");
+
+        var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
+        var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
+
+        if (cheep.Likes.Contains(author))
+        {
+            await _cheepService.UnlikeCheep(cheepId, UserId);
+        }
+        else
+        {
+            await _cheepService.LikeCheep(cheepId, UserId);
+        }
+
+        return LocalRedirect(Url.Content("~/"));
     }
 }

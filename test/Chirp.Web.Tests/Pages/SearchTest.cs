@@ -1,73 +1,108 @@
-// test/Chirp.Web.Tests/Pages/SearchIntegrationTests.cs
-using Chirp.Core.Entities;
+namespace Chirp.Web.Tests.Integration;
 
-using Chirp.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
-using Moq;
-using Chirp.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Chirp.Web.Tests.Integration
+public class SearchIntegrationTests : IClassFixture<CustomWebApplicationFactory<Program>>
 {
-    public class SearchIntegrationTests : IClassFixture<CustomWebApplicationFactory<Program>>
+    private readonly CustomWebApplicationFactory<Program> _factory;
+
+    public SearchIntegrationTests(CustomWebApplicationFactory<Program> factory)
     {
-        private readonly CustomWebApplicationFactory<Program> _factory;
+        CustomWebApplicationFactory<Program>.TestSeedDatabase(factory);
+        _factory = factory;
+    }
 
-        public SearchIntegrationTests(CustomWebApplicationFactory<Program> factory)
+
+    [Theory]
+    [InlineData("John Doe")]
+    [InlineData("John Smith")]
+    [InlineData("Jane Doe")]
+    [InlineData("Jane Smith")]
+    public async Task OnGet_SearchByAuthor_ReturnsAuthors(string user)
+    {
+
+        // Arrange
+        var client = _factory.CreateClient();
+
+        // Act
+        var response = await client.GetAsync("/search?SearchQuery=@J&page=1");
+        var page = await response.Content.ReadAsStringAsync();
+
+        // Assert
+        Assert.Contains(user, page);
+        Assert.DoesNotContain("Helge", page);
+    }
+
+    public static readonly TheoryData<int, string> CaseCheepSearch =
+    new()
+    {
+            { 0, "I love my" },
+            { 1, "I love my wife" },
+            { 2, "I love my wife Jane Doe" },
+    };
+    [Theory, MemberData(nameof(CaseCheepSearch))]
+    public async Task OnGet_SearchByCheep_ReturnsCheeps(int index, string cheep)
+    {
+        // Arrange
+        var client = _factory.CreateClient();
+
+        // Act
+        var response = await client.GetAsync($"/search?SearchQuery={cheep}&page=1");
+        var page = await response.Content.ReadAsStringAsync();
+
+        // Assert
+        switch (index)
         {
-            CustomWebApplicationFactory<Program>.TestSeedDatabase(factory);
-            _factory = factory;
+            case 0:
+            case 1:
+                Assert.Contains("Jane Doe", page);
+                Assert.Contains("Jane Smith", page);
+                break;
+            case 2:
+                Assert.Contains("I love my wife Jane Doe", page);
+                Assert.DoesNotContain("I love my wife John Doe", page);
+                break;
+
         }
+    }
 
+    public static readonly TheoryData<int, string> CaseCheepAndAuthorSearch =
+    new()
+    {
+            { 0, "@Jane D" },
+            { 1, "I love my wife Jane" },
+            { 2, "I love my wife Jane Doe" },
+            { 3, "I love my wife John Smith" },
+    };
+    [Theory, MemberData(nameof(CaseCheepAndAuthorSearch))]
+    public async Task OnGet_SearchByAuthorAndCheep_ReturnsResults(int index, string query)
+    {
+        // Arrange
+        var client = _factory.CreateClient();
 
-        [Fact]
-        public async Task OnGet_SearchByAuthor_ReturnsAuthors()
+        // Act
+        var response = await client.GetAsync($"/search?SearchQuery={query}&page=1");
+        var page = await response.Content.ReadAsStringAsync();
+
+        switch (index)
         {
-            // Arrange
-            var client = _factory.CreateClient();
-
-            // Act
-            var response = await client.GetAsync("/search?SearchQuery=J&page=1");
-            var page = await response.Content.ReadAsStringAsync();
-
-            // Assert
-            Assert.Contains("John Smith", page);
+            case 0:
+                Assert.Contains("Jane Doe", page);
+                Assert.DoesNotContain("Jane Smith", page);
+                break;
+            case 1:
+                Assert.Contains("I love my wife Jane Doe", page);
+                Assert.Contains("I love my wife Jane Smith", page);
+                Assert.DoesNotContain("I love my husband John Doe", page);
+                break;
+            case 2:
+                Assert.Contains("I love my wife Jane Doe", page);
+                Assert.DoesNotContain("I love my wife John Doe", page);
+                Assert.DoesNotContain("I love my wife John Smith", page);
+                break;
+            case 3:
+                Assert.Contains("I love my wife John Smith", page);
+                Assert.DoesNotContain("I love my wife Jane Doe", page);
+                Assert.DoesNotContain("I love my wife John Doe", page);
+                break;
         }
-
-        // [Fact]
-        // public async Task OnGet_SearchByCheep_ReturnsCheeps()
-        // {
-        //     // Arrange
-        //     var mockAuthor = new Author { UserName = "TestAuthor" };
-        //     var mockCheep = new Cheep { AuthorId = "1", Author = mockAuthor, Message = "TestCheep", TimeStamp = new DateTime(1970, 1, 1) };
-        //     _factory.MockCheepRepository.Setup(s => s.SearchCheeps("TestCheep", 1)).ReturnsAsync(new List<Cheep> { mockCheep });
-
-        //     var client = _factory.CreateClient();
-
-        //     // Act
-        //     await client.GetAsync("/search?SearchQuery=TestCheep&page=1");
-
-        //     // Assert
-        //     _factory.MockCheepRepository.Verify(v => v.SearchCheeps("TestCheep", 1), Times.Once);
-        //     _factory.MockCheepRepository.Verify(v => v.SearchCheeps("TestCheep", 2), Times.Never);
-        // }
-
-        // [Fact]
-        // public async Task OnGet_SearchByAuthorAndCheep_ReturnsResults()
-        // {
-        //     // Arrange
-        //     var mockAuthor = new Author { UserName = "TestAuthor" };
-        //     var mockCheep = new Cheep { AuthorId = "1", Author = mockAuthor, Message = "TestCheep", TimeStamp = new DateTime(1970, 1, 1) };
-        //     _factory.MockAuthorRepository.Setup(s => s.SearchAuthors("TestAuthor", 1)).ReturnsAsync(new List<Author> { mockAuthor });
-        //     _factory.MockCheepRepository.Setup(s => s.SearchCheeps("TestCheep", 1)).ReturnsAsync(new List<Cheep> { mockCheep });
-        //     var client = _factory.CreateClient();
-
-        //     // Act
-        //     await client.GetAsync("/search?SearchQuery=TestAuthor&page=1");
-
-        //     // Assert
-        //     _factory.MockAuthorRepository.Verify(v => v.SearchAuthors("TestAuthor", 1), Times.Once);
-        //     // _factory.MockCheepRepository.Verify(v => v.SearchCheeps("TestCheep", 1), Times.Once);
-        // }
     }
 }
