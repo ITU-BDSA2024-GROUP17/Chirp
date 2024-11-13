@@ -14,6 +14,9 @@ public class UserTimelineModel(AuthorService authorService, CheepService cheepSe
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
     public int TotalCheeps { get; set; }
 
+    [BindProperty]
+    public string CheepMessage { get; set; } = "";
+
     public async Task<IActionResult> OnGet(string author, [FromQuery] int page)
     {
         if (page < 1)
@@ -47,5 +50,34 @@ public class UserTimelineModel(AuthorService authorService, CheepService cheepSe
     public IActionResult OnPostPaginationAsync(int newPage)
     {
         return Redirect($"{Request.Path}?page={newPage}");
+    }
+
+    public async Task<IActionResult> OnPostCheepAsync(string returnUrl)
+    {
+        if (User.Identity == null || !User.Identity.IsAuthenticated) throw new UnauthorizedAccessException("User is not logged in!");
+
+        var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
+        var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
+
+        try
+        {
+            Cheep cheep = new()
+            {
+                AuthorId = UserId,
+                Message = CheepMessage,
+                TimeStamp = DateTime.Now,
+                Author = author,
+                Likes = []
+            };
+
+            await _cheepService.CreateCheep(cheep);
+
+            // Reload page
+            return LocalRedirect(Url.Content($"~/{author}"));
+        }
+        catch (InvalidDataException)
+        {
+            return LocalRedirect(Url.Content($"~/{author}"));
+        }
     }
 }
