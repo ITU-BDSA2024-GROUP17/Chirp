@@ -10,8 +10,6 @@
 
 @if (Model.Author != null)
 {
-
-
     <div style="display: flex; flex-direction: column; gap: 1.5rem">
     <div class="avatar" style="width: 120px; height: 120px;">
         @if (Model.Author?.Avatar != null)
@@ -26,8 +24,13 @@
             }
         </div>
 
-        <div>
+        <div class="d-flex flex-column gap-2">
             <p class="profileName">@Model.Author?.UserName</p>
+
+            <div class="d-flex gap-4">
+                <p><span class="fw-bold">@Model.Following.Count</span> Following</p>
+                <p><span class="fw-bold">@Model.Followers.Count</span> Followers</p>
+            </div>
         </div>
 
         <div>
@@ -56,6 +59,7 @@ else
 <style>
     .profileName {
         font-size: large;
-        margin: 0
+        margin: 0;
+        font-weight: bold;
     }
 </style>

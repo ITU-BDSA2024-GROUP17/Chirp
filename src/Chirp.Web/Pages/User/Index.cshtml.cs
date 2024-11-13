@@ -14,6 +14,8 @@ public class UserModel(AuthorService authorService, CheepService cheepService) :
     private readonly CheepService _cheepService = cheepService;
 
     public Author? Author { get; set; }
+    public ICollection<Author> Following { get; set; } = [];
+    public ICollection<Author> Followers { get; set; } = [];
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
     public int TotalCheeps { get; set; }
     public int TotalLikedCheeps { get; set; }
@@ -29,9 +31,26 @@ public class UserModel(AuthorService authorService, CheepService cheepService) :
         }
 
         Author = await _authorService.GetAuthorByName(author);
-        Cheeps = await _authorService.GetCheeps(author, page);
-        TotalCheeps = await _authorService.GetCheepsCount(author);
-        TotalLikedCheeps = await _authorService.GetLikedCount(author);
+
+        if (Author != null)
+        {
+            if (Author.UserName == author)
+            {
+                Cheeps = await _authorService.GetCheepsTimeline(author, page);
+                TotalCheeps = await _authorService.GetCheepsTimelineCount(author);
+            }
+            else
+            {
+                Cheeps = await _authorService.GetCheeps(author, page);
+                TotalCheeps = await _authorService.GetCheepsCount(author);
+            }
+
+            TotalLikedCheeps = await _authorService.GetLikedCount(author);
+
+            Following = await _authorService.GetFollowing(Author.Id);
+            Followers = await _authorService.GetFollowers(Author.Id);
+        }
+
         return Page();
     }
 
