@@ -7,9 +7,10 @@
 
         <ul class="pagination justify-content-center">
             <li class="page-item @(Model.Current == 1 ? "disabled" : "")">
-                <a class="page-link" href="#" aria-label="Previous">
+                <button class="page-link" type="submit" asp-page-handler="pagination"
+                    asp-route-newPage="@(Model.Current - 1)">
                     <span aria-hidden="true">&laquo;</span>
-                </a>
+                </button>
             </li>
             @for (var i = 3; i >= 1; i--)
             {
@@ -39,10 +40,11 @@
                     </li>
                 }
             }
-            <li class="page-item">
-                <a class="page-link @(Model.Current == Model.Pages ? "disabled" : "")" href="#" aria-label="Next">
+            <li class="page-item @(Model.Current == Model.Pages ? "disabled" : "")">
+                <button class="page-link" type="submit" asp-page-handler="pagination"
+                    asp-route-newPage="@(Model.Current + 1)">
                     <span aria-hidden="true">&raquo;</span>
-                </a>
+                </button>
             </li>
         </ul>
     </form>
