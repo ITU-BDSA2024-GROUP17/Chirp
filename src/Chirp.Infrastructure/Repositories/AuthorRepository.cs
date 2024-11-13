@@ -72,9 +72,30 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         return Task.FromResult(cheeps);
     }
 
-    public Task<int> CountCheeps(string author)
+    public Task<int> GetCheepsCount(string author)
     {
         var cheeps = _context.Authors.Where(a => a.UserName == author).SelectMany(a => a.Cheeps).CountAsync();
+
+        return cheeps;
+    }
+
+    public Task<List<Cheep>> GetLiked(string author, int page)
+    {
+        var cheeps = _context.Authors
+          .Where(a => a.UserName == author)
+          .SelectMany(a => a.LikedCheeps)
+          .Include(c => c.Author)
+          .Include(c => c.Likes)
+          .OrderByDescending(c => c.TimeStamp)
+          .Paginate(page)
+          .ToList();
+
+        return Task.FromResult(cheeps);
+    }
+
+    public Task<int> GetLikedCount(string author)
+    {
+        var cheeps = _context.Authors.Where(a => a.UserName == author).SelectMany(a => a.LikedCheeps).CountAsync();
 
         return cheeps;
     }

@@ -1,0 +1,61 @@
+@{
+    Layout = "../Shared/_Layout";
+
+    Func<string, string> IsActive = (string page) =>
+    {
+        var currentPage = ViewContext.RouteData.Values["page"] as string;
+        return currentPage == page ? "btn-primary" : "btn-secondary";
+    };
+}
+
+@if (Model.Author != null)
+{
+
+
+    <div style="display: flex; flex-direction: column; gap: 1.5rem">
+    <div class="avatar" style="width: 120px; height: 120px;">
+        @if (Model.Author?.Avatar != null)
+            {
+                <img src="@Model.Author.Avatar" style="width: 120px; height: 120px;" />
+            }
+            else
+            {
+                <p style="margin: 0; font-size: 2rem">
+                    @Model.Author?.UserName[0]
+                </p>
+            }
+        </div>
+
+        <div>
+            <p class="profileName">@Model.Author?.UserName</p>
+        </div>
+
+        <div>
+            <a type="button" class="btn @IsActive("/User/Index")" href="/@Model.Author?.UserName">
+                Cheeps <span class="badge text-bg-secondary">@Model.TotalCheeps</span>
+            </a>
+            <a type="button" class="btn @IsActive("/User/Likes")" href="/@Model.Author?.UserName/likes">
+                Likes <span class="badge text-bg-secondary">@Model.TotalLikedCheeps</span>
+            </a>
+        </div>
+    </div>
+
+    <hr />
+
+    @RenderBody()
+}
+else
+{
+    <p>That user does not exist!</p>
+    IgnoreBody();
+}
+
+
+@await RenderSectionAsync("Scripts", required: false)
+
+<style>
+    .profileName {
+        font-size: large;
+        margin: 0
+    }
+</style>

@@ -4,16 +4,19 @@ using Chirp.Core.Entities;
 using Chirp.Infrastructure.Services;
 using System.Security.Claims;
 using Chirp.Core.Interfaces;
+using Chirp.Web.Interfaces.Pages;
 
-namespace Chirp.Web.Pages;
+namespace Chirp.Web.Pages.User;
 
-public class UserTimelineModel(AuthorService authorService, CheepService cheepService) : PageModel, ICheepModel
+public class UserModel(AuthorService authorService, CheepService cheepService) : PageModel, IUserPage, ICheepModel
 {
     private readonly AuthorService _authorService = authorService;
     private readonly CheepService _cheepService = cheepService;
 
+    public Author? Author { get; set; }
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
     public int TotalCheeps { get; set; }
+    public int TotalLikedCheeps { get; set; }
 
     [BindProperty]
     public string CheepMessage { get; set; } = "";
@@ -24,8 +27,11 @@ public class UserTimelineModel(AuthorService authorService, CheepService cheepSe
         {
             return Redirect($"/{author}?page=1");
         }
+
+        Author = await _authorService.GetAuthorByName(author);
         Cheeps = await _authorService.GetCheeps(author, page);
-        TotalCheeps = await _authorService.CountCheeps(author);
+        TotalCheeps = await _authorService.GetCheepsCount(author);
+        TotalLikedCheeps = await _authorService.GetLikedCount(author);
         return Page();
     }
 
