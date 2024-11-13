@@ -1,5 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
 
+@{
+    var avatarUrl = User.FindFirst("Avatar")?.Value;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,21 +30,22 @@
             </div>
         </div>
 
-        </div>
         @if (User.Identity != null && User.Identity.IsAuthenticated)
         {
-            var avatarUrl = User.FindFirst("Avatar")?.Value;
-            if (avatarUrl != null)
-            {
-                <a class="btn" href="/Identity/Account/Logout">
-                    <img class="avatar" src="@avatarUrl" />
-                    @User.Identity.Name
-                </a>
-            }
-            else
-            {
-                <a class="btn" href="/Identity/Account/Logout">@User.Identity.Name</a>
-            }
+            <div class="dropdown">
+                <div role="button" data-bs-toggle="dropdown">
+                    @if (avatarUrl != null)
+                    {
+                        <img class="avatar" src="@avatarUrl" />
+                    }
+                    @User.Identity?.Name
+                </div>
+
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/@User.Identity?.Name">Profile</a></li>
+                    <li><a class="dropdown-item" href="/Identity/Account/Logout">Logout</a></li>
+                </ul>
+            </div>
         }
         else
         {

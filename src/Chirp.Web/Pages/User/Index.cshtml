@@ -1,11 +1,13 @@
 @page "/{author}"
 @using Chirp.Web.Models
-@model Chirp.Web.Pages.UserTimelineModel
+
+@model Chirp.Web.Pages.User.UserModel
+
 @{
-    Layout = "Shared/_Layout";
     var routeName = HttpContext.GetRouteValue("author");
     ViewData["Title"] = @routeName + "'s Timeline";
 }
+
 <div>
     @if (Model.Cheeps.Any())
     {
