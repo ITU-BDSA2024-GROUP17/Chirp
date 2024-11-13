@@ -66,10 +66,14 @@
                                 </button>
                             }
                         </form>
-                        <form asp-page-handler="Delete" method="post" asp-route-cheepId="@cheep.Id">
-                            <button class="btn">
-                                Delete
-                            </button>
+                        <form asp-page-handler="Delete" method="post" asp-route-UserAuth="@userId"
+                            asp-route-cheepId="@cheep.Id">
+                            @if (User.Identity != null && User.Identity.IsAuthenticated && cheep.AuthorId.Equals(userId))
+                            {
+                                <button class="btn">
+                                    Delete
+                                </button>
+                            }
                         </form>
                     </div>
                 </div>

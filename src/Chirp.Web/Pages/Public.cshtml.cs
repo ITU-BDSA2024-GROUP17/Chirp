@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Core.Entities;
 using Chirp.Infrastructure.Services;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Web.Pages;
 
@@ -57,12 +58,19 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         }
     }
 
-    public async Task<IActionResult> OnPostDeleteAsync(int cheepId)
+    public async Task<IActionResult> OnPostDeleteAsync(string UserAuth, int cheepId)
     {
         var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found for delete!");
-        await _cheepService.DeleteCheep(cheep.Id);
+        if (cheep.AuthorId.Equals(UserAuth))
+        {
+            await _cheepService.DeleteCheep(cheep.Id);
+            return LocalRedirect("~/");
+        }
+        else
+        {
+            throw new Exception("User can't delete this cheep");
+        }
 
-        return LocalRedirect("~/");
     }
 
     public async Task<IActionResult> OnPostLikeAsync(int cheepId)
