@@ -11,6 +11,7 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
     private readonly AuthorService _authorService = authorService;
     private readonly CheepService _cheepService = cheepService;
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
+    public int TotalCheeps { get; set; }
 
     [BindProperty]
     public string CheepMessage { get; set; } = "";
@@ -23,6 +24,7 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
             return Redirect("/?page=1");
         }
         Cheeps = await _cheepService.GetCheeps(page);
+        TotalCheeps = await _cheepService.CountCheeps();
         return Page();
     }
 
@@ -72,5 +74,10 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         }
 
         return LocalRedirect(Url.Content("~/"));
+    }
+
+    public IActionResult OnPostPaginationAsync(int newPage)
+    {
+        return LocalRedirect(Url.Content($"~/?page={newPage}"));
     }
 }
