@@ -13,8 +13,8 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     {
         var cheeps = _context.Cheeps
             .Include(c => c.Author)
+            .ThenInclude(a => a.Followers)
             .Include(c => c.Likes)
-            .Select(c => c)
             .OrderByDescending(c => c.TimeStamp)
             .Paginate(page)
             .ToListAsync();
