@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Core.Entities;
 using Chirp.Infrastructure.Services;
 using System.Security.Claims;
+using Chirp.Web.Interfaces.Pages;
 
 namespace Chirp.Web.Pages.User;
 
-public class UserLikesModel(AuthorService authorService, CheepService cheepService) : PageModel
+public class UserLikesModel(AuthorService authorService, CheepService cheepService) : PageModel, IUserPage
 {
     private readonly AuthorService _authorService = authorService;
     private readonly CheepService _cheepService = cheepService;
