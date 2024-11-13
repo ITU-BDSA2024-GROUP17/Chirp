@@ -66,6 +66,11 @@
                                 </button>
                             }
                         </form>
+                        <form asp-page-handler="Delete" method="post" asp-route-cheepId="@cheep.Id">
+                            <button class="btn">
+                                Delete
+                            </button>
+                        </form>
                     </div>
                 </div>
             </li>
