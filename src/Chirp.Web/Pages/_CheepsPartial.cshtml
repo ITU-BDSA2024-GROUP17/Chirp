@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     @cheep.Message
-                    <div style="margin-top: .5rem;">
+                    <div style="margin-top: .5rem; display: flex; gap: 0.5em;">
                         <form asp-page-handler="Like" method="post" asp-route-cheepId="@cheep.Id">
                             @if (User.Identity != null && User.Identity.IsAuthenticated)
                             {
@@ -63,6 +63,16 @@
                                     style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
                                     type="submit" disabled>
                                     Like <span class="badge text-bg-secondary">@cheep.Likes.Count</span>
+                                </button>
+                            }
+                        </form>
+                        <form asp-page-handler="Delete" method="post" asp-route-UserAuth="@userId"
+                            asp-route-cheepId="@cheep.Id">
+                            @if (User.Identity != null && User.Identity.IsAuthenticated && cheep.AuthorId.Equals(userId))
+                            {
+                                <button class="btn btn-secondary" type="submit"
+                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                    Delete
                                 </button>
                             }
                         </form>

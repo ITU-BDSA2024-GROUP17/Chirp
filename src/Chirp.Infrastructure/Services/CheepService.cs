@@ -61,4 +61,9 @@ public class CheepService(ICheepRepository cheepRepo) : ICheepRepository
     {
         return _cheepRepo.UnlikeCheep(cheepId, authorId);
     }
+
+    public Task DeleteCheep(int cheepId)
+    {
+        return _cheepRepo.DeleteCheep(cheepId);
+    }
 }

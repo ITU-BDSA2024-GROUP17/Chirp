@@ -98,4 +98,12 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
 
         return Task.FromResult(cheep);
     }
+
+    public Task DeleteCheep(int cheepId)
+    {
+        var cheepToDelete = _context.Cheeps.Find(cheepId) ?? throw new Exception("Cheep not found for delete");
+        _context.Cheeps.Remove(cheepToDelete);
+
+        return Task.FromResult(_context.SaveChangesAsync());
+    }
 }

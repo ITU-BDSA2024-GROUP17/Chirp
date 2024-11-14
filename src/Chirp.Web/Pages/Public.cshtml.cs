@@ -58,9 +58,24 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         }
     }
 
+    public async Task<IActionResult> OnPostDeleteAsync(string UserAuth, int cheepId)
+    {
+        var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found for delete!");
+        if (cheep.AuthorId.Equals(UserAuth))
+        {
+            await _cheepService.DeleteCheep(cheep.Id);
+            return LocalRedirect("~/");
+        }
+        else
+        {
+            throw new Exception("User can't delete this cheep");
+        }
+
+    }
+
     public async Task<IActionResult> OnPostLikeAsync(int cheepId)
     {
-        var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found!");
+        var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found for like!");
 
         var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
         var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
