@@ -34,7 +34,7 @@ public class UserModel(AuthorService authorService, CheepService cheepService) :
 
         if (Author != null)
         {
-            if (Author.UserName == author)
+            if (@User.Identity?.Name == author)
             {
                 Cheeps = await _authorService.GetCheepsTimeline(author, page);
                 TotalCheeps = await _authorService.GetCheepsTimelineCount(author);
