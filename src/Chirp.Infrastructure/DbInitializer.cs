@@ -1,6 +1,5 @@
 using Chirp.Core.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chirp.Infrastructure;

@@ -63,9 +63,19 @@ public class AuthorService(IAuthorRepository authorRepo) : IAuthorRepository
         return _authorRepo.GetCheeps(author, page);
     }
 
-    public Task<int> CountCheeps(string author)
+    public Task<int> GetCheepsCount(string author)
     {
-        return _authorRepo.CountCheeps(author);
+        return _authorRepo.GetCheepsCount(author);
+    }
+
+    public Task<List<Cheep>> GetLiked(string author, int page)
+    {
+        return _authorRepo.GetLiked(author, page);
+    }
+
+    public Task<int> GetLikedCount(string author)
+    {
+        return _authorRepo.GetLikedCount(author);
     }
 
     /// <summary>

@@ -1,0 +1,13 @@
+@page "/{author}/likes"
+
+@using Chirp.Web.Models
+
+@model Chirp.Web.Pages.User.UserLikesModel
+
+@await Html.PartialAsync("_CheepsPartial", Model.LikedCheeps)
+
+@await Html.PartialAsync("_PaginationPartial", new Pagination()
+{
+    Current = Int32.Parse(Request.Query["page"].ToString()),
+    Pages = (int)Math.Ceiling(Model.TotalLikedCheeps / 32.0)
+})
