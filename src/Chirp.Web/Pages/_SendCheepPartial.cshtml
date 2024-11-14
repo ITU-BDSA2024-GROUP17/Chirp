@@ -2,7 +2,7 @@
 @model ICheepModel
 
 <div class="send-box">
-    <div class="cheep-avatar">
+    <div class="avatar">
         @if (User.Identity?.Name != null)
         {
             var avatarUrl = User.FindFirst("Avatar")?.Value;

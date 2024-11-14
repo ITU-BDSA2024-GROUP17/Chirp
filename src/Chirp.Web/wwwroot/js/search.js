@@ -130,7 +130,7 @@ function renderAuthorsInSeach(data) {
         a.href = `${name}`;
         if (avatar == null) {
             a.innerHTML = `
-                            <div class="cheep-avatar">
+                            <div class="avatar">
                                 ${name.charAt(0)}
                             </div>
                             <div class="cheep">
@@ -141,7 +141,7 @@ function renderAuthorsInSeach(data) {
                         `;
         } else {
             a.innerHTML = `
-                        <div class="cheep-avatar">
+                        <div class="avatar">
                             <img src="${avatar}" class="avatar"/>
                         </div>
                         <div class="cheep">
