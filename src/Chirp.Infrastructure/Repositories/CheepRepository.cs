@@ -52,19 +52,18 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
 
     public async Task<Cheep> CreateCheep(Cheep cheep)
     {
-        if (cheep.Message.Length > 160) throw new InvalidDataException("Message is too long");
+        if (new List<CheepRevision>(cheep.Revisions)[0].Message.Length > 160) throw new InvalidDataException("Message is too long");
         _context.Cheeps.Add(cheep);
         await _context.SaveChangesAsync();
 
         return cheep;
     }
 
-    public Task<Cheep> UpdateCheep(Cheep newCheep)
+    public Task<Cheep> UpdateCheep(int cheepId, CheepRevision cheepRevision)
     {
-        var cheep = _context.Cheeps.Find(newCheep.Id) ?? throw new InvalidDataException("Cheep does not exist!");
+        var cheep = _context.Cheeps.Find(cheepId) ?? throw new InvalidDataException("Cheep does not exist!");
 
-        cheep.Message = newCheep.Message;
-        cheep.TimeStamp = newCheep.TimeStamp;
+        cheep.Revisions.Add(cheepRevision);
 
         _context.SaveChanges();
 

@@ -35,13 +35,20 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
         var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
 
+        var revisions = new List<CheepRevision>();
+
+
         try
         {
+            CheepRevision revision = new(){
+                Message = CheepMessage,
+                TimeStamp = DateTime.Now
+            };
+            revisions.Add(revision);
             Cheep cheep = new()
             {
                 AuthorId = UserId,
-                Message = CheepMessage,
-                TimeStamp = DateTime.Now,
+                Revisions = revisions,
                 Author = author,
                 Likes = []
             };

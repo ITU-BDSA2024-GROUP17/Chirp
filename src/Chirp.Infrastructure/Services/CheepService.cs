@@ -12,6 +12,12 @@ public class CheepService(ICheepRepository cheepRepo) : ICheepRepository
         return _cheepRepo.GetCheep(id);
     }
 
+    /// <summary>
+    /// Edits a cheep in the database with the same cheep id and stores the new edit as a revision
+    /// </summary>
+    /// <param name="cheep">The new</param>
+    /// <returns></returns>
+
     public Task<Cheep> UpdateCheep(Cheep cheep)
     {
         return _cheepRepo.UpdateCheep(cheep);
