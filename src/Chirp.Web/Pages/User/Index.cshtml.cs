@@ -87,11 +87,16 @@ public class UserModel(AuthorService authorService, CheepService cheepService) :
 
         try
         {
+            CheepRevision cheepRevision = new()
+            {
+                Message = CheepMessage,
+                TimeStamp = DateTime.Now
+            };
+            List<CheepRevision> revList = [cheepRevision];
             Cheep cheep = new()
             {
                 AuthorId = UserId,
-                Message = CheepMessage,
-                TimeStamp = DateTime.Now,
+                Revisions = revList,
                 Author = author,
                 Likes = []
             };
