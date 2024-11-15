@@ -34,6 +34,20 @@ public class CheepRepositoryTests
         Assert.Equal(expected, cheeps.Count);
     }
 
+    [Fact]
+    public async Task DeleteCheep()
+    {
+        const int CHEEP_ID = 3;
+        // Ensure cheep is avaliable for deletion
+        var cheep = _cheepRepository.GetCheep(CHEEP_ID);
+        Assert.True(cheep != null);
+
+        await _cheepRepository.DeleteCheep(3);
+        var cheepAfterDelete = await _cheepRepository.GetCheep(CHEEP_ID);
+        Assert.True(cheepAfterDelete == null);
+
+    }
+
     [Theory]
     [InlineData("first", 1, 2)]
     [InlineData("watch", 1, 2)]

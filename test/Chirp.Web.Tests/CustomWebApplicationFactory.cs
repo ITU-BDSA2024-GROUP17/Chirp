@@ -35,18 +35,19 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
             });
         });
     }
+
     /// <summary>
     /// Seed the test database
     /// </summary>
     /// <param name="factory"></param>
     /// <exception cref="Exception"></exception>
-    public static void TestSeedDatabase(CustomWebApplicationFactory<Program> factory)
+    public static CheepDbContext TestSeedDatabase(CustomWebApplicationFactory<Program> factory)
     {
         using var scope = factory.Services.CreateScope();
         using var context = scope.ServiceProvider.GetService<CheepDbContext>() ?? throw new Exception("TestCheepDbContext not found!");
         DetachAllEntities(context);
         WebDbInitializer.SeedDatabase(context);
-
+        return context;
     }
 
     /// <summary>

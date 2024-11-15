@@ -13,8 +13,8 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     {
         var cheeps = _context.Cheeps
             .Include(c => c.Author)
+            .ThenInclude(a => a.Followers)
             .Include(c => c.Likes)
-            .Select(c => c)
             .OrderByDescending(c => c.TimeStamp)
             .Paginate(page)
             .ToListAsync();
@@ -96,5 +96,13 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
         _context.SaveChanges();
 
         return Task.FromResult(cheep);
+    }
+
+    public Task DeleteCheep(int cheepId)
+    {
+        var cheepToDelete = _context.Cheeps.Find(cheepId) ?? throw new Exception("Cheep not found for delete");
+        _context.Cheeps.Remove(cheepToDelete);
+
+        return Task.FromResult(_context.SaveChangesAsync());
     }
 }

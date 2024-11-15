@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Core.Entities;
 using Chirp.Infrastructure.Services;
 using System.Security.Claims;
+using Chirp.Core.Interfaces;
 
 namespace Chirp.Web.Pages;
 
-public class PublicModel(AuthorService authorService, CheepService cheepService) : PageModel
+public class PublicModel(AuthorService authorService, CheepService cheepService) : PageModel, ICheepModel
 {
     private readonly AuthorService _authorService = authorService;
     private readonly CheepService _cheepService = cheepService;
@@ -64,9 +65,24 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         }
     }
 
+    public async Task<IActionResult> OnPostDeleteAsync(string UserAuth, int cheepId)
+    {
+        var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found for delete!");
+        if (cheep.AuthorId.Equals(UserAuth))
+        {
+            await _cheepService.DeleteCheep(cheep.Id);
+            return LocalRedirect("~/");
+        }
+        else
+        {
+            throw new Exception("User can't delete this cheep");
+        }
+
+    }
+
     public async Task<IActionResult> OnPostLikeAsync(int cheepId)
     {
-        var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found!");
+        var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found for like!");
 
         var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
         var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
@@ -79,6 +95,24 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         {
             await _cheepService.LikeCheep(cheepId, UserId);
         }
+
+        return LocalRedirect(Url.Content("~/"));
+    }
+
+    public async Task<IActionResult> OnPostFollowAsync(string followeeId)
+    {
+        var FollowerId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
+
+        await _authorService.Follow(FollowerId, followeeId);
+
+        return LocalRedirect(Url.Content("~/"));
+    }
+
+    public async Task<IActionResult> OnPostUnfollowAsync(string followeeId)
+    {
+        var FollowerId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
+
+        await _authorService.Unfollow(FollowerId, followeeId);
 
         return LocalRedirect(Url.Content("~/"));
     }

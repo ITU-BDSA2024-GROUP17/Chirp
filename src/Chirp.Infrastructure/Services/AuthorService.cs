@@ -63,9 +63,29 @@ public class AuthorService(IAuthorRepository authorRepo) : IAuthorRepository
         return _authorRepo.GetCheeps(author, page);
     }
 
-    public Task<int> CountCheeps(string author)
+    public Task<int> GetCheepsCount(string author)
     {
-        return _authorRepo.CountCheeps(author);
+        return _authorRepo.GetCheepsCount(author);
+    }
+
+    public Task<List<Cheep>> GetCheepsTimeline(string author, int page)
+    {
+        return _authorRepo.GetCheepsTimeline(author, page);
+    }
+
+    public Task<int> GetCheepsTimelineCount(string author)
+    {
+        return _authorRepo.GetCheepsTimelineCount(author);
+    }
+
+    public Task<List<Cheep>> GetLiked(string author, int page)
+    {
+        return _authorRepo.GetLiked(author, page);
+    }
+
+    public Task<int> GetLikedCount(string author)
+    {
+        return _authorRepo.GetLikedCount(author);
     }
 
     /// <summary>
@@ -75,5 +95,25 @@ public class AuthorService(IAuthorRepository authorRepo) : IAuthorRepository
     public Task<Author> CreateAuthor(Author author)
     {
         return _authorRepo.CreateAuthor(author);
+    }
+
+    public Task<List<Author>> GetFollowing(string authorId)
+    {
+        return _authorRepo.GetFollowing(authorId);
+    }
+
+    public Task<List<Author>> GetFollowers(string authorId)
+    {
+        return _authorRepo.GetFollowers(authorId);
+    }
+
+    public Task<Author> Follow(string followerId, string followeeId)
+    {
+        return _authorRepo.Follow(followerId, followeeId);
+    }
+
+    public Task<Author> Unfollow(string followerId, string followeeId)
+    {
+        return _authorRepo.Unfollow(followerId, followeeId);
     }
 }

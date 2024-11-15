@@ -4,7 +4,6 @@
 
 <nav>
     <form method="post">
-
         <ul class="pagination justify-content-center">
             <li class="page-item @(Model.Current == 1 ? "disabled" : "")">
                 <button class="page-link" type="submit" asp-page-handler="pagination"
@@ -16,12 +15,12 @@
             {
                 @if ((@Model.Current - i) > 0)
                 {
-                    <li class="page-item">
-                        <button class="page-link" type="submit" asp-page-handler="pagination"
-                            asp-route-newPage="@(Model.Current - i)">
+                            <li class="page-item">
+                                <button class="page-link" type="submit" asp-page-handler="pagination"
+                                    asp-route-newPage="@(Model.Current - i)">
                             @(Model.Current - i)
-                        </button>
-                    </li>
+                                </button>
+                            </li>
                 }
             }
             <li class="page-item active">
@@ -32,12 +31,12 @@
             {
                 @if (@Model.Current + i <= @Model.Pages)
                 {
-                    <li class="page-item">
-                        <button class="page-link" type="submit" asp-page-handler="pagination"
-                            asp-route-newPage="@(Model.Current + i)">
+                            <li class="page-item">
+                                <button class="page-link" type="submit" asp-page-handler="pagination"
+                                    asp-route-newPage="@(Model.Current + i)">
                             @(Model.Current + i)
-                        </button>
-                    </li>
+                                </button>
+                            </li>
                 }
             }
             <li class="page-item @(Model.Current == Model.Pages ? "disabled" : "")">
