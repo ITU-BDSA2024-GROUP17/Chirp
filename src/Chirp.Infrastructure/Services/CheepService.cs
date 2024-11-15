@@ -18,9 +18,9 @@ public class CheepService(ICheepRepository cheepRepo) : ICheepRepository
     /// <param name="cheep">The new</param>
     /// <returns></returns>
 
-    public Task<Cheep> UpdateCheep(Cheep cheep)
+    public Task<Cheep> UpdateCheep(int cheepId, CheepRevision cheepRevision)
     {
-        return _cheepRepo.UpdateCheep(cheep);
+        return _cheepRepo.UpdateCheep(cheepId, cheepRevision);
     }
 
     /// <summary>

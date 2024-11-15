@@ -11,11 +11,11 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
 
     public Task<List<Cheep>> GetCheeps(int page)
     {
-        var cheeps = _context.Cheeps
+        Task<List<Cheep>> cheeps = _context.Cheeps
             .Include(c => c.Author)
             .ThenInclude(a => a.Followers)
             .Include(c => c.Likes)
-            .OrderByDescending(c => c.TimeStamp)
+            .OrderByDescending(c => new List<CheepRevision>(c.Revisions).First().TimeStamp)
             .Paginate(page)
             .ToListAsync();
 
@@ -42,8 +42,8 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     public Task<List<Cheep>> SearchCheeps(string searchQuery, int page)
     {
         var cheeps = _context.Cheeps
-            .Search(searchQuery, x => x.Message)
-            .OrderByDescending(c => c.TimeStamp)
+            .Search(searchQuery, x => new List<CheepRevision>(x.Revisions).Last().Message)
+            .OrderByDescending(c => new List<CheepRevision>(c.Revisions).First().TimeStamp)
             .Paginate(page)
             .ToList();
 
