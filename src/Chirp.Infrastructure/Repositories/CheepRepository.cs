@@ -102,7 +102,11 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
 
     public Task DeleteCheep(int cheepId)
     {
-        var cheepToDelete = _context.Cheeps.Find(cheepId) ?? throw new Exception("Cheep not found for delete");
+        var cheepToDelete = _context.Cheeps
+            .Where(c => c.Id == cheepId)
+            .Include(c => c.Likes)
+            .Include(c => c.Revisions)
+            .FirstOrDefault() ?? throw new Exception("Cheep not found for delete");
         _context.Cheeps.Remove(cheepToDelete);
 
         return Task.FromResult(_context.SaveChangesAsync());
