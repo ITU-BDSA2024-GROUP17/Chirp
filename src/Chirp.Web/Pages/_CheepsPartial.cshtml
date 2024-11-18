@@ -45,12 +45,12 @@
                             </form>
                         }
                         <div class="cheep-timestamp-tooltip">
-                            &sdot;<span>@Chirp.Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.Revisions.First().TimeStamp)</span>
+                            &sdot;<span>@Chirp.Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.Revisions.ToArray().First().TimeStamp)</span>
                             <small class="cheep-timestamp">
-                                @Chirp.Web.Utilities.TimeUtilties.FormatUnixTimeRaw(@cheep.Revisions.First().TimeStamp)</small>
+                                @Chirp.Web.Utilities.TimeUtilties.FormatUnixTimeRaw(@cheep.Revisions.ToArray().First().TimeStamp)</small>
                         </div>
                     </div>
-                    @cheep.Revisions.Last().Message
+                    @cheep.Revisions.ToArray().Last().Message
                     <div style="margin-top: .5rem; display: flex; gap: 0.5em;">
                         <form asp-page-handler="Like" method="post" asp-route-cheepId="@cheep.Id">
                             @if (User.Identity != null && User.Identity.IsAuthenticated)
