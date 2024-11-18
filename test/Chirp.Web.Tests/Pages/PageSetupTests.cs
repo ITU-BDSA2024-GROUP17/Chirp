@@ -8,12 +8,13 @@ namespace Chirp.Web.Tests.Integration;
 /// General page endpoint tests and client load tests.
 /// </summary>
 public class PageSetupTests
-    : IClassFixture<WebApplicationFactory<Program>>
+    : IClassFixture<CustomWebApplicationFactory<Program>>
 {
-    private readonly WebApplicationFactory<Program> _factory;
+    private readonly CustomWebApplicationFactory<Program> _factory;
 
-    public PageSetupTests(WebApplicationFactory<Program> factory)
+    public PageSetupTests(CustomWebApplicationFactory<Program> factory)
     {
+        CustomWebApplicationFactory<Program>.TestSeedDatabase(factory);
         _factory = factory;
     }
 
