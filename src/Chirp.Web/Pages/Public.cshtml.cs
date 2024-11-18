@@ -41,7 +41,8 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
 
         try
         {
-            CheepRevision revision = new(){
+            CheepRevision revision = new()
+            {
                 Message = CheepMessage,
                 TimeStamp = DateTime.Now
             };
