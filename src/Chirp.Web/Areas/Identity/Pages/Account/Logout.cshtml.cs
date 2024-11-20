@@ -2,26 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Threading.Tasks;
 using Chirp.Core.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 namespace Chirp.Web.Areas.Identity.Pages.Account
 {
-    public class LogoutModel : PageModel
+    public class LogoutModel(SignInManager<Author> signInManager, ILogger<LogoutModel> logger) : PageModel
     {
-        private readonly SignInManager<Author> _signInManager;
-        private readonly ILogger<LogoutModel> _logger;
+        private readonly SignInManager<Author> _signInManager = signInManager;
+        private readonly ILogger<LogoutModel> _logger = logger;
 
-        public LogoutModel(SignInManager<Author> signInManager, ILogger<LogoutModel> logger)
+        public async Task<IActionResult> OnGet()
         {
-            _signInManager = signInManager;
-            _logger = logger;
+            await _signInManager.SignOutAsync();
+
+            return Redirect("/");
         }
 
         public async Task<IActionResult> OnPost(string returnUrl = null)

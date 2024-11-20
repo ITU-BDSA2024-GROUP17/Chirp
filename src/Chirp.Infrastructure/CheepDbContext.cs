@@ -23,6 +23,40 @@ public class CheepDbContext : IdentityDbContext
         optionsBuilder.UseSqlite("Data Source=SQLiteDB.db");
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Author>()
+            .HasMany(a => a.Cheeps)
+            .WithOne(c => c.Author)
+            .HasForeignKey(c => c.AuthorId);
+
+        modelBuilder.Entity<Author>()
+            .HasMany(a => a.LikedCheeps)
+            .WithMany(c => c.Likes)
+            .UsingEntity<CheepLike>(cl => cl.Property(cl => cl.TimeStamp).HasDefaultValueSql("CURRENT_TIMESTAMP"));
+
+        modelBuilder.Entity<Author>()
+            .HasMany(a => a.Following)
+            .WithMany(a => a.Followers)
+            .UsingEntity<AuthorFollow>(
+                join => join
+                    .HasOne(af => af.Followee)
+                    .WithMany()
+                    .HasForeignKey("FolloweeId"),
+                join => join
+                    .HasOne(af => af.Follower)
+                    .WithMany()
+                    .HasForeignKey("FollowerId"),
+                join =>
+                {
+                    join.HasKey("FollowerId", "FolloweeId");
+                    join.Property(af => af.TimeStamp).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                }
+            );
+    }
+
     public DbSet<Cheep> Cheeps { get; set; }
     public DbSet<Author> Authors { get; set; }
 }

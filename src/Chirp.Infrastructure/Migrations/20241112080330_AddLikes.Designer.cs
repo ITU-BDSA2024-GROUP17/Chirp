@@ -3,6 +3,7 @@ using System;
 using Chirp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,32 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(CheepDbContext))]
-    partial class CheepDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241112080330_AddLikes")]
+    partial class AddLikes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
-
-            modelBuilder.Entity("Chirp.Core.Entities.AuthorFollow", b =>
-                {
-                    b.Property<string>("FollowerId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FolloweeId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.HasKey("FollowerId", "FolloweeId");
-
-                    b.HasIndex("FolloweeId");
-
-                    b.ToTable("AuthorFollow");
-                });
 
             modelBuilder.Entity("Chirp.Core.Entities.Cheep", b =>
                 {
@@ -45,6 +28,14 @@ namespace Chirp.Infrastructure.Migrations
 
                     b.Property<string>("AuthorId")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("TimeStamp")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -72,30 +63,6 @@ namespace Chirp.Infrastructure.Migrations
                     b.HasIndex("LikesId");
 
                     b.ToTable("CheepLike");
-                });
-
-            modelBuilder.Entity("Chirp.Core.Entities.CheepRevision", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("CheepId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasMaxLength(160)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CheepId");
-
-                    b.ToTable("CheepRevision");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -309,25 +276,6 @@ namespace Chirp.Infrastructure.Migrations
                     b.HasDiscriminator().HasValue("Author");
                 });
 
-            modelBuilder.Entity("Chirp.Core.Entities.AuthorFollow", b =>
-                {
-                    b.HasOne("Chirp.Core.Entities.Author", "Followee")
-                        .WithMany()
-                        .HasForeignKey("FolloweeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Chirp.Core.Entities.Author", "Follower")
-                        .WithMany()
-                        .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Followee");
-
-                    b.Navigation("Follower");
-                });
-
             modelBuilder.Entity("Chirp.Core.Entities.Cheep", b =>
                 {
                     b.HasOne("Chirp.Core.Entities.Author", "Author")
@@ -352,13 +300,6 @@ namespace Chirp.Infrastructure.Migrations
                         .HasForeignKey("LikesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Chirp.Core.Entities.CheepRevision", b =>
-                {
-                    b.HasOne("Chirp.Core.Entities.Cheep", null)
-                        .WithMany("Revisions")
-                        .HasForeignKey("CheepId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -410,11 +351,6 @@ namespace Chirp.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Chirp.Core.Entities.Cheep", b =>
-                {
-                    b.Navigation("Revisions");
                 });
 
             modelBuilder.Entity("Chirp.Core.Entities.Author", b =>

@@ -34,6 +34,20 @@ public class CheepRepositoryTests
         Assert.Equal(expected, cheeps.Count);
     }
 
+    [Fact]
+    public async Task DeleteCheep()
+    {
+        const int CHEEP_ID = 3;
+        // Ensure cheep is avaliable for deletion
+        var cheep = _cheepRepository.GetCheep(CHEEP_ID);
+        Assert.True(cheep != null);
+
+        await _cheepRepository.DeleteCheep(3);
+        var cheepAfterDelete = await _cheepRepository.GetCheep(CHEEP_ID);
+        Assert.True(cheepAfterDelete == null);
+
+    }
+
     [Theory]
     [InlineData("first", 1, 2)]
     [InlineData("watch", 1, 2)]
@@ -55,11 +69,17 @@ public class CheepRepositoryTests
     {
         var author = await _authorRepository.GetAuthor("2bcf724c-b650-476c-ae11-d408eb2105a0");
         if (author == null) Assert.Fail("Author could not be found from db");
+        var revision = new CheepRevision()
+        {
+            Message = "".PadRight(messageLength, 'A'),
+            TimeStamp = DateTime.Now
+        };
+        var revisionsList = new List<CheepRevision>();
+        revisionsList.Add(revision);
         var cheep = new Cheep()
         {
             AuthorId = author.Id,
-            Message = "".PadRight(messageLength, 'A'),
-            TimeStamp = DateTime.Now,
+            Revisions = revisionsList,
             Author = author
         };
         try

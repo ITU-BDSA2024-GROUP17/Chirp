@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Chirp.Web.Models
 @model Chirp.Web.Pages.PublicModel
 @{
     Layout = "Shared/_Layout";
@@ -8,68 +9,14 @@
 
 @if (User.Identity != null && User.Identity.IsAuthenticated)
 {
-    <div class="send-box">
-        <div class="cheep-avatar">
-            @if (User.Identity.Name != null)
-            {
-                var avatarUrl = User.FindFirst("Avatar")?.Value;
-                if (avatarUrl != null)
-                {
-                    <img src="@avatarUrl" class="avatar" />
-                }
-                else
-                {
-                    @User.Identity.Name?.First()
-                }
-            }
-        </div>
-        <form class="flex-grow-1 d-flex flex-row gap-2" id="cheepInputForm" asp-page-handler="Cheep" method="post"
-            defaultbutton="sendCheepButton">
-            <textarea type="text" asp-for="CheepMessage" id="cheepMessage" class="text-box cheep-input"
-                placeholder="Whats on your mind?" autocomplete="off" style="resize: none; overflow: hidden;"
-                oninput="auto_grow(this)"> </textarea>
-
-            <div class="d-flex justify-content-end">
-                <button class="btn btn-primary" id="sendCheepButton" type="submit">Cheep</button>
-            </div>
-        </form>
-    </div>
+    @await Html.PartialAsync("_SendCheepPartial", Model)
 }
 
-<hr />
+<partial name="_CheepsPartial" model="@Model.Cheeps" />
 
-@await Html.PartialAsync("_CheepsPartial", Model.Cheeps)
-
-<script>
-
-    auto_grow(document.getElementById("cheepMessage"));
-
-    window.addEventListener("DOMContentLoaded", () => {
-        const cheepInputField = document.querySelector("#cheepMessage");
-        ['keyup', 'change'].forEach((type) => {
-            cheepInputField.addEventListener(type, (event) => {
-                const inputFieldValue = document.getElementById("cheepMessage").value;
-                if (inputFieldValue.length > 160) {
-                    document.getElementById("cheepMessage").style.color = "red";
-                } else {
-                    document.getElementById("cheepMessage").style.color = "black";
-                }
-            })
-        })
-    })
-
-    const textA = document.getElementById("cheepMessage");
-    textA.addEventListener("keypress", event => {
-        if (!event.shiftKey && event.key == "Enter") {
-            event.preventDefault();
-            document.getElementById("cheepInputForm").submit();
-        }
-    });
-
-
-    function auto_grow(element) {
-        element.style.height = "5px";
-        element.style.height = (element.scrollHeight) + "px";
+<partial name="_PaginationPartial" model="@(new Pagination()
+    {
+        Current = Int32.Parse(Request.Query["page"].ToString()),
+        Pages=(int)Math.Ceiling(Model.TotalCheeps / 32.0)
     }
-
-</script>
+)" />

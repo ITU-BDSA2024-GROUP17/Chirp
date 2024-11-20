@@ -1,19 +1,20 @@
 using System.Net;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.TestHost;
-using Xunit;
 using AngleSharp;
 
 namespace Chirp.Web.Tests.Integration;
-public class PageSetupTests
-    : IClassFixture<WebApplicationFactory<Program>>
-{
-    private readonly WebApplicationFactory<Program> _factory;
 
-    public PageSetupTests(WebApplicationFactory<Program> factory)
+/// <summary>
+/// General page endpoint tests and client load tests.
+/// </summary>
+public class PageSetupTests
+    : IClassFixture<CustomWebApplicationFactory<Program>>
+{
+    private readonly CustomWebApplicationFactory<Program> _factory;
+
+    public PageSetupTests(CustomWebApplicationFactory<Program> factory)
     {
+        CustomWebApplicationFactory<Program>.TestSeedDatabase(factory);
         _factory = factory;
     }
 

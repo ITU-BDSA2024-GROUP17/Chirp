@@ -3,14 +3,16 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Core.Entities;
 using Chirp.Infrastructure.Services;
 using System.Security.Claims;
+using Chirp.Core.Interfaces;
 
 namespace Chirp.Web.Pages;
 
-public class PublicModel(AuthorService authorService, CheepService cheepService) : PageModel
+public class PublicModel(AuthorService authorService, CheepService cheepService) : PageModel, ICheepModel
 {
     private readonly AuthorService _authorService = authorService;
     private readonly CheepService _cheepService = cheepService;
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
+    public int TotalCheeps { get; set; }
 
     [BindProperty]
     public string CheepMessage { get; set; } = "";
@@ -23,6 +25,7 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
             return Redirect("/?page=1");
         }
         Cheeps = await _cheepService.GetCheeps(page);
+        TotalCheeps = await _cheepService.CountCheeps();
         return Page();
     }
 
@@ -33,15 +36,23 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
         var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
 
+        var revisions = new List<CheepRevision>();
+
+
         try
         {
-
+            CheepRevision revision = new()
+            {
+                Message = CheepMessage,
+                TimeStamp = DateTime.Now
+            };
+            revisions.Add(revision);
             Cheep cheep = new()
             {
                 AuthorId = UserId,
-                Message = CheepMessage,
-                TimeStamp = DateTime.Now,
+                Revisions = revisions,
                 Author = author,
+                Likes = []
             };
 
             await _cheepService.CreateCheep(cheep);
@@ -53,5 +64,62 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         {
             return LocalRedirect(Url.Content("~/"));
         }
+    }
+
+    public async Task<IActionResult> OnPostDeleteAsync(string UserAuth, int cheepId)
+    {
+        var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found for delete!");
+        if (cheep.AuthorId.Equals(UserAuth))
+        {
+            await _cheepService.DeleteCheep(cheep.Id);
+            return LocalRedirect("~/");
+        }
+        else
+        {
+            throw new Exception("User can't delete this cheep");
+        }
+
+    }
+
+    public async Task<IActionResult> OnPostLikeAsync(int cheepId)
+    {
+        var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found for like!");
+
+        var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
+        var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
+
+        if (cheep.Likes.Contains(author))
+        {
+            await _cheepService.UnlikeCheep(cheepId, UserId);
+        }
+        else
+        {
+            await _cheepService.LikeCheep(cheepId, UserId);
+        }
+
+        return LocalRedirect(Url.Content("~/"));
+    }
+
+    public async Task<IActionResult> OnPostFollowAsync(string followeeId)
+    {
+        var FollowerId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
+
+        await _authorService.Follow(FollowerId, followeeId);
+
+        return LocalRedirect(Url.Content("~/"));
+    }
+
+    public async Task<IActionResult> OnPostUnfollowAsync(string followeeId)
+    {
+        var FollowerId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
+
+        await _authorService.Unfollow(FollowerId, followeeId);
+
+        return LocalRedirect(Url.Content("~/"));
+    }
+
+    public IActionResult OnPostPaginationAsync(int newPage)
+    {
+        return LocalRedirect(Url.Content($"~/?page={newPage}"));
     }
 }

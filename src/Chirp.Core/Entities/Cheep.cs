@@ -7,8 +7,7 @@ public class Cheep
     [Key]
     public int Id { get; set; }
     public required string AuthorId { get; set; }
-    [StringLength(160)]
-    public required string Message { get; set; }
-    public required DateTime TimeStamp { get; set; }
+    public required ICollection<CheepRevision> Revisions { get; set; } = [];
     public required Author Author { get; set; }
+    public ICollection<Author> Likes { get; set; } = [];
 }

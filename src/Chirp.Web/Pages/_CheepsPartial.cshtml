@@ -1,14 +1,20 @@
 @using Chirp.Core.Entities;
+@using System.Security.Claims
 @model IEnumerable<Cheep>
+
+@{
+    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+}
+
 @if (Model.Any())
 {
     <ul id="messagelist" class="cheeps-container">
-        @foreach (var cheep in Model)
+    @foreach (var cheep in Model)
         {
             <li class="cheep-wrapper">
                 @if (@cheep.Author.UserName != null)
                 {
-                    <a href="/@cheep.Author.UserName" class="cheep-avatar">
+                    <a href="/@cheep.Author.UserName" class="avatar">
                         <!--If the author has an avatar, display it instead of just a letter-->
                         @if (cheep.Author.Avatar != null)
                         {
@@ -23,13 +29,58 @@
                 <div class="cheep">
                     <div class="cheep-user">
                         <a class="cheep-author" href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
+                        @if (User.Identity != null && User.Identity.IsAuthenticated && cheep.Author.Id != userId)
+                        {
+                            <form method="post">
+                                @{
+                                    string action = cheep.Author.Followers.Any(f => f.Id == userId) == true ? "unfollow" : "follow";
+                                }
+
+                                <button class="btn btn-secondary"
+
+                                type="submit" asp-page-handler="@action" asp-route-followeeId="@cheep.AuthorId"
+                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                    @action
+                                </button>
+                            </form>
+                        }
                         <div class="cheep-timestamp-tooltip">
-                            &sdot;<span>@Chirp.Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.TimeStamp)</span>
+                            &sdot;<span>@Chirp.Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.Revisions.ToArray().First().TimeStamp)</span>
                             <small class="cheep-timestamp">
-                                @Chirp.Web.Utilities.TimeUtilties.FormatUnixTimeRaw(@cheep.TimeStamp)</small>
+                                @Chirp.Web.Utilities.TimeUtilties.FormatUnixTimeRaw(@cheep.Revisions.ToArray().First().TimeStamp)</small>
                         </div>
                     </div>
-                    @cheep.Message
+                    @cheep.Revisions.ToArray().Last().Message
+                    <div style="margin-top: .5rem; display: flex; gap: 0.5em;">
+                        <form asp-page-handler="Like" method="post" asp-route-cheepId="@cheep.Id">
+                            @if (User.Identity != null && User.Identity.IsAuthenticated)
+                            {
+                                <button class="btn @(cheep.Likes.Any(a => a.Id == userId) == true ? "btn-primary" : "btn-secondary")"
+                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                    type="submit">
+                                    Like <span class="badge text-bg-secondary">@cheep.Likes.Count</span>
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-secondary"
+                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                    type="submit" disabled>
+                                    Like <span class="badge text-bg-secondary">@cheep.Likes.Count</span>
+                                </button>
+                            }
+                        </form>
+                        <form asp-page-handler="Delete" method="post" asp-route-UserAuth="@userId"
+                            asp-route-cheepId="@cheep.Id">
+                            @if (User.Identity != null && User.Identity.IsAuthenticated && cheep.AuthorId.Equals(userId))
+                            {
+                                <button class="btn btn-secondary" type="submit"
+                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                    Delete
+                                </button>
+                            }
+                        </form>
+                    </div>
                 </div>
             </li>
         }
