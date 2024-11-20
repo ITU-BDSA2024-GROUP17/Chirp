@@ -39,6 +39,8 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Build
+        run: dotnet build
       - name: Install playwright
         run: pwsh test/Chirp.Web.Playwright/bin/Debug/net8.0/playwright.ps1 install chromium
       - name: Test
