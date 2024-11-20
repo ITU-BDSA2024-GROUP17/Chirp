@@ -103,6 +103,4 @@ public class Tests2 : PageTest
         await Page.WaitForURLAsync("http://localhost:5163/?page=1");
         await Expect(Page.GetByText("I am testing today!").GetByText("PlayWright" + userId)).ToBeVisibleAsync();
     }
-
-
 }

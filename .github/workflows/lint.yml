@@ -41,6 +41,8 @@ jobs:
 
       - name: Build
         run: dotnet build
+      - name: Run test server
+        run: dotnet run --project src/Chirp.Web &
       - name: Install playwright
         run: pwsh test/Chirp.Web.Playwright/bin/Debug/net8.0/playwright.ps1 install chromium
       - name: Test
