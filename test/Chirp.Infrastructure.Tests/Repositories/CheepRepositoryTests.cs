@@ -69,11 +69,17 @@ public class CheepRepositoryTests
     {
         var author = await _authorRepository.GetAuthor("2bcf724c-b650-476c-ae11-d408eb2105a0");
         if (author == null) Assert.Fail("Author could not be found from db");
+        var revision = new CheepRevision()
+        {
+            Message = "".PadRight(messageLength, 'A'),
+            TimeStamp = DateTime.Now
+        };
+        var revisionsList = new List<CheepRevision>();
+        revisionsList.Add(revision);
         var cheep = new Cheep()
         {
             AuthorId = author.Id,
-            Message = "".PadRight(messageLength, 'A'),
-            TimeStamp = DateTime.Now,
+            Revisions = revisionsList,
             Author = author
         };
         try

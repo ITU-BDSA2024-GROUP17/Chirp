@@ -11,11 +11,12 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
 
     public Task<List<Cheep>> GetCheeps(int page)
     {
-        var cheeps = _context.Cheeps
+        Task<List<Cheep>> cheeps = _context.Cheeps
+            .Include(c => c.Revisions)
             .Include(c => c.Author)
             .ThenInclude(a => a.Followers)
             .Include(c => c.Likes)
-            .OrderByDescending(c => c.TimeStamp)
+            .OrderByDescending(c => c.Revisions.First().TimeStamp)
             .Paginate(page)
             .ToListAsync();
 
@@ -42,8 +43,9 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     public Task<List<Cheep>> SearchCheeps(string searchQuery, int page)
     {
         var cheeps = _context.Cheeps
-            .Search(searchQuery, x => x.Message)
-            .OrderByDescending(c => c.TimeStamp)
+            .Include(c => c.Revisions)
+            .Search(searchQuery, x => x.Revisions.Last().Message)
+            .OrderByDescending(c => c.Revisions.First().TimeStamp)
             .Paginate(page)
             .ToList();
 
@@ -52,19 +54,18 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
 
     public async Task<Cheep> CreateCheep(Cheep cheep)
     {
-        if (cheep.Message.Length > 160) throw new InvalidDataException("Message is too long");
+        if (new List<CheepRevision>(cheep.Revisions)[0].Message.Length > 160) throw new InvalidDataException("Message is too long");
         _context.Cheeps.Add(cheep);
         await _context.SaveChangesAsync();
 
         return cheep;
     }
 
-    public Task<Cheep> UpdateCheep(Cheep newCheep)
+    public Task<Cheep> UpdateCheep(int cheepId, CheepRevision cheepRevision)
     {
-        var cheep = _context.Cheeps.Find(newCheep.Id) ?? throw new InvalidDataException("Cheep does not exist!");
+        var cheep = _context.Cheeps.Find(cheepId) ?? throw new InvalidDataException("Cheep does not exist!");
 
-        cheep.Message = newCheep.Message;
-        cheep.TimeStamp = newCheep.TimeStamp;
+        cheep.Revisions.Add(cheepRevision);
 
         _context.SaveChanges();
 
@@ -101,7 +102,11 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
 
     public Task DeleteCheep(int cheepId)
     {
-        var cheepToDelete = _context.Cheeps.Find(cheepId) ?? throw new Exception("Cheep not found for delete");
+        var cheepToDelete = _context.Cheeps
+            .Where(c => c.Id == cheepId)
+            .Include(c => c.Likes)
+            .Include(c => c.Revisions)
+            .FirstOrDefault() ?? throw new Exception("Cheep not found for delete");
         _context.Cheeps.Remove(cheepToDelete);
 
         return Task.FromResult(_context.SaveChangesAsync());
