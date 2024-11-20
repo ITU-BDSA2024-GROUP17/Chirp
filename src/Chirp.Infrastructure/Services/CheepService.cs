@@ -7,6 +7,11 @@ public class CheepService(ICheepRepository cheepRepo) : ICheepRepository
 {
     private readonly ICheepRepository _cheepRepo = cheepRepo;
 
+    /// <summary>
+    /// Get a specific cheep by id
+    /// </summary>
+    /// <param name="id">The id of the specified cheep</param>
+    /// <returns>Returns the cheep with the specified id</returns>
     public Task<Cheep?> GetCheep(int id)
     {
         return _cheepRepo.GetCheep(id);
@@ -58,16 +63,34 @@ public class CheepService(ICheepRepository cheepRepo) : ICheepRepository
         return _cheepRepo.CreateCheep(cheep);
     }
 
+    /// <summary>
+    /// Stores a like for the specified cheep
+    /// </summary>
+    /// <param name="cheepId">The cheep that needs to be liked</param>
+    /// <param name="authorId">The author that likes the cheep</param>
+    /// <returns>Returns the newly liked cheep</returns>
     public Task<Cheep> LikeCheep(int cheepId, string authorId)
     {
         return _cheepRepo.LikeCheep(cheepId, authorId);
     }
 
+    /// <summary>
+    /// Deletes the like for a cheep
+    /// </summary>
+    /// <param name="cheepId">The cheep that needs to be unliked</param>
+    /// <param name="authorId">The author that unlikes the cheep</param>
+    /// <returns>Returns the newly unliked cheep</returns>
     public Task<Cheep> UnlikeCheep(int cheepId, string authorId)
     {
         return _cheepRepo.UnlikeCheep(cheepId, authorId);
     }
 
+
+    /// <summary>
+    /// Delete the cheep connected with the cheepId
+    /// </summary>
+    /// <param name="cheepId">The id of the cheep that needs to be deleted</param>
+    /// <returns>Returns the task by the database</returns>
     public Task DeleteCheep(int cheepId)
     {
         return _cheepRepo.DeleteCheep(cheepId);
