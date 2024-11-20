@@ -86,6 +86,11 @@ public class CheepService(ICheepRepository cheepRepo) : ICheepRepository
     }
 
 
+    public Task PostComment(int CheepToCommentId, Cheep cheep)
+    {
+        return _cheepRepo.PostComment(CheepToCommentId, cheep);
+    }
+
     /// <summary>
     /// Delete the cheep connected with the cheepId
     /// </summary>

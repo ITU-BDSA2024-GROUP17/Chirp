@@ -11,6 +11,8 @@ public interface ICheepRepository
     public Task<int> CountCheeps();
     public Task<Cheep> UpdateCheep(int cheepId, CheepRevision cheepRevision);
     public Task<List<Cheep>> SearchCheeps(string searchQuery, int page);
+    public Task PostComment(int CheepToCommentId, Cheep comment);
+    // public Task<List<Cheep>> GetComments(int id);
     public Task<Cheep> LikeCheep(int cheepId, string authorId);
     public Task<Cheep> UnlikeCheep(int cheepId, string authorId);
     public Task DeleteCheep(int cheepId);
