@@ -10,4 +10,5 @@ public class Cheep
     public required ICollection<CheepRevision> Revisions { get; set; } = [];
     public required Author Author { get; set; }
     public ICollection<Author> Likes { get; set; } = [];
+    public ICollection<Cheep> Comments { get; set; } = [];
 }
