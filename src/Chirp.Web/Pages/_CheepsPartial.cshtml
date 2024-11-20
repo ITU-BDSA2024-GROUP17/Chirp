@@ -81,6 +81,10 @@
                             }
                         </form>
                     </div>
+                    @if (User.Identity != null && User.Identity.IsAuthenticated && !cheep.AuthorId.Equals(userId))
+                    {
+                        <partial name="_CheepSendCommentPartial" model="@cheep" />
+                    }
                 </div>
             </li>
         }
