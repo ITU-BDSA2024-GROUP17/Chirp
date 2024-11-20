@@ -32,12 +32,14 @@
             </a>
         </li>
     }
+    @* This is a feature that can be finalized later. It works but Identity does not require it when signing in.
     <li class="nav-item">
         <a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor"
             asp-page="./TwoFactorAuthentication">
             Two-factor authentication
         </a>
     </li>
+    *@
     <li class="nav-item">
         <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data"
             asp-page="./PersonalData">
