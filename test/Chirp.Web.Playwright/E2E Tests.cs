@@ -5,7 +5,7 @@ namespace Chirp.Web.Playwright;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
-public class Tests2 : PageTest
+public class E2ETests : PageTest
 {
 
     [SetUp]
