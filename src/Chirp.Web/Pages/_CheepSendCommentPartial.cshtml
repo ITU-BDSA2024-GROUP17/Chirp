@@ -17,7 +17,7 @@
         }
     </div>
     <form class="flex-grow-1 d-flex flex-row gap-2" id="cheepInputForm" method="post" asp-page-handler="CommentCheep"
-        asp-route-CommentCheep="@Model.Id">
+        asp-route-CommentCheep="@Model.Id" defaultbutton="sendCheepButton">
 
         <div class="text-box-container">
             <!-- Bind to a single comment, rather than ICollection -->

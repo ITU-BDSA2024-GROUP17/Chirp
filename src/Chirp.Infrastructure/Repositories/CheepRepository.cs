@@ -101,12 +101,12 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     }
 
 
-    public Task PostComment(int CheepToCommentId, Cheep comment)
+    public async Task PostComment(int CheepToCommentId, Cheep comment)
     {
-        var cheepToComment = GetCheep(CheepToCommentId).Result ?? throw new Exception("Cheep not found to comment!");
+        var cheepToComment = await GetCheep(CheepToCommentId) ?? throw new Exception("Cheep not found to comment!");
         cheepToComment.Comments.Add(comment);
-
-        return Task.FromResult(_context.SaveChangesAsync());
+        await CreateCheep(comment);
+        await _context.SaveChangesAsync();
     }
 
     public Task DeleteCheep(int cheepId)
