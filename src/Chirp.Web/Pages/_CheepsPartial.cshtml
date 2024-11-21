@@ -27,6 +27,7 @@
                     </a>
                 }
                 <div class="cheep">
+
                     <div class="cheep-user">
                         <a class="cheep-author" href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
                         @if (User.Identity != null && User.Identity.IsAuthenticated && cheep.Author.Id != userId)
@@ -81,19 +82,15 @@
                             }
                         </form>
                     </div>
+                </div>
+                <partial name="_CheepsPartial" model="@cheep.Comments" />
                     @if (User.Identity != null && User.Identity.IsAuthenticated && !cheep.AuthorId.Equals(userId))
                     {
                         <partial name="_CheepSendCommentPartial" model="@cheep" />
                     }
-                </div>
             </li>
 
-                <partial name="_CheepsPartial" model="@cheep.Comments" />
 
         }
     </ul>
-}
-else
-{
-    <em>No Cheeps found</em>
 }

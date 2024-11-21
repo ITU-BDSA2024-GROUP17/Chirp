@@ -10,6 +10,7 @@
 @if (User.Identity != null && User.Identity.IsAuthenticated)
 {
     @await Html.PartialAsync("_SendCheepPartial", Model)
+    <hr />
 }
 
 <partial name="_CheepsPartial" model="@Model.Cheeps" />
