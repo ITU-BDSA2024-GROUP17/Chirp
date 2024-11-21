@@ -89,6 +89,8 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         .SelectMany(a => a.Cheeps)
         .Include(c => c.Author)
         .Include(c => c.Likes)
+        .Include(c => c.Revisions)
+        .Include(c => c.Comments)
         .ToListAsync();
 
         // Cheeps form follwing
@@ -98,6 +100,8 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         .SelectMany(a => a.Following.SelectMany(f => f.Cheeps))
         .Include(c => c.Author)
         .Include(c => c.Likes)
+        .Include(c => c.Revisions)
+        .Include(c => c.Comments)
         .ToListAsync();
 
         // Combine results
