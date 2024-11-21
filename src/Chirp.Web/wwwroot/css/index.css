@@ -458,17 +458,21 @@ Interface
     color: #0d6efd !important;
 }
 /* icons */
+.icon {
+    width: 25px;
+    height: 25px;
+}
+
 .like-btn {
     padding: unset !important;
 }
+
 .like-logo {
-    width: 25px;
     fill: var(--gray-600);
     transition: all 200ms ease;
 }
 .like-logo-deactive {
     cursor: default;
-    width: 25px;
     fill: var(--gray-600);
     transition: all 200ms ease;
 }
