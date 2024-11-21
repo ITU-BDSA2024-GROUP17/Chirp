@@ -466,6 +466,12 @@ Interface
     fill: var(--gray-600);
     transition: all 200ms ease;
 }
+.like-logo-deactive {
+    cursor: default;
+    width: 25px;
+    fill: var(--gray-600);
+    transition: all 200ms ease;
+}
 
 .like-logo:hover {
     fill: #0d6efd;
