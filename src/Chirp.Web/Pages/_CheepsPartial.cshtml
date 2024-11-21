@@ -8,89 +8,97 @@
 
 @if (Model.Any())
 {
-    <ul id="messagelist" class="cheeps-container">
-    @foreach (var cheep in Model)
+        <ul id="messagelist" class="cheeps-container">
+        @foreach (var cheep in Model)
         {
-            <li class="cheep-wrapper">
+                    <li class="cheep-wrapper">
                 @if (@cheep.Author.UserName != null)
                 {
-                    <a href="/@cheep.Author.UserName" class="avatar">
-                        <!--If the author has an avatar, display it instead of just a letter-->
+                                <a href="/@cheep.Author.UserName" class="avatar">
+                                    <!--If the author has an avatar, display it instead of just a letter-->
                         @if (cheep.Author.Avatar != null)
                         {
-                            <img src="@cheep.Author.Avatar" class="avatar" />
+                                            <img src="@cheep.Author.Avatar" class="avatar" />
                         }
                         else
                         {
                             @cheep.Author.UserName.First()
                         }
-                    </a>
+                                </a>
                 }
-                <div class="cheep">
+                        <div class="cheep">
 
-                    <div class="cheep-user">
-                        <a class="cheep-author" href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
+                            <div class="cheep-user">
+                                <a class="cheep-author" href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
                         @if (User.Identity != null && User.Identity.IsAuthenticated && cheep.Author.Id != userId)
                         {
-                            <form method="post">
+                                        <form method="post">
                                 @{
                                     string action = cheep.Author.Followers.Any(f => f.Id == userId) == true ? "unfollow" : "follow";
                                 }
 
-                                <button class="btn btn-secondary"
+                                            <button class="btn btn-secondary"
 
-                                type="submit" asp-page-handler="@action" asp-route-followeeId="@cheep.AuthorId"
-                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                            type="submit" asp-page-handler="@action" asp-route-followeeId="@cheep.AuthorId"
+                                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
                                     @action
-                                </button>
-                            </form>
+                                            </button>
+                                        </form>
                         }
-                        <div class="cheep-timestamp-tooltip">
-                            &sdot;<span>@Chirp.Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.Revisions.ToArray().First().TimeStamp)</span>
-                            <small class="cheep-timestamp">
+                                <div class="cheep-timestamp-tooltip">
+                                    &sdot;<span>@Chirp.Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.Revisions.ToArray().First().TimeStamp)</span>
+                                    <small class="cheep-timestamp">
                                 @Chirp.Web.Utilities.TimeUtilties.FormatUnixTimeRaw(@cheep.Revisions.ToArray().First().TimeStamp)</small>
-                        </div>
-                    </div>
+                                </div>
+                            </div>
                     @cheep.Revisions.ToArray().Last().Message
-                    <div style="margin-top: .5rem; display: flex; gap: 0.5em;">
-                        <form asp-page-handler="Like" method="post" asp-route-cheepId="@cheep.Id">
+                            <div style="display: flex; gap: 0.5em;">
+                                <form asp-page-handler="Like" method="post" asp-route-cheepId="@cheep.Id">
                             @if (User.Identity != null && User.Identity.IsAuthenticated)
                             {
-                                <button class="btn @(cheep.Likes.Any(a => a.Id == userId) == true ? "btn-primary" : "btn-secondary")"
-                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                    type="submit">
-                                    Like <span class="badge text-bg-secondary">@cheep.Likes.Count</span>
-                                </button>
+                                <div>
+                                            <button class="like-btn btn"
+                                                type="submit">
+                                                <div class="like-logo">
+                                                    @if (cheep.Likes.Any(a => a.Id == userId) == true){
+                                                        <svg viewBox="0 0 24 24" fill="#0d6efd" aria-hidden="true"><g><path d="M20.884 13.19c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path></g></svg>
+                                                    }else{
+                                                        <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path></g></svg>
+                                                    }
+                                                </div>
+                                            </button>
+                                            <span class="@(cheep.Likes.Any(a => a.Id == userId) == true ? "active" : "font-sec")">@cheep.Likes.Count</span>
+                                </div>
                             }
                             else
                             {
-                                <button class="btn btn-secondary"
-                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                    type="submit" disabled>
-                                    Like <span class="badge text-bg-secondary">@cheep.Likes.Count</span>
-                                </button>
+                                            <button class="btn btn-secondary"
+                                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                type="submit" disabled>
+                                                Like <span class="badge text-bg-secondary">@cheep.Likes.Count</span>
+                                            </button>
                             }
-                        </form>
-                        <form asp-page-handler="Delete" method="post" asp-route-UserAuth="@userId"
-                            asp-route-cheepId="@cheep.Id">
+                                </form>
+                                <form asp-page-handler="Delete" method="post" asp-route-UserAuth="@userId"
+                                    asp-route-cheepId="@cheep.Id">
                             @if (User.Identity != null && User.Identity.IsAuthenticated && cheep.AuthorId.Equals(userId))
                             {
-                                <button class="btn btn-secondary" type="submit"
-                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                    Delete
-                                </button>
+                                            <button class="btn btn-secondary" type="submit"
+                                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+                                                Delete
+                                            </button>
                             }
-                        </form>
-                    </div>
-                </div>
-                <partial name="_CheepsPartial" model="@cheep.Comments" />
-                    @if (User.Identity != null && User.Identity.IsAuthenticated && !cheep.AuthorId.Equals(userId))
-                    {
-                        <partial name="_CheepSendCommentPartial" model="@cheep" />
-                    }
-            </li>
+                                </form>
+                            </div>
+                        </div>
+                        <partial name="_CheepsPartial" model="@cheep.Comments" />
+                @if (User.Identity != null && User.Identity.IsAuthenticated && !cheep.AuthorId.Equals(userId))
+                {
+                                    <partial name="_CheepSendCommentPartial" model="@cheep" />
+                }
+                    </li>
 
 
         }
-    </ul>
+        </ul>
 }
