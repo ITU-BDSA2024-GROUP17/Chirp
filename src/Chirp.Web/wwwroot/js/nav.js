@@ -18,3 +18,22 @@ function skipPages(pagesToSkip) {
     const searchQuery = urlParams.get("SearchQuery") || "";
     window.location.href = `/search?SearchQuery=${searchQuery}&page=${newPageNum}`;
 }
+
+function showCommentField(id) {
+    if (!Number.isInteger(id)) {
+        console.error("id must be an integer.");
+        return;
+    }
+    const fields = document.querySelectorAll(`[fieldId="${id}"]`);
+    if (fields.length === 0) {
+        console.error(`No elements found with fieldId: ${id}`);
+        return;
+    }
+    fields.forEach((field) => {
+        if (field.style.display === "none") {
+            field.style.display = "flex";
+        } else {
+            field.style.display = "none";
+        }
+    });
+}
