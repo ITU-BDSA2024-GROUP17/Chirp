@@ -219,6 +219,7 @@ Cheeps
 .cheep-wrapper-mini > .cheeps-container {
     grid-area: comment;
     gap: unset;
+    margin-top: 0.7em;
 }
 .avatar {
     grid-area: avatar;
