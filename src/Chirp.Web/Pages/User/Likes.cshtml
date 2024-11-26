@@ -4,7 +4,7 @@
 
 @model Chirp.Web.Pages.User.UserLikesModel
 
-@await Html.PartialAsync("_CheepsPartial", Model.LikedCheeps)
+@await Html.PartialAsync("_CheepsPartial", Model)
 
 @await Html.PartialAsync("_PaginationPartial", new Pagination()
 {
