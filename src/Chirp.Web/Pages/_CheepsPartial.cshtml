@@ -48,7 +48,15 @@
                         <div class="cheep-timestamp-tooltip">
                             &sdot;<span>@Chirp.Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.Revisions.Last().TimeStamp)</span>
                             <small class="cheep-timestamp">
-                                @Chirp.Web.Utilities.TimeUtilties.FormatUnixTimeRaw(@cheep.Revisions.Last().TimeStamp)</small>
+                                @Chirp.Web.Utilities.TimeUtilties.FormatUnixTimeRaw(@cheep.Revisions.Last().TimeStamp)
+                            </small>
+                        </div>
+                        <div class="cheep-timestamp-tooltip">
+                            &sdot;
+                            @if (cheep.Revisions.Count > 1)
+                            {
+                                <span onclick="ToggleRevisions(@cheep.Id)">Edited</span>
+                            }
                         </div>
                         @if (User.Identity != null && User.Identity.IsAuthenticated && cheep.AuthorId.Equals(userId))
                         {
@@ -76,6 +84,19 @@
                             </form>
                         </div>
                     }
+                    <div class="cheep-message" id="cheeprevision-@cheep.Id" style="display: none;">
+                        @{
+                            List<CheepRevision> revisionList = cheep.Revisions.ToList();
+                            for (int i = cheep.Revisions.Count - 1; i > -1; i--)
+                            {
+                                <div class="cheep-message" style="padding-bottom: 10px;">
+                                    @Chirp.Web.Utilities.TimeUtilties.FormatUnixTimeRaw(revisionList[i].TimeStamp)
+                                    &sdot;
+                                    @revisionList[i].Message
+                                </div>
+                            }
+                        }
+                    </div>
                     <div style="margin-top: .5rem; display: flex; gap: 0.5em;">
                         <form asp-page-handler="Like" method="post" asp-route-cheepId="@cheep.Id">
                             @if (User.Identity != null && User.Identity.IsAuthenticated)
