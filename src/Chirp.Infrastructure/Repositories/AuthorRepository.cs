@@ -2,6 +2,7 @@ using Chirp.Core.Interfaces;
 using Chirp.Core.Entities;
 using Chirp.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
+using System.IO.Compression;
 
 namespace Chirp.Infrastructure.Repositories;
 
@@ -64,12 +65,14 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
             .SelectMany(a => a.Cheeps)
             .Include(c => c.Author)
             .Include(c => c.Likes)
-            .OrderByDescending(c => new List<CheepRevision>(c.Revisions).First().TimeStamp)
+            .Include(c => c.Revisions)
+            .OrderByDescending(c => c.Revisions.First().TimeStamp)
             .Paginate(page)
-            .ToListAsync();
+            .ToList();
 
-        return cheeps;
+        return Task.FromResult(cheeps);
     }
+
 
     public Task<int> GetCheepsCount(string author)
     {

@@ -105,7 +105,6 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     {
         var cheepToComment = await GetCheep(CheepToCommentId) ?? throw new Exception("Cheep not found to comment!");
         cheepToComment.Comments.Add(comment);
-        await CreateCheep(comment);
         await _context.SaveChangesAsync();
     }
 
