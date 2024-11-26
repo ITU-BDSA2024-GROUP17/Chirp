@@ -11,6 +11,7 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
 {
     private readonly AuthorService _authorService = authorService;
     private readonly CheepService _cheepService = cheepService;
+    [BindProperty]
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
     public int TotalCheeps { get; set; }
 
@@ -98,6 +99,29 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         }
 
         return LocalRedirect(Url.Content("~/"));
+    }
+
+    public async Task<IActionResult> OnPostUpdateCheepAsync(int cheepId, [FromForm] string CheepMessage)
+    {
+        if (User.Identity == null || !User.Identity.IsAuthenticated) throw new UnauthorizedAccessException("User is not logged in!");
+
+        try
+        {
+            CheepRevision revision = new()
+            {
+                Message = CheepMessage,
+                TimeStamp = DateTime.Now
+            };
+
+            await _cheepService.UpdateCheep(cheepId, revision);
+            
+            // Reload page
+            return LocalRedirect(Url.Content("~/"));
+        }
+        catch (InvalidDataException)
+        {
+            return LocalRedirect(Url.Content("~/"));
+        }
     }
 
     public async Task<IActionResult> OnPostFollowAsync(string followeeId)

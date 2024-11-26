@@ -16,7 +16,7 @@
 <div>
     @if (Model.Cheeps.Any())
     {
-        @await Html.PartialAsync("_CheepsPartial", Model.Cheeps)
+        @await Html.PartialAsync("_CheepsPartial", Model)
 
         @await Html.PartialAsync("_PaginationPartial", new Pagination()
 {

@@ -12,7 +12,7 @@
     @await Html.PartialAsync("_SendCheepPartial", Model)
 }
 
-<partial name="_CheepsPartial" model="@Model.Cheeps" />
+<partial name="_CheepsPartial" model="@Model" />
 
 <partial name="_PaginationPartial" model="@(new Pagination()
     {
