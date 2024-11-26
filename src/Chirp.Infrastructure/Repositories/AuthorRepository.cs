@@ -89,7 +89,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         .Where(a => a.UserName == author)
         .SelectMany(a => a.Cheeps)
         .Include(c => c.Author)
-        .Include(c => c.Revisions)
+        .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
         .Include(c => c.Likes)
         .ToListAsync();
 
@@ -99,7 +99,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         .Include(a => a.Following)
         .SelectMany(a => a.Following.SelectMany(f => f.Cheeps))
         .Include(c => c.Author)
-        .Include(c => c.Revisions)
+        .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
         .Include(c => c.Likes)
         .ToListAsync();
 
@@ -133,6 +133,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
           .Where(a => a.UserName == author)
           .SelectMany(a => a.LikedCheeps)
           .Include(c => c.Author)
+          .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
           .Include(c => c.Likes)
           .OrderByDescending(c => c.Revisions.First().TimeStamp)
           .Paginate(page)
