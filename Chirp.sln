@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Infrastructure.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Web.Tests", "test\Chirp.Web.Tests\Chirp.Web.Tests.csproj", "{ADD2F2EC-5560-40D3-B940-FF8E71DEA1B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Web.Playwright", "test\Chirp.Web.Playwright\Chirp.Web.Playwright.csproj", "{64D31138-EA46-4171-97BF-8CFB17AE2396}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{ADD2F2EC-5560-40D3-B940-FF8E71DEA1B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADD2F2EC-5560-40D3-B940-FF8E71DEA1B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADD2F2EC-5560-40D3-B940-FF8E71DEA1B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64D31138-EA46-4171-97BF-8CFB17AE2396}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64D31138-EA46-4171-97BF-8CFB17AE2396}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64D31138-EA46-4171-97BF-8CFB17AE2396}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64D31138-EA46-4171-97BF-8CFB17AE2396}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,5 +59,6 @@ Global
 		{2AE22EE2-73AE-4723-A895-12CB24F83277} = {5415D0A6-7663-433B-B39E-3A5D5CE38FA5}
 		{45038281-0DF8-44A2-A7FB-1BE6B0B0FAB2} = {D6FD1C26-2687-4D3B-AAF1-437F1F2445E2}
 		{ADD2F2EC-5560-40D3-B940-FF8E71DEA1B0} = {D6FD1C26-2687-4D3B-AAF1-437F1F2445E2}
+		{64D31138-EA46-4171-97BF-8CFB17AE2396} = {D6FD1C26-2687-4D3B-AAF1-437F1F2445E2}
 	EndGlobalSection
 EndGlobal
