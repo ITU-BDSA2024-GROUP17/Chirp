@@ -90,7 +90,7 @@ public class UserModel(AuthorService authorService, CheepService cheepService) :
             CheepRevision cheepRevision = new()
             {
                 Message = CheepMessage,
-                TimeStamp = DateTime.Now
+                TimeStamp = DateTime.UtcNow
             };
             List<CheepRevision> revList = [cheepRevision];
             Cheep cheep = new()
