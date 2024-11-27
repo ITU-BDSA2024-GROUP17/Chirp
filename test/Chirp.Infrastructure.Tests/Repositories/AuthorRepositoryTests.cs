@@ -88,22 +88,18 @@ public class AuthorRepositoryTests
     }
 
     [Theory]
-    [InlineData("John Doe")]
-    [InlineData("John Smith")]
-    public async Task GetCheepsWithLikesByAuthorTest(string name)
+    [InlineData("John Doe", 1, 1)]
+    [InlineData("John Smith", 3, 2)]
+    [InlineData("Jane Smith", 4, 3)]
+    public async Task GetCheepsWithLikesByAuthorTest(string name, int cheepID, int expectedLikes)
     {
         var author = await _authorRepository.GetAuthorByName(name) ?? throw new Exception("Author not found");
 
         foreach (var cheep in author.Cheeps)
         {
-            if (cheep.Id == 1)
+            if (cheep.Id == cheepID)
             {
-                Assert.Single(cheep.Likes);
-            }
-            else if (cheep.Id == 3)
-            {
-                Assert.Equal(2, cheep.Likes.Count);
-
+                Assert.Equal(cheep.Likes.Count, expectedLikes);
             }
             else
             {
