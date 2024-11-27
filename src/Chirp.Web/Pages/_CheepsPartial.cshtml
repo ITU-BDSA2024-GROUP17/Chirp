@@ -14,20 +14,19 @@
                     <li class="cheep-wrapper">
                 @if (@cheep.Author.UserName != null)
                 {
-                                <a href="/@cheep.Author.UserName" class="avatar">
-                                    <!--If the author has an avatar, display it instead of just a letter-->
+                    <a href="/@cheep.Author.UserName" class="avatar">
+                        <!--If the author has an avatar, display it instead of just a letter-->
                         @if (cheep.Author.Avatar != null)
                         {
-                                            <img src="@cheep.Author.Avatar" class="avatar" />
+                            <img src="@cheep.Author.Avatar" class="avatar" />
                         }
                         else
                         {
                             @cheep.Author.UserName.First()
                         }
-                                </a>
+                    </a>
                 }
                         <div class="cheep">
-
                             <div class="cheep-user">
                                 <a class="cheep-author" href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
                                 <div class="cheep-timestamp-tooltip">
@@ -70,7 +69,7 @@
                                 </form>
 
 
-                              @if (User.Identity != null && User.Identity.IsAuthenticated)
+                              @if (User.Identity != null && User.Identity.IsAuthenticated && @cheep.CheepOwnerId == null)
                             {
                                 <button class="btn" style="padding: unset; border: unset;" onclick="showCommentField(@cheep.Id)">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="comment-btn icon" fill="#ced4da"  viewBox="0 0 24 24"><path d="M12,2A10,10,0,0,0,2,12a9.89,9.89,0,0,0,2.26,6.33l-2,2a1,1,0,0,0-.21,1.09A1,1,0,0,0,3,22h9A10,10,0,0,0,12,2Zm0,18H5.41l.93-.93a1,1,0,0,0,0-1.41A8,8,0,1,1,12,20Z"/></svg>
