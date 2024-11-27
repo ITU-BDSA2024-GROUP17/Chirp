@@ -103,4 +103,21 @@ public class E2ETests : PageTest
         await Page.WaitForURLAsync("http://localhost:5163/?page=1");
         await Expect(Page.GetByText("I am testing today!").GetByText("PlayWright" + userId)).ToBeVisibleAsync();
     }
+
+    [Test]
+    public async Task AvatarTest()
+    {
+        int userId = await HelperCreateAccount();
+
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Playwright" + userId }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { NameString = "Settings" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/Identity/Account/Manage");
+        await Expect(Page.GetByRole(AriaRole.Img, new()).Nth(1)).Not.ToBeVisibleAsync();
+
+        await Page.GetByRole(AriaRole.Textbox, new() { NameString = "Avatar" }).FillAsync("https://www.w3schools.com/howto/img_avatar.png");
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Save" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/Identity/Account/Manage");
+
+        await Expect(Page.GetByRole(AriaRole.Img, new()).Nth(1)).ToBeVisibleAsync();
+    }
 }
