@@ -9,11 +9,11 @@
 
 @if (User.Identity != null && User.Identity.IsAuthenticated)
 {
-    @await Html.PartialAsync("_SendCheepPartial", Model)
+    @await Html.PartialAsync("_SendCheepPartial")
     <hr />
 }
 
-<partial name="_CheepsPartial" model="@Model" />
+<partial name="_CheepsPartial" model="@Model.Cheeps" />
 
 <partial name="_PaginationPartial" model="@(new Pagination()
     {

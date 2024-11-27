@@ -10,13 +10,13 @@
 
 @if (User.Identity != null && User.Identity.IsAuthenticated && routeName?.ToString() == User.Identity.Name)
 {
-    @await Html.PartialAsync("_SendCheepPartial", Model)
+    @await Html.PartialAsync("_SendCheepPartial")
 }
 
 <div>
     @if (Model.Cheeps.Any())
     {
-        @await Html.PartialAsync("_CheepsPartial", Model)
+        @await Html.PartialAsync("_CheepsPartial", Model.Cheeps)
 
         @await Html.PartialAsync("_PaginationPartial", new Pagination()
 {
