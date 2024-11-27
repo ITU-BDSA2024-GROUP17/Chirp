@@ -1,0 +1,31 @@
+@using Chirp.Core.Entities;
+@model Cheep;
+
+<div class="send-box" fieldId="@Model.Id" style="display: none;">
+    <div class="avatar">
+        @if (User.Identity?.Name != null)
+        {
+            var avatarUrl = User.FindFirst("Avatar")?.Value;
+            if (avatarUrl != null)
+            {
+                <img src="@avatarUrl" class="avatar" />
+            }
+            else
+            {
+                @User.Identity.Name?.First()
+            }
+        }
+    </div>
+    <form class="flex-grow-1 d-flex flex-row gap-2" style="max-height: 40px;" id="cheepCommentInputForm" method="post"
+        asp-page-handler="CommentCheep" asp-route-CommentCheep="@Model.Id" defaultbutton="sendCommentButton">
+
+        <div class="text-box-container">
+            <textarea name="CommentText" class="text-box-cheep cheep-input" id="cheepComment"
+                placeholder="What's on your mind?" autocomplete="off"></textarea>
+            <span class="text-box-limit">0</span>
+        </div>
+        <div class="d-flex absolute justify-content-end">
+            <button class="btn btn-primary" id="sendCommentButton" type="submit">Comment</button>
+        </div>
+    </form>
+</div>

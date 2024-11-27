@@ -55,6 +55,11 @@ public class CheepDbContext : IdentityDbContext
                     join.Property(af => af.TimeStamp).HasDefaultValueSql("CURRENT_TIMESTAMP");
                 }
             );
+
+        modelBuilder.Entity<Cheep>()
+            .HasMany(c => c.Comments)
+            .WithOne(c => c.CheepOwner)
+            .HasForeignKey(c => c.CheepOwnerId);
     }
 
     public DbSet<Cheep> Cheeps { get; set; }

@@ -12,10 +12,16 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     public Task<List<Cheep>> GetCheeps(int page)
     {
         Task<List<Cheep>> cheeps = _context.Cheeps
+            .Where(c => c.CheepOwnerId == null)
             .Include(c => c.Revisions)
-            .Include(c => c.Author)
-            .ThenInclude(a => a.Followers)
+            .Include(c => c.Author).ThenInclude(a => a.Followers)
             .Include(c => c.Likes)
+
+            // Comment inclusion
+            .Include(c => c.Comments).ThenInclude(c => c.Revisions)
+            .Include(c => c.Comments).ThenInclude(c => c.Author).ThenInclude(a => a.Followers)
+            .Include(c => c.Comments).ThenInclude(c => c.Likes)
+
             .OrderByDescending(c => c.Revisions.First().TimeStamp)
             .Paginate(page)
             .ToListAsync();
@@ -98,6 +104,14 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
         _context.SaveChanges();
 
         return Task.FromResult(cheep);
+    }
+
+
+    public async Task PostComment(int CheepToCommentId, Cheep comment)
+    {
+        var cheepToComment = await GetCheep(CheepToCommentId) ?? throw new Exception("Cheep not found to comment!");
+        cheepToComment.Comments.Add(comment);
+        await _context.SaveChangesAsync();
     }
 
     public Task DeleteCheep(int cheepId)

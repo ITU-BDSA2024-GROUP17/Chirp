@@ -8,10 +8,10 @@
 
 @if (Model.Any())
 {
-    <ul id="messagelist" class="cheeps-container">
-    @foreach (var cheep in Model)
+        <ul id="messagelist" class="cheeps-container">
+        @foreach (var cheep in Model)
         {
-            <li class="cheep-wrapper">
+                    <li class="cheep-wrapper">
                 @if (@cheep.Author.UserName != null)
                 {
                     <a href="/@cheep.Author.UserName" class="avatar">
@@ -26,67 +26,101 @@
                         }
                     </a>
                 }
-                <div class="cheep">
-                    <div class="cheep-user">
-                        <a class="cheep-author" href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
-                        @if (User.Identity != null && User.Identity.IsAuthenticated && cheep.Author.Id != userId)
-                        {
-                            <form method="post">
-                                @{
-                                    string action = cheep.Author.Followers.Any(f => f.Id == userId) == true ? "unfollow" : "follow";
-                                }
-
-                                <button class="btn btn-secondary"
-
-                                type="submit" asp-page-handler="@action" asp-route-followeeId="@cheep.AuthorId"
-                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                    @action
-                                </button>
-                            </form>
-                        }
-                        <div class="cheep-timestamp-tooltip">
-                            &sdot;<span>@Chirp.Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.Revisions.ToArray().First().TimeStamp)</span>
-                            <small class="cheep-timestamp">
+                        <div class="cheep">
+                            <div class="cheep-user">
+                                <a class="cheep-author" href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
+                                <div class="cheep-timestamp-tooltip">
+                                    &sdot;<span>@Chirp.Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.Revisions.ToArray().First().TimeStamp)</span>
+                                    <small class="cheep-timestamp">
                                 @Chirp.Web.Utilities.TimeUtilties.FormatUnixTimeRaw(@cheep.Revisions.ToArray().First().TimeStamp)</small>
-                        </div>
-                    </div>
+                                </div>
+                            </div>
                     @cheep.Revisions.ToArray().Last().Message
-                    <div style="margin-top: .5rem; display: flex; gap: 0.5em;">
-                        <form asp-page-handler="Like" method="post" asp-route-cheepId="@cheep.Id">
+                            <div style="display: flex; gap: 0.5em; align-items: center;">
+                                <form asp-page-handler="Like" method="post" asp-route-cheepId="@cheep.Id">
                             @if (User.Identity != null && User.Identity.IsAuthenticated)
                             {
-                                <button class="btn @(cheep.Likes.Any(a => a.Id == userId) == true ? "btn-primary" : "btn-secondary")"
-                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                    type="submit">
-                                    Like <span class="badge text-bg-secondary">@cheep.Likes.Count</span>
-                                </button>
+                                <div>
+                                    <button class="like-btn btn"
+                                        type="submit">
+                                        <div class="like-logo icon">
+                                            @if (cheep.Likes.Any(a => a.Id == userId) == true){
+                                                <svg viewBox="0 0 24 24" fill="#0d6efd" aria-hidden="true"><g><path d="M20.884 13.19c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path></g></svg>
+                                            }else{
+                                                <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path></g></svg>
+                                            }
+                                        </div>
+                                    </button>
+                                    <span class="@(cheep.Likes.Any(a => a.Id == userId) == true ? "active" : "font-sec")" style="vertical-align: middle;">@cheep.Likes.Count</span>
+                                </div>
+
                             }
                             else
                             {
-                                <button class="btn btn-secondary"
-                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                    type="submit" disabled>
-                                    Like <span class="badge text-bg-secondary">@cheep.Likes.Count</span>
-                                </button>
+                                <div>
+                                    <div class="like-btn btn">
+                                        <div class="deactive icon">
+                                            <svg viewBox="0 0 24 24" style="fill: transparent; stroke-width: 2px; stroke: #ced4da;" aria-hidden="true"><g><path d="M20.884 13.19c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path></g></svg>
+                                        </div>
+                                    </div>
+                                    <span class="@(cheep.Likes.Any(a => a.Id == userId) == true ? "active" : "font-sec")">@cheep.Likes.Count</span>
+                                </div>
                             }
-                        </form>
-                        <form asp-page-handler="Delete" method="post" asp-route-UserAuth="@userId"
-                            asp-route-cheepId="@cheep.Id">
+                                </form>
+
+
+                              @if (User.Identity != null && User.Identity.IsAuthenticated && @cheep.CheepOwnerId == null)
+                            {
+                                <button class="btn" style="padding: unset; border: unset;" onclick="showCommentField(@cheep.Id)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="comment-btn icon" fill="#ced4da"  viewBox="0 0 24 24"><path d="M12,2A10,10,0,0,0,2,12a9.89,9.89,0,0,0,2.26,6.33l-2,2a1,1,0,0,0-.21,1.09A1,1,0,0,0,3,22h9A10,10,0,0,0,12,2Zm0,18H5.41l.93-.93a1,1,0,0,0,0-1.41A8,8,0,1,1,12,20Z"/></svg>
+                                </button>
+                                <span class="font-sec">@cheep.Comments.Count</span>
+                             }else if(@cheep.CheepOwnerId != null){
+                                // Display no comment if 1-deep
+                             }else
+                             {
+                                <button class="btn" style="padding: unset; border: unset;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="#ced4da" viewBox="0 0 24 24"><path d="M12,2A10,10,0,0,0,2,12a9.89,9.89,0,0,0,2.26,6.33l-2,2a1,1,0,0,0-.21,1.09A1,1,0,0,0,3,22h9A10,10,0,0,0,12,2Zm0,18H5.41l.93-.93a1,1,0,0,0,0-1.41A8,8,0,1,1,12,20Z"/></svg>
+                                </button>
+                                <span class="font-sec">@cheep.Comments.Count</span>
+                             }
+                                @if (User.Identity != null && User.Identity.IsAuthenticated && cheep.Author.Id != userId)
+                                {
+                                <form method="post">
+                                @{
+                                    string action = cheep.Author.Followers.Any(f => f.Id == userId) == true ? "unfollow" : "follow";
+                                }
+                                    <button class="btn @action"
+                                    type="submit" asp-page-handler="@action" asp-route-followeeId="@cheep.AuthorId" style="padding: 0.25rem;"  >
+
+                                    @if(cheep.Author.Followers.Any(f => f.Id == userId) == true){
+                                        <svg class="icon @action" style="fill: #0d6efd" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com" viewBox="3.125 2.187 32.731 31.948" width="32.731px" height="31.948px"><defs><bx:export><bx:file format="svg" href="#object-0"/><bx:file format="svg" href="#_Transparent_Rectangle_" path="Untitled 4.svg"/></bx:export></defs><title>user--follow</title><path d="M 172.751 94.344 L 172.751 176.344 L 90.751 176.344 L 90.751 94.344 Z M 140.751 144.344 L 140.751 126.344 L 122.751 126.344 L 122.751 144.344 Z" style="fill: none;"/><path d="M 172.751 94.344 L 172.751 176.344 L 90.751 176.344 L 90.751 94.344 Z M 140.751 144.344 L 140.751 126.344 L 122.751 126.344 L 122.751 144.344 Z" style="fill: none;"/><title>user--follow</title><title>user--follow</title>
+                                        <path style="stroke: #0d6efd; stroke-width: 2px;  fill: none;" d="M 24.256 16.406 L 28.577 22.271 L 34.239 13.971" id="object-0"/><title>user--follow</title><rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32" style="fill: none;" x="2.815" y="2.457"/><title>user--follow</title><rect id="rect-1" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32" style="fill: none;" x="39.964" y="1.378"/><title>user--follow</title><path d="M 14.608 6.761 C 18.457 6.761 20.862 10.928 18.938 14.261 C 17.013 17.594 12.202 17.594 10.278 14.261 C 9.839 13.501 9.608 12.639 9.608 11.761 C 9.608 9 11.846 6.761 14.608 6.761 M 14.608 4.761 C 9.219 4.761 5.851 10.594 8.546 15.261 C 11.24 19.928 17.976 19.928 20.67 15.261 C 21.284 14.197 21.608 12.99 21.608 11.761 C 21.608 7.895 18.474 4.761 14.608 4.761 Z"/><path d="M 24.608 32.761 L 22.608 32.761 L 22.608 27.761 C 22.608 25 20.369 22.761 17.608 22.761 L 11.608 22.761 C 8.846 22.761 6.608 25 6.608 27.761 L 6.608 32.761 L 4.608 32.761 L 4.608 27.761 C 4.608 23.895 7.742 20.761 11.608 20.761 L 17.608 20.761 C 21.474 20.761 24.608 23.895 24.608 27.761 L 24.608 32.761 Z"/><rect id="rect-2" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32" style="fill: none;" x="25.206" y="1.193"/></svg>
+                                    }else{
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon @action" fill="#ced4da" viewBox="0 0 32 32" ><defs><style>.cls-1{fill:none;}</style></defs><title>user--follow</title><polygon points="32 14 28 14 28 10 26 10 26 14 22 14 22 16 26 16 26 20 28 20 28 16 32 16 32 14"/><path d="M12,4A5,5,0,1,1,7,9a5,5,0,0,1,5-5m0-2a7,7,0,1,0,7,7A7,7,0,0,0,12,2Z" transform="translate(0 0)"/><path d="M22,30H20V25a5,5,0,0,0-5-5H9a5,5,0,0,0-5,5v5H2V25a7,7,0,0,1,7-7h6a7,7,0,0,1,7,7Z" transform="translate(0 0)"/><rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/></svg>
+                                    }
+                                    </button>
+                                </form>
+                                }
+                                <form asp-page-handler="Delete" method="post" asp-route-UserAuth="@userId"
+                                    asp-route-cheepId="@cheep.Id">
                             @if (User.Identity != null && User.Identity.IsAuthenticated && cheep.AuthorId.Equals(userId))
                             {
-                                <button class="btn btn-secondary" type="submit"
-                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                    Delete
+                                <button class="btn" style="padding: unset;" type="submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" style="scale: 0.65; width: 35px;" viewBox="0 0 30 30" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" width="30" height="30"><g><path d="M3.968 12.061A3.965 3.965 0 0 0 0 16.027a3.965 3.965 0 0 0 3.968 3.967 3.966 3.966 0 1 0 0 -7.933m12.265 0A3.967 3.967 0 0 0 12.265 16.026c0 2.192 1.778 3.967 3.968 3.967S20.203 18.221 20.203 16.026a3.97 3.97 0 0 0 -3.97 -3.965m11.857 0a3.967 3.967 0 1 0 -0.005 7.933 3.967 3.967 0 0 0 0.005 -7.933"/></g></svg>
                                 </button>
                             }
-                        </form>
-                    </div>
-                </div>
-            </li>
+                                </form>
+                            </div>
+                        </div>
+                        <partial name="_CheepsPartial" model="@cheep.Comments" />
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+
+                            <partial name="_CheepSendCommentPartial" model="@cheep" />
+                        }
+                    </li>
         }
-    </ul>
-}
-else
-{
-    <em>No Cheeps found</em>
+        </ul>
+
 }
