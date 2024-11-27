@@ -1,3 +1,4 @@
+using Chirp.Core.Entities;
 using Chirp.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,21 +22,94 @@ public class AuthorRepositoryTests
     }
 
     [Fact]
-    public async Task GetAllAuthors()
+    public async Task GetAllAuthorsTest()
     {
         var authors = await _authorRepository.GetAuthors(1);
 
         Assert.Equal(4, authors.Count);
     }
 
-    [Theory]
-    [InlineData("John", 1, 2)]
-    [InlineData("o", 1, 3)]
-    [InlineData("smith", 1, 2)]
-    public async Task SearchCheeps(string search, int page, int expected)
-    {
-        var authors = (await _authorRepository.SearchAuthors(search, page)).ToList();
 
-        Assert.Equal(expected, authors.Count);
+    [Theory]
+    [InlineData("John Doe")]
+    [InlineData("Jane Smith")]
+    [InlineData("John")]
+    public async Task GetAuthorByNameTest(string searchName)
+    {
+        var author = await _authorRepository.GetAuthorByName(searchName);
+
+        if (searchName.Equals("John"))
+        {
+            Assert.Null(author);
+        }
+        else
+        {
+            Assert.Equal(searchName, author?.UserName);
+        }
+
     }
+
+
+    [Theory]
+    // Setup: InlineData("Search", "Expected")
+    [InlineData("", new[] { "John Doe", "John Smith", "Jane Smith", "Jane Doe" })]
+    [InlineData("t", new[] { "Jane Smith", "John Smith" })] // 't' only in Smith
+    [InlineData("John", new[] { "John Doe", "John Smith" })]
+    [InlineData("smith", new[] { "Jane Smith", "John Smith" })]
+    public async Task SearchAuthorsTest(string search, string[] expected)
+    {
+        var authors = await _authorRepository.SearchAuthors(search, 1);
+
+        Assert.Equal(expected.Length, authors.Count);
+
+        foreach (var item in authors)
+        {
+            Assert.Contains(item.UserName, expected);
+        }
+    }
+
+    [Theory]
+    [InlineData("John Doe")]
+    [InlineData("Jane Smith")]
+    public async Task GetCheepsTest(string author)
+    {
+        var cheeps = await _authorRepository.GetCheeps(author, 1);
+
+        foreach (var cheep in cheeps)
+        {
+            Assert.True(cheep.Author.UserName == author);
+            // Ensure all fileds in the cheeps are consturcted
+            Assert.NotNull(cheep.Revisions);
+            Assert.NotNull(cheep.AuthorId);
+            Assert.NotNull(cheep.Likes);
+            Assert.NotNull(cheep.Comments);
+            Assert.NotNull(cheep.Revisions);
+        }
+    }
+
+    // [Theory]
+    // [InlineData(1)]
+    // [InlineData(4)]
+    // public async Task GetCheepsWithLikes(int cheepId)
+    // {
+    //     var cheeps = await _authorRepository.Get(author, 1);
+
+    //     if (cheep.Id.Equals(1))
+    //     {
+    //         Assert.Single(cheep.Likes);
+    //     }
+    //     else
+    //     {
+    //         Assert.Empty(cheep.Likes);
+    //     }
+
+    //     if (cheep.Id.Equals(2))
+    //     {
+    //         Assert.Single(cheep.Comments);
+    //     }
+    //     else
+    //     {
+    //         Assert.Empty(cheep.Comments);
+    //     }
+    // }
 }

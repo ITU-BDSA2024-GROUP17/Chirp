@@ -8,17 +8,28 @@ public static class DbInitializer
     {
         if (cheepDbContext.Authors.Any() || cheepDbContext.Cheeps.Any()) return;
 
-        var a1 = new Author() { Id = "2bcf724c-b650-476c-ae11-d408eb2105a0", UserName = "John Doe ", Email = "John-Doe@mail.com", Cheeps = [] };
+        var a1 = new Author() { Id = "2bcf724c-b650-476c-ae11-d408eb2105a0", UserName = "John Doe", Email = "John-Doe@mail.com", Cheeps = [] };
         var a2 = new Author() { Id = "ac71fc84-62b9-4907-9b90-5305e1e25c96", UserName = "Jane Doe", Email = "Jane-Doe@mail.dk", Cheeps = [] };
         var a3 = new Author() { Id = "797776e2-0ac8-4493-a9dd-526a24146a87", UserName = "John Smith", Email = "John-Smith@mail.com", Cheeps = [] };
         var a4 = new Author() { Id = "5ba7ed22-77c3-43da-899c-ac31e563d036", UserName = "Jane Smith", Email = "Jane-Smith@mail.com", Cheeps = [] };
 
         var authors = new List<Author>() { a1, a2, a3, a4 };
 
-        var c1 = new Cheep() { Id = 1, AuthorId = a1.Id, Author = a1, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", TimeStamp = DateTime.Parse("2023-08-01 13:14:37") } } };
-        var c2 = new Cheep() { Id = 2, AuthorId = a2.Id, Author = a2, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "And then, as he listened to all that''s left o'' twenty-one people.", TimeStamp = DateTime.Parse("2023-08-01 13:15:21") } } };
-        var c3 = new Cheep() { Id = 3, AuthorId = a3.Id, Author = a3, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "In various enchanted attitudes, like the Sperm Whale.", TimeStamp = DateTime.Parse("2023-08-01 13:14:58") } } };
-        var c4 = new Cheep() { Id = 4, AuthorId = a4.Id, Author = a4, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "Unless we succeed in establishing ourselves in some monomaniac way whatever significance might lurk in them.", TimeStamp = DateTime.Parse("2023-08-01 13:14:34") } } };
+        // With Like
+        var c1 = new Cheep() { Id = 1, AuthorId = a1.Id, Author = a1, Likes = new List<Author>() { a2 }, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", TimeStamp = DateTime.Parse("2023-08-01 13:14:37") } } };
+
+        // With Comment
+        var c2 = new Cheep() { Id = 2, AuthorId = a2.Id, Author = a2, Comments = new List<Cheep>() { c1 }, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "And then, as he listened to all that''s left o'' twenty-one people.", TimeStamp = DateTime.Parse("2023-08-01 13:15:21") } } };
+
+        // With Like (count = 2) and Comments (count = 2)
+        var c3 = new Cheep() { Id = 3, AuthorId = a3.Id, Author = a3, Comments = new List<Cheep>() { c1, c2 }, Likes = new List<Author>() { a1, a2 }, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "In various enchanted attitudes, like the Sperm Whale.", TimeStamp = DateTime.Parse("2023-08-01 13:14:58") } } };
+
+        // With Like (count = 3), Comment (count = 2) and Revisions (count = 2)
+        var c4 = new Cheep() { Id = 4, AuthorId = a4.Id, Author = a4, Comments = new List<Cheep>() { c1, c2 }, Likes = new List<Author>() { a1, a2, a3 }, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "Unless we succeed in establishing ourselves in some monomaniac way whatever significance might lurk in them.", TimeStamp = DateTime.Parse("2023-08-01 13:14:34") }, new CheepRevision() { Message = "Unless we succeed in establishing ourselves in some monomaniac way whatever significance might lurk in them.", TimeStamp = DateTime.Parse("2023-08-01 13:16:34") } } };
+
+
+        /// Boiler plate
+
         var c5 = new Cheep() { Id = 5, AuthorId = a1.Id, Author = a1, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "At last we came back!", TimeStamp = DateTime.Parse("2023-08-01 13:14:35") } } };
         var c6 = new Cheep() { Id = 6, AuthorId = a2.Id, Author = a2, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "At first he had only exchanged one trouble for another.", TimeStamp = DateTime.Parse("2023-08-01 13:14:13") } } };
         var c7 = new Cheep() { Id = 7, AuthorId = a3.Id, Author = a3, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "In the first watch, and every creditor paid in full.", TimeStamp = DateTime.Parse("2023-08-01 13:16:13") } } };
