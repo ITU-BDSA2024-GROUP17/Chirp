@@ -88,6 +88,7 @@ public class AuthorRepositoryTests
     }
 
     [Theory]
+    // (Author, cheepId, expectedLikes)
     [InlineData("John Doe", 1, 1)]
     [InlineData("John Smith", 3, 2)]
     [InlineData("Jane Smith", 4, 3)]
@@ -105,6 +106,25 @@ public class AuthorRepositoryTests
             {
                 Assert.Empty(cheep.Likes);
             }
+        }
+    }
+
+    [Theory]
+    [InlineData("John Doe")]
+    [InlineData("John Smith")]
+    public async Task GetFollowersByAuthorTest(string name)
+    {
+        var author = await _authorRepository.GetAuthorByName(name) ?? throw new Exception("Author not found");
+
+        if (name == "John Doe")
+        {
+            Assert.Single(await _authorRepository.GetFollowers(author.Id));
+            Assert.Empty(await _authorRepository.GetFollowing(author.Id));
+        }
+        else if (name == "John Smith")
+        {
+            Assert.Single(await _authorRepository.GetFollowing(author.Id));
+            Assert.Empty(await _authorRepository.GetFollowers(author.Id));
         }
     }
 }

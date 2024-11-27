@@ -10,7 +10,7 @@ public static class DbInitializer
 
         var a1 = new Author() { Id = "2bcf724c-b650-476c-ae11-d408eb2105a0", UserName = "John Doe", Email = "John-Doe@mail.com", Cheeps = [] };
         var a2 = new Author() { Id = "ac71fc84-62b9-4907-9b90-5305e1e25c96", UserName = "Jane Doe", Email = "Jane-Doe@mail.dk", Cheeps = [] };
-        var a3 = new Author() { Id = "797776e2-0ac8-4493-a9dd-526a24146a87", UserName = "John Smith", Email = "John-Smith@mail.com", Cheeps = [] };
+        var a3 = new Author() { Id = "797776e2-0ac8-4493-a9dd-526a24146a87", UserName = "John Smith", Email = "John-Smith@mail.com", Cheeps = [], Following = [a1] };
         var a4 = new Author() { Id = "5ba7ed22-77c3-43da-899c-ac31e563d036", UserName = "Jane Smith", Email = "Jane-Smith@mail.com", Cheeps = [] };
 
         var authors = new List<Author>() { a1, a2, a3, a4 };
@@ -27,6 +27,8 @@ public static class DbInitializer
         // With Like (count = 3), Comment (count = 2) and Revisions (count = 2)
         var c4 = new Cheep() { Id = 4, AuthorId = a4.Id, Author = a4, Comments = new List<Cheep>() { c1, c2 }, Likes = new List<Author>() { a1, a2, a3 }, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "Unless we succeed in establishing ourselves in some monomaniac way whatever significance might lurk in them.", TimeStamp = DateTime.Parse("2023-08-01 13:14:34") }, new CheepRevision() { Message = "Unless we succeed in establishing ourselves in some monomaniac way whatever significance might lurk in them.", TimeStamp = DateTime.Parse("2023-08-01 13:16:34") } } };
 
+        //
+        // FOLLOWING
 
         /// Boiler plate
 
