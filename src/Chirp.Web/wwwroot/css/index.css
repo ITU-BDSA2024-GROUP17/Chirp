@@ -480,8 +480,6 @@ Interface
 .deactive {
     fill: var(--gray-600);
     transition: all 200ms ease;
-    stroke: var(--gray-400);
-    stroke-width: 2px;
 }
 .unfollow:hover,
 .follow:hover,
