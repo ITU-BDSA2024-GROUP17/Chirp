@@ -23,6 +23,11 @@ builder.Services.Configure<IdentityOptions>(options =>
 {
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
     options.User.RequireUniqueEmail = true;
+
+    // We don't have an email or phone service, so we cannot send the verification messages.
+    options.SignIn.RequireConfirmedAccount = false;
+    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
 });
 
 builder.Services.ConfigureApplicationCookie(options =>

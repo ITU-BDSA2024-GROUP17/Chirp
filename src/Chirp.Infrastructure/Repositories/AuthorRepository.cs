@@ -63,6 +63,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         var cheeps = _context.Authors
             .Where(a => a.UserName == author)
             .SelectMany(a => a.Cheeps)
+            .Include(c => c.Revisions)
             .Include(c => c.Author)
             .Include(c => c.Likes)
             .Include(c => c.Revisions)
@@ -134,13 +135,14 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
     public Task<List<Cheep>> GetLiked(string author, int page)
     {
         var cheeps = _context.Authors
-          .Where(a => a.UserName == author)
-          .SelectMany(a => a.LikedCheeps)
-          .Include(c => c.Author)
-          .Include(c => c.Likes)
-          .OrderByDescending(c => new List<CheepRevision>(c.Revisions).First().TimeStamp)
-          .Paginate(page)
-          .ToList();
+            .Where(a => a.UserName == author)
+            .SelectMany(a => a.LikedCheeps)
+            .Include(c => c.Revisions)
+            .Include(c => c.Author)
+            .Include(c => c.Likes)
+            .OrderByDescending(c => c.Revisions.First().TimeStamp)
+            .Paginate(page)
+            .ToList();
 
         return Task.FromResult(cheeps);
     }
