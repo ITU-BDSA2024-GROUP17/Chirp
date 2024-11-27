@@ -66,7 +66,6 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
             .Include(c => c.Revisions)
             .Include(c => c.Author)
             .Include(c => c.Likes)
-            .Include(c => c.Revisions)
             .OrderByDescending(c => c.Revisions.First().TimeStamp)
             .Paginate(page)
             .ToList();
