@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Chirp.Core.Entities;
@@ -31,6 +32,9 @@ namespace Chirp.Web.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string Username { get; set; }
+
+        [BindProperty]
+        public string Avatar { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -67,6 +71,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
+            Avatar = user.Avatar;
 
             Input = new InputModel
             {
@@ -109,6 +114,17 @@ namespace Chirp.Web.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
+            }
+
+            if (Avatar != user.Avatar)
+            {
+                if (user.Avatar != null)
+                {
+                    await _userManager.RemoveClaimAsync(user, new Claim("Avatar", user.Avatar));
+                }
+                await _userManager.AddClaimAsync(user, new Claim("Avatar", Avatar));
+                user.Avatar = Avatar;
+                await _userManager.UpdateAsync(user);
             }
 
             await _signInManager.RefreshSignInAsync(user);
