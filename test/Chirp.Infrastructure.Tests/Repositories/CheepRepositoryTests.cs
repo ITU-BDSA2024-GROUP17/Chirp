@@ -72,7 +72,7 @@ public class CheepRepositoryTests
         var revision = new CheepRevision()
         {
             Message = "".PadRight(messageLength, 'A'),
-            TimeStamp = DateTime.Now
+            TimeStamp = DateTime.UtcNow
         };
         var revisionsList = new List<CheepRevision>();
         revisionsList.Add(revision);

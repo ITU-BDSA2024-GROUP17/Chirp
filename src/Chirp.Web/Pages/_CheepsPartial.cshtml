@@ -46,7 +46,7 @@
                         <div class="cheep-timestamp-tooltip">
                             &sdot;<span>@Chirp.Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.Revisions.Last().TimeStamp)</span>
                             <small class="cheep-timestamp">
-                                @Chirp.Web.Utilities.TimeUtilties.FormatUnixTimeRaw(@cheep.Revisions.Last().TimeStamp)
+                                @Chirp.Web.Utilities.TimeUtilties.FormatUnixTimeRaw(@cheep.Revisions.Last().TimeStamp) UTC
                             </small>
                         </div>
                         @if (cheep.Revisions.Count > 1)
