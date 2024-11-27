@@ -1,6 +1,6 @@
 namespace Chirp.Infrastructure.Extensions.Tests;
 
-public class CheepExtensionsTest
+public class QueryableExtensionsTest
 {
     [Fact]
     public void PaginateIEnumarableTest()
