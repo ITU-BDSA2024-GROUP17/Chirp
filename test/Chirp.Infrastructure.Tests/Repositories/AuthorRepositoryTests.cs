@@ -87,29 +87,28 @@ public class AuthorRepositoryTests
         }
     }
 
-    // [Theory]
-    // [InlineData(1)]
-    // [InlineData(4)]
-    // public async Task GetCheepsWithLikes(int cheepId)
-    // {
-    //     var cheeps = await _authorRepository.Get(author, 1);
+    [Theory]
+    [InlineData("John Doe")]
+    [InlineData("John Smith")]
+    public async Task GetCheepsWithLikesByAuthorTest(string name)
+    {
+        var author = await _authorRepository.GetAuthorByName(name) ?? throw new Exception("Author not found");
 
-    //     if (cheep.Id.Equals(1))
-    //     {
-    //         Assert.Single(cheep.Likes);
-    //     }
-    //     else
-    //     {
-    //         Assert.Empty(cheep.Likes);
-    //     }
+        foreach (var cheep in author.Cheeps)
+        {
+            if (cheep.Id == 1)
+            {
+                Assert.Single(cheep.Likes);
+            }
+            else if (cheep.Id == 3)
+            {
+                Assert.Equal(2, cheep.Likes.Count);
 
-    //     if (cheep.Id.Equals(2))
-    //     {
-    //         Assert.Single(cheep.Comments);
-    //     }
-    //     else
-    //     {
-    //         Assert.Empty(cheep.Comments);
-    //     }
-    // }
+            }
+            else
+            {
+                Assert.Empty(cheep.Likes);
+            }
+        }
+    }
 }

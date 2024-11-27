@@ -2,7 +2,6 @@ using Chirp.Core.Interfaces;
 using Chirp.Core.Entities;
 using Chirp.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
-using System.IO.Compression;
 
 namespace Chirp.Infrastructure.Repositories;
 
@@ -152,6 +151,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
 
         return cheeps;
     }
+
 
     public Task<Author> GetAuthorByField(string author, Func<Author, string> field)
     {
