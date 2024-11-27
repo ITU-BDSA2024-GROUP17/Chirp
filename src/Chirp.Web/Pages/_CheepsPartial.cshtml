@@ -31,18 +31,6 @@
                 <div class="cheep">
                     <div class="cheep-user">
                         <a class="cheep-author" href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
-                        @if (User.Identity != null && User.Identity.IsAuthenticated && cheep.Author.Id != userId)
-                        {
-                            <form method="post">
-                                @{
-                                    string action = cheep.Author.Followers.Any(f => f.Id == userId) == true ? "unfollow" : "follow";
-                                }
-
-                                <button class="btn btn-secondary" type="submit" asp-page-handler="@action" asp-route-followeeId="@cheep.AuthorId" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                    @action
-                                </button>
-                            </form>
-                        }
                         <div class="cheep-timestamp-tooltip">
                             &sdot;<span>@Chirp.Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.Revisions.Last().TimeStamp)</span>
                             <small class="cheep-timestamp">
