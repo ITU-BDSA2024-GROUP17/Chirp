@@ -16,54 +16,16 @@
             }
         }
     </div>
-    <form class="flex-grow-1 d-flex flex-row gap-2" style="max-height: 40px;" id="cheepInputForm" method="post"
-        asp-page-handler="CommentCheep" asp-route-CommentCheep="@Model.Id" defaultbutton="sendCheepButton">
+    <form class="flex-grow-1 d-flex flex-row gap-2" style="max-height: 40px;" id="cheepCommentInputForm" method="post"
+        asp-page-handler="CommentCheep" asp-route-CommentCheep="@Model.Id" defaultbutton="sendCommentButton">
 
         <div class="text-box-container">
-            <textarea name="CommentText" class="text-box-cheep cheep-input" id="cheepMessage"
+            <textarea name="CommentText" class="text-box-cheep cheep-input" id="cheepComment"
                 placeholder="What's on your mind?" autocomplete="off"></textarea>
             <span class="text-box-limit">0</span>
         </div>
         <div class="d-flex absolute justify-content-end">
-            <button class="btn btn-primary" id="sendCheepButton" type="submit">Comment</button>
+            <button class="btn btn-primary" id="sendCommentButton" type="submit">Comment</button>
         </div>
     </form>
 </div>
-
-<script>
-    auto_grow(document.getElementById("cheepMessage"));
-
-    window.addEventListener("DOMContentLoaded", () => {
-        const textLengthLimit = 160;
-        const cheepInputFieldLimit = document.querySelector(".text-box-limit");
-        cheepInputFieldLimit.innerHTML = "0 / " + textLengthLimit; // init length
-
-        const cheepInputField = document.querySelector("#cheepMessage");
-        ['keyup', 'change'].forEach((type) => {
-            cheepInputField.addEventListener(type, (event) => {
-                const inputFieldValue = cheepInputField.value;
-                cheepInputFieldLimit.innerHTML = inputFieldValue.length + " / " + textLengthLimit;
-                if (inputFieldValue.length > textLengthLimit) {
-                    cheepInputFieldLimit.style.color = "red";
-                    cheepInputField.style.color = "red";
-                } else {
-                    cheepInputField.style.color = "black";
-                    cheepInputFieldLimit.style.color = "var(--gray-600)";
-                }
-            });
-        });
-    });
-
-    const textA = document.getElementById("cheepMessage");
-    textA.addEventListener("keypress", event => {
-        if (!event.shiftKey && event.key === "Enter") {
-            event.preventDefault();
-            document.getElementById("cheepInputForm").submit();
-        }
-    });
-
-    function auto_grow(element) {
-        element.style.height = "5px";
-        element.style.height = (element.scrollHeight - 5) + "px";
-    }
-</script>
