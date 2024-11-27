@@ -477,7 +477,7 @@ Interface
 }
 .unfollow,
 .follow,
-.like-logo-deactive {
+.deactive {
     fill: var(--gray-600);
     transition: all 200ms ease;
 }
