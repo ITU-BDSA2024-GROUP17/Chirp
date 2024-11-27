@@ -2,6 +2,7 @@ using Chirp.Core.Interfaces;
 using Chirp.Core.Entities;
 using Chirp.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
+using System.IO.Compression;
 
 namespace Chirp.Infrastructure.Repositories;
 
@@ -68,10 +69,11 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
             .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
             .OrderByDescending(c => c.Revisions.First().TimeStamp)
             .Paginate(page)
-            .ToListAsync();
+            .ToList();
 
-        return cheeps;
+        return Task.FromResult(cheeps);
     }
+
 
     public Task<int> GetCheepsCount(string author)
     {
@@ -92,6 +94,8 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         .Include(c => c.Author)
         .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
         .Include(c => c.Likes)
+        .Include(c => c.Revisions)
+        .Include(c => c.Comments)
         .ToListAsync();
 
         // Cheeps form follwing
@@ -102,6 +106,8 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         .Include(c => c.Author)
         .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
         .Include(c => c.Likes)
+        .Include(c => c.Revisions)
+        .Include(c => c.Comments)
         .ToListAsync();
 
         // Combine results

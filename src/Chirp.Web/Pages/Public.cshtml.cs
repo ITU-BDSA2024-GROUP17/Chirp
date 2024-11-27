@@ -4,6 +4,7 @@ using Chirp.Core.Entities;
 using Chirp.Infrastructure.Services;
 using System.Security.Claims;
 using Chirp.Core.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Chirp.Web.Pages;
 
@@ -141,6 +142,50 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
 
         return LocalRedirect(Url.Content("~/"));
     }
+
+    public async Task<IActionResult> OnPostCommentCheepAsync(int CommentCheep, string CommentText)
+    {
+        if (string.IsNullOrWhiteSpace(CommentText))
+        {
+            ModelState.AddModelError("", "Comment cannot be empty.");
+            return Page();
+        }
+
+        var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
+        var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
+
+
+
+        try
+        {
+
+            Cheep cheep = new()
+            {
+                AuthorId = UserId,
+                Author = author,
+                Revisions = new List<CheepRevision>
+                {
+                    new CheepRevision
+                    {
+                        Message = CommentText,
+                        TimeStamp = DateTime.UtcNow
+                    }
+                },
+                Likes = []
+            };
+
+            await _cheepService.PostComment(CommentCheep, cheep);
+
+            // Reload page
+            return LocalRedirect(Url.Content("~/"));
+        }
+        catch (InvalidDataException)
+        {
+            return LocalRedirect(Url.Content("~/"));
+        }
+
+    }
+
 
     public IActionResult OnPostPaginationAsync(int newPage)
     {

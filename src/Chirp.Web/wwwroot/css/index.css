@@ -96,6 +96,10 @@ header {
     max-width: 72rem;
 }
 
+.font-sec {
+    color: var(--gray-700);
+}
+
 .container {
     padding-top: 1rem;
 }
@@ -188,20 +192,37 @@ Cheeps
 .cheeps-container {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
     padding: 0;
     text-decoration: none;
 }
 
 .cheep-wrapper,
 .cheep-wrapper-mini {
-    display: flex;
+    display: grid;
+    grid-template-areas:
+        "avatar cheep"
+        ". post"
+        ". comment";
+    grid-auto-columns: 3.5rem 1fr;
     align-items: center;
     margin-bottom: 1rem;
     list-style-type: none;
 }
 
+.cheep-wrapper > .send-box,
+.cheep-wrapper-mini > .send-box {
+    grid-area: post;
+    padding: 5px 0;
+}
+.cheep-wrapper > .cheeps-container,
+.cheep-wrapper-mini > .cheeps-container {
+    grid-area: comment;
+    gap: unset;
+    margin-top: 0.7em;
+}
 .avatar {
+    grid-area: avatar;
     height: 40px;
     width: 40px;
     border-radius: 50%;
@@ -217,6 +238,7 @@ Cheeps
 }
 
 .cheep {
+    grid-area: cheep;
     align-items: center;
     justify-content: space-between;
     word-break: break-word;
@@ -350,8 +372,8 @@ mini version of cheep wrapper
 }
 
 .cheep-wrapper-mini .avatar {
-    height: 20px;
-    width: 20px;
+    height: 35px;
+    width: 35px;
 }
 
 /*
@@ -416,7 +438,7 @@ Interface
 */
 ::-webkit-scrollbar {
     width: 1.25rem;
-  }
+}
 
 ::-webkit-scrollbar-track {
     background-color: transparent;
@@ -431,4 +453,38 @@ Interface
 
 ::-webkit-scrollbar-thumb:hover {
     background-color: #a8bbbf;
+}
+
+.active {
+    color: #0d6efd !important;
+    fill: #0d6efd;
+}
+
+/* icons */
+.icon {
+    width: 25px;
+    height: 25px;
+}
+
+.like-btn {
+    padding: unset !important;
+}
+
+.comment-btn,
+.like-logo {
+    fill: var(--gray-600);
+    transition: all 200ms ease;
+}
+.unfollow,
+.follow,
+.deactive {
+    fill: var(--gray-600);
+    transition: all 200ms ease;
+}
+.unfollow:hover,
+.follow:hover,
+.comment-btn:hover,
+.like-logo:hover {
+    fill: #0d6efd;
+    filter: drop-shadow(0px 0px 3px #0d6efd);
 }
