@@ -116,7 +116,16 @@ namespace Chirp.Web.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            if (Avatar != user.Avatar)
+            if (Avatar == null)
+            {
+                if (user.Avatar != null)
+                {
+                    await _userManager.RemoveClaimAsync(user, new Claim("Avatar", user.Avatar));
+                }
+                user.Avatar = null;
+                await _userManager.UpdateAsync(user);
+            }
+            else if (Avatar != user.Avatar)
             {
                 if (user.Avatar != null)
                 {
