@@ -12,10 +12,9 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
 {
     private readonly AuthorService _authorService = authorService;
     private readonly CheepService _cheepService = cheepService;
+    [BindProperty]
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
     public int TotalCheeps { get; set; }
-
-    [BindProperty]
     public string CheepMessage { get; set; } = "";
 
     public async Task<ActionResult> OnGet([FromQuery] int page)
@@ -30,7 +29,7 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         return Page();
     }
 
-    public async Task<IActionResult> OnPostCheepAsync(string returnUrl)
+    public async Task<IActionResult> OnPostCheepAsync([FromForm] string cheepMessage)
     {
         if (User.Identity == null || !User.Identity.IsAuthenticated) throw new UnauthorizedAccessException("User is not logged in!");
 
@@ -39,12 +38,11 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
 
         var revisions = new List<CheepRevision>();
 
-
         try
         {
             CheepRevision revision = new()
             {
-                Message = CheepMessage,
+                Message = cheepMessage,
                 TimeStamp = DateTime.UtcNow
             };
             revisions.Add(revision);
@@ -99,6 +97,28 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         }
 
         return LocalRedirect(Url.Content("~/"));
+    }
+
+    public async Task<IActionResult> OnPostUpdateCheepAsync(int cheepId, [FromForm] string updateCheep)
+    {
+        if (User.Identity == null || !User.Identity.IsAuthenticated) throw new UnauthorizedAccessException("User is not logged in!");
+        try
+        {
+            CheepRevision revision = new()
+            {
+                Message = updateCheep,
+                TimeStamp = DateTime.Now
+            };
+
+            await _cheepService.UpdateCheep(cheepId, revision);
+
+            // Reload page
+            return LocalRedirect(Url.Content("~/"));
+        }
+        catch (InvalidDataException)
+        {
+            return LocalRedirect(Url.Content("~/"));
+        }
     }
 
     public async Task<IActionResult> OnPostFollowAsync(string followeeId)

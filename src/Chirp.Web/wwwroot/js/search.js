@@ -68,9 +68,13 @@ document.addEventListener("DOMContentLoaded", function () {
         resetkeydownIndex();
     });
 
+
     document.addEventListener("keydown", function (event) {
         listItems = document.getElementsByClassName("cheep-wrapper-mini");
         // Check for up/down key presses
+        if (document.activeElement.id != "navSearchInput" && document.activeElement.className != "cheep-wrapper-mini") {
+            return;
+        }
         switch (event.keyCode) {
             case 38: // Up arrow
                 if (currentLI == 0 || currentLI == -1) {
@@ -103,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 break;
             case 13: // Enter key
                 console.log(currentLI);
+
                 if (currentLI == -1) {
                     const searchQuery = searchInput.value;
                     window.location.href = `/search?SearchQuery=${encodeURIComponent(

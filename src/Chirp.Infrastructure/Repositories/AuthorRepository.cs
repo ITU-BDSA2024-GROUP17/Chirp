@@ -66,6 +66,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
             .Include(c => c.Revisions)
             .Include(c => c.Author)
             .Include(c => c.Likes)
+            .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
             .OrderByDescending(c => c.Revisions.First().TimeStamp)
             .Paginate(page)
             .ToList();
@@ -91,6 +92,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         .Where(a => a.UserName == author)
         .SelectMany(a => a.Cheeps)
         .Include(c => c.Author)
+        .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
         .Include(c => c.Likes)
         .Include(c => c.Revisions)
         .Include(c => c.Comments)
@@ -102,6 +104,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         .Include(a => a.Following)
         .SelectMany(a => a.Following.SelectMany(f => f.Cheeps))
         .Include(c => c.Author)
+        .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
         .Include(c => c.Likes)
         .Include(c => c.Revisions)
         .Include(c => c.Comments)
@@ -110,7 +113,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         // Combine results
         var combinedCheeps = authorCheeps
         .Concat(followingCheeps)
-        .OrderByDescending(c => new List<CheepRevision>(c.Revisions).First().TimeStamp)
+        .OrderByDescending(c => c.Revisions.First().TimeStamp)
         .Paginate(page)
         .ToList();
 
@@ -136,7 +139,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         var cheeps = _context.Authors
             .Where(a => a.UserName == author)
             .SelectMany(a => a.LikedCheeps)
-            .Include(c => c.Revisions)
+            .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
             .Include(c => c.Author)
             .Include(c => c.Likes)
             .OrderByDescending(c => c.Revisions.First().TimeStamp)

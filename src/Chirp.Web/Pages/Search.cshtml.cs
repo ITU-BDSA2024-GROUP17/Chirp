@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Chirp.Infrastructure.Services;
+using Chirp.Core.Interfaces;
 
 namespace Chirp.Web.Pages;
 [BindProperties]
-public class SearchModel(AuthorService authorService, CheepService cheepService) : PageModel
+public class SearchModel(AuthorService authorService, CheepService cheepService) : PageModel, ICheepModel
 {
+
     private readonly AuthorService _authorService = authorService;
     private readonly CheepService _cheepService = cheepService;
 
@@ -15,6 +17,7 @@ public class SearchModel(AuthorService authorService, CheepService cheepService)
 
     [BindProperty(SupportsGet = true)]
     public string? SearchQuery { get; set; }
+    public string CheepMessage { get; set; } = "";
 
     public async Task<IActionResult> OnGet([FromQuery] string SearchQuery, [FromQuery] int page = 1)
     {

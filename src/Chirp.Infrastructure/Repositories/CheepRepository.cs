@@ -13,8 +13,9 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     {
         Task<List<Cheep>> cheeps = _context.Cheeps
             .Where(c => c.CheepOwnerId == null)
-            .Include(c => c.Revisions)
+            .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
             .Include(c => c.Author).ThenInclude(a => a.Followers)
+            .ThenInclude(a => a.Followers)
             .Include(c => c.Likes)
 
             // Comment inclusion
@@ -40,6 +41,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     {
         var cheep = _context.Cheeps
             .Include(c => c.Author)
+            .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
             .Include(c => c.Likes)
             .FirstOrDefault(c => c.Id == id);
 
@@ -49,9 +51,16 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     public Task<List<Cheep>> SearchCheeps(string searchQuery, int page)
     {
         var cheeps = _context.Cheeps
-            .Include(c => c.Revisions)
-            .Search(searchQuery, x => x.Revisions.Last().Message)
-            .OrderByDescending(c => c.Revisions.First().TimeStamp)
+            .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
+            .Include(c => c.Likes)
+
+            // Cheep.Comments inclusion
+            .Include(c => c.Comments).ThenInclude(c => c.Revisions)
+            .Include(c => c.Comments).ThenInclude(c => c.Author).ThenInclude(a => a.Followers)
+            .Include(c => c.Comments).ThenInclude(c => c.Likes)
+
+            .Search(searchQuery, x => x.Revisions.First().Message)
+            .OrderByDescending(c => c.Revisions.Last().TimeStamp)
             .Paginate(page)
             .ToList();
 
@@ -71,7 +80,9 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     {
         var cheep = _context.Cheeps.Find(cheepId) ?? throw new InvalidDataException("Cheep does not exist!");
 
-        cheep.Revisions.Add(cheepRevision);
+        List<CheepRevision> tempList = cheep.Revisions.ToList();
+        tempList.Add(cheepRevision);
+        cheep.Revisions = tempList;
 
         _context.SaveChanges();
 

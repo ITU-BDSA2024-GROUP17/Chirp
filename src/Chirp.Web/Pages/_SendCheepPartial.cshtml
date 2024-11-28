@@ -1,5 +1,4 @@
 @using Chirp.Core.Interfaces;
-@model ICheepModel
 
 <div class="send-box">
     <div class="avatar">
@@ -20,7 +19,7 @@
         defaultbutton="sendCheepButton">
 
         <div class="text-box-container" oninput="auto_grow(this)">
-            <textarea type="text" asp-for="CheepMessage" class="text-box-cheep cheep-input" id="cheepMessage"
+            <textarea type="text" name="cheepMessage" class="text-box-cheep cheep-input" id="cheepMessage"
                 placeholder="Whats on your mind?" autocomplete="off" oninput="auto_grow(this)"></textarea>
             <span class="text-box-limit">
                 0
