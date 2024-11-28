@@ -101,6 +101,7 @@ public class E2ETests : PageTest
         await Page.GetByPlaceholder("Whats on your mind?").FillAsync("I am testing today!");
         await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
         await Page.WaitForURLAsync("http://localhost:5163/?page=1");
-        await Expect(Page.GetByText("I am testing today!").GetByText("PlayWright" + userId)).ToBeVisibleAsync();
+        await Expect(Page.Locator(".cheep").GetByText("I am testing today!").First).ToBeVisibleAsync();
+        await Expect(Page.Locator(".cheep").First.GetByText("PlayWright" + userId)).ToBeVisibleAsync();
     }
 }
