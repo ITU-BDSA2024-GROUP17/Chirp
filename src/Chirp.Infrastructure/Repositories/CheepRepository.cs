@@ -51,7 +51,14 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
     public Task<List<Cheep>> SearchCheeps(string searchQuery, int page)
     {
         var cheeps = _context.Cheeps
-            .Include(c => c.Revisions)
+            .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
+            .Include(c => c.Likes)
+
+            // Cheep.Comments inclusion
+            .Include(c => c.Comments).ThenInclude(c => c.Revisions)
+            .Include(c => c.Comments).ThenInclude(c => c.Author).ThenInclude(a => a.Followers)
+            .Include(c => c.Comments).ThenInclude(c => c.Likes)
+
             .Search(searchQuery, x => x.Revisions.First().Message)
             .OrderByDescending(c => c.Revisions.Last().TimeStamp)
             .Paginate(page)

@@ -10,8 +10,8 @@ namespace Chirp.Web.Pages;
 
 public class PublicModel(AuthorService authorService, CheepService cheepService) : PageModel, ICheepModel
 {
-    public readonly AuthorService _authorService = authorService;
-    public readonly CheepService _cheepService = cheepService;
+    private readonly AuthorService _authorService = authorService;
+    private readonly CheepService _cheepService = cheepService;
     [BindProperty]
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
     public int TotalCheeps { get; set; }
