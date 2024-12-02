@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Tests.Repositories;
 
+[TestFixture]
 public class CheepRepositoryTests
 {
     private readonly CheepDbContext _cheepDbContext;
@@ -24,61 +25,61 @@ public class CheepRepositoryTests
         _authorRepository = new AuthorRepository(_cheepDbContext);
     }
 
-    [Theory]
-    [InlineData(1, 32)]
-    [InlineData(2, 32)]
+    [TestCase(1, 32), Order(1)]
+    [TestCase(2, 32)]
     public async Task GetCheeps(int page, int expected)
     {
         var cheeps = await _cheepRepository.GetCheeps(page);
 
-        Assert.Equal(expected, cheeps.Count);
+        Assert.That(cheeps, Has.Count.EqualTo(expected));
     }
 
-    [Fact]
+    [Test, Order(999)]
     public async Task DeleteCheep()
     {
         const int CHEEP_ID = 3;
         // Ensure cheep is avaliable for deletion
         var cheep = _cheepRepository.GetCheep(CHEEP_ID);
-        Assert.True(cheep != null);
+        Assert.That(cheep, Is.Not.Null);
 
         await _cheepRepository.DeleteCheep(3);
         var cheepAfterDelete = await _cheepRepository.GetCheep(CHEEP_ID);
-        Assert.True(cheepAfterDelete == null);
-
+        Assert.That(cheepAfterDelete, Is.Null);
     }
 
-    [Theory]
-    [InlineData("first", 1, 2)]
-    [InlineData("watch", 1, 2)]
-    [InlineData("at", 1, 32)]
+    [TestCase("first", 1, 2)]
+    [TestCase("watch", 1, 2)]
+    [TestCase("at", 1, 32)]
     public async Task SearchCheeps(string search, int page, int expected)
     {
         var cheeps = (await _cheepRepository.SearchCheeps(search, page)).ToList();
 
-        Assert.Equal(expected, cheeps.Count);
+        Assert.That(cheeps, Has.Count.EqualTo(expected));
     }
 
-    [Theory]
-    [InlineData(10, true)]
-    [InlineData(159, true)]
-    [InlineData(160, true)]
-    [InlineData(161, false)]
-    [InlineData(561, false)]
+    [TestCase(10, true)]
+    [TestCase(159, true)]
+    [TestCase(160, true)]
+    [TestCase(161, false)]
+    [TestCase(561, false)]
     public async Task SendLongCheep(int messageLength, bool shouldPass)
     {
         var author = await _authorRepository.GetAuthor("2bcf724c-b650-476c-ae11-d408eb2105a0");
-        if (author == null) Assert.Fail("Author could not be found from db");
+
+        Assert.That(author, Is.Not.Null, "Author could not be found from db");
+
         var revision = new CheepRevision()
         {
             Message = "".PadRight(messageLength, 'A'),
             TimeStamp = DateTime.UtcNow
         };
-        var revisionsList = new List<CheepRevision>();
-        revisionsList.Add(revision);
+        var revisionsList = new List<CheepRevision>
+        {
+            revision
+        };
         var cheep = new Cheep()
         {
-            AuthorId = author.Id,
+            AuthorId = author.Id, // Author cannot be null since it is asserted that earlier.
             Revisions = revisionsList,
             Author = author
         };
@@ -92,6 +93,11 @@ public class CheepRepositoryTests
             return;
         }
         if (!shouldPass) Assert.Fail("Cheep was created, but it shouldnt have");
+    }
 
+    [OneTimeTearDown]
+    public void TearDown()
+    {
+        _cheepDbContext.Dispose();
     }
 }
