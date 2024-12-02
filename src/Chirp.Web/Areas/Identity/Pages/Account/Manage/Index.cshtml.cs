@@ -2,30 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using Chirp.Core.Entities;
+using Chirp.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Areas.Identity.Pages.Account.Manage
 {
-    public class IndexModel : PageModel
+    public class IndexModel(UserManager<Author> userManager, SignInManager<Author> signInManager, AuthorService authorService) : PageModel
     {
-        private readonly UserManager<Author> _userManager;
-        private readonly SignInManager<Author> _signInManager;
-
-        public IndexModel(
-            UserManager<Author> userManager,
-            SignInManager<Author> signInManager)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+        private readonly UserManager<Author> _userManager = userManager;
+        private readonly SignInManager<Author> _signInManager = signInManager;
+        private readonly AuthorService _authorService = authorService;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -105,36 +96,22 @@ namespace Chirp.Web.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            // Remove previous avatar claim
+            if (user.Avatar != null)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
-                }
+                await _userManager.RemoveClaimAsync(user, new Claim("Avatar", user.Avatar));
             }
 
-            if (Avatar == null)
+            // Create new avatar claim
+            if (Avatar != null)
             {
-                if (user.Avatar != null)
-                {
-                    await _userManager.RemoveClaimAsync(user, new Claim("Avatar", user.Avatar));
-                }
-                user.Avatar = null;
-                await _userManager.UpdateAsync(user);
-            }
-            else if (Avatar != user.Avatar)
-            {
-                if (user.Avatar != null)
-                {
-                    await _userManager.RemoveClaimAsync(user, new Claim("Avatar", user.Avatar));
-                }
                 await _userManager.AddClaimAsync(user, new Claim("Avatar", Avatar));
-                user.Avatar = Avatar;
-                await _userManager.UpdateAsync(user);
             }
+
+            await _userManager.UpdateAsync(user);
+
+            user = await _authorService.UpdateAuthorAvatar(user.Id, Avatar);
+            user = await _authorService.UpdateAuthorPhoneNumber(user.Id, Input.PhoneNumber);
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

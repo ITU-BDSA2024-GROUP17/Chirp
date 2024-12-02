@@ -14,7 +14,7 @@ public static class CheepEndpoints
         {
             List<Author> authors = await _authorService.SearchAuthors(SearchQuery, 1);
 
-            List<CreateAuthorDto> authorDtos = new List<CreateAuthorDto>();
+            List<CreateAuthorDto> authorDtos = [];
             foreach (var author in authors)
             {
                 authorDtos.Add(new CreateAuthorDto()
