@@ -116,4 +116,14 @@ public class AuthorService(IAuthorRepository authorRepo) : IAuthorRepository
     {
         return _authorRepo.Unfollow(followerId, followeeId);
     }
+
+    public Task<Author> UpdateAuthorPhoneNumber(string id, string email)
+    {
+        return _authorRepo.UpdateAuthorPhoneNumber(id, email);
+    }
+
+    public Task<Author> UpdateAuthorAvatar(string id, string avatar)
+    {
+        return _authorRepo.UpdateAuthorAvatar(id, avatar);
+    }
 }

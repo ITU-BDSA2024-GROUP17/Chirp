@@ -20,4 +20,6 @@ public interface IAuthorRepository
     public Task<List<Author>> GetFollowers(string authorId);
     public Task<Author> Follow(string followerId, string followeeId);
     public Task<Author> Unfollow(string followerId, string followeeId);
+    public Task<Author> UpdateAuthorPhoneNumber(string id, string phoneNumber);
+    public Task<Author> UpdateAuthorAvatar(string id, string avatar);
 }
