@@ -27,6 +27,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
             .Include(a => a.Cheeps)
             .Include(a => a.Following)
             .Include(a => a.Followers)
+            .AsSplitQuery()
             .FirstOrDefaultAsync();
 
         return author;
@@ -66,6 +67,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
             .Include(c => c.Author)
             .Include(c => c.Likes)
             .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
+            .AsSplitQuery()
             .OrderByDescending(c => c.Revisions.First().TimeStamp)
             .Paginate(page)
             .ToList();
@@ -95,6 +97,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         .Include(c => c.Likes)
         .Include(c => c.Revisions)
         .Include(c => c.Comments)
+        .AsSplitQuery()
         .ToListAsync();
 
         // Cheeps form follwing
@@ -107,6 +110,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         .Include(c => c.Likes)
         .Include(c => c.Revisions)
         .Include(c => c.Comments)
+        .AsSplitQuery()
         .ToListAsync();
 
         // Combine results
@@ -141,6 +145,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
             .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
             .Include(c => c.Author)
             .Include(c => c.Likes)
+            .AsSplitQuery()
             .OrderByDescending(c => c.Revisions.First().TimeStamp)
             .Paginate(page)
             .ToList();

@@ -23,6 +23,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
             .Include(c => c.Comments).ThenInclude(c => c.Author).ThenInclude(a => a.Followers)
             .Include(c => c.Comments).ThenInclude(c => c.Likes)
 
+            .AsSplitQuery()
             .OrderByDescending(c => c.Revisions.First().TimeStamp)
             .Paginate(page)
             .ToListAsync();
@@ -43,6 +44,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
             .Include(c => c.Author)
             .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
             .Include(c => c.Likes)
+            .AsSplitQuery()
             .FirstOrDefault(c => c.Id == id);
 
         return Task.FromResult(cheep);
@@ -59,6 +61,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
             .Include(c => c.Comments).ThenInclude(c => c.Author).ThenInclude(a => a.Followers)
             .Include(c => c.Comments).ThenInclude(c => c.Likes)
 
+            .AsSplitQuery()
             .Search(searchQuery, x => x.Revisions.First().Message)
             .OrderByDescending(c => c.Revisions.Last().TimeStamp)
             .Paginate(page)
@@ -131,6 +134,7 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
             .Where(c => c.Id == cheepId)
             .Include(c => c.Likes)
             .Include(c => c.Revisions)
+            .AsSplitQuery()
             .FirstOrDefault() ?? throw new Exception("Cheep not found for delete");
         _context.Cheeps.Remove(cheepToDelete);
 
