@@ -5,6 +5,7 @@ namespace Chirp.Infrastructure.Tests.Repositories;
 
 public class AuthorRepositoryTests
 {
+
     private readonly CheepDbContext _cheepDbContext;
     private readonly AuthorRepository _authorRepository;
 
@@ -20,22 +21,27 @@ public class AuthorRepositoryTests
         _authorRepository = new AuthorRepository(_cheepDbContext);
     }
 
-    [Fact]
+    [Test]
     public async Task GetAllAuthors()
     {
         var authors = await _authorRepository.GetAuthors(1);
 
-        Assert.Equal(4, authors.Count);
+        Assert.That(authors, Has.Count.EqualTo(4));
     }
 
-    [Theory]
-    [InlineData("John", 1, 2)]
-    [InlineData("o", 1, 3)]
-    [InlineData("smith", 1, 2)]
+    [TestCase("John", 1, 2)]
+    [TestCase("o", 1, 3)]
+    [TestCase("smith", 1, 2)]
     public async Task SearchCheeps(string search, int page, int expected)
     {
         var authors = (await _authorRepository.SearchAuthors(search, page)).ToList();
 
-        Assert.Equal(expected, authors.Count);
+        Assert.That(authors, Has.Count.EqualTo(expected));
+    }
+
+    [OneTimeTearDown]
+    public void TearDown()
+    {
+        _cheepDbContext.Dispose();
     }
 }
