@@ -2,7 +2,6 @@ using Chirp.Core.Interfaces;
 using Chirp.Core.Entities;
 using Chirp.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
-using System.IO.Compression;
 
 namespace Chirp.Infrastructure.Repositories;
 
@@ -224,5 +223,27 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         _context.SaveChanges();
 
         return Task.FromResult(follower);
+    }
+
+    public Task<Author> UpdateAuthorPhoneNumber(string id, string phoneNumber)
+    {
+        var author = _context.Authors.Find(id) ?? throw new InvalidDataException("Author is not avaliable");
+
+        author.PhoneNumber = phoneNumber;
+
+        _context.SaveChanges();
+
+        return Task.FromResult(author);
+    }
+
+    public Task<Author> UpdateAuthorAvatar(string id, string avatar)
+    {
+        var author = _context.Authors.Find(id) ?? throw new InvalidDataException("Author is not avaliable");
+
+        author.Avatar = avatar;
+
+        _context.SaveChanges();
+
+        return Task.FromResult(author);
     }
 }
