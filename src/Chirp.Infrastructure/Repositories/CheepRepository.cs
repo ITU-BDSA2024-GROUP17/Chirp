@@ -130,16 +130,24 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
         await _context.SaveChangesAsync();
     }
 
-    public Task DeleteCheep(int cheepId)
+    public async Task DeleteCheep(int cheepId)
     {
         var cheepToDelete = _context.Cheeps
             .Where(c => c.Id == cheepId)
             .Include(c => c.Likes)
             .Include(c => c.Revisions)
+            .Include(c => c.Comments)
             .AsSplitQuery()
             .FirstOrDefault() ?? throw new Exception("Cheep not found for delete");
-        _context.Cheeps.Remove(cheepToDelete);
 
-        return Task.FromResult(_context.SaveChangesAsync());
+        var commentIds = cheepToDelete.Comments.Select(c => c.Id).ToList();
+
+        foreach (var commentId in commentIds)
+        {
+            await DeleteCheep(commentId);
+        }
+
+        _context.Cheeps.Remove(cheepToDelete);
+        await _context.SaveChangesAsync();
     }
 }
