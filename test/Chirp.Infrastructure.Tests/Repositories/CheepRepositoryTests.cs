@@ -26,11 +26,11 @@ public class CheepRepositoryTests
     }
 
     [TestCase(1, 32), Order(1)]
-    [TestCase(2, 32)]
+    [TestCase(2, 30)] // - 2 cheeps for 2 comments (comments gets saved as cheeps under a ´likes´ in another cheep)
     public async Task GetCheeps(int page, int expected)
     {
         var cheeps = await _cheepRepository.GetCheeps(page);
-
+        Console.WriteLine(cheeps);
         Assert.That(cheeps, Has.Count.EqualTo(expected));
     }
 

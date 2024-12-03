@@ -120,7 +120,7 @@ public class AuthorRepositoryTests
         }
         else if (name == "John Smith")
         {
-            var followers = await _authorRepository.GetFollowers(author.Id);
+            var followers = await _authorRepository.GetFollowing(author.Id);
             Assert.That(followers.Count, Is.EqualTo(1));
             Assert.IsEmpty(await _authorRepository.GetFollowers(author.Id));
         }
