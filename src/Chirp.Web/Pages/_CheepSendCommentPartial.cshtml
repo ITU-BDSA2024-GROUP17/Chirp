@@ -1,11 +1,13 @@
 @using Chirp.Core.Entities;
 @model Cheep;
 
+@* Comment send box, hidden by default *@
 <div class="send-box" fieldId="@Model.Id" style="display: none;">
     <div class="avatar">
         @if (User.Identity?.Name != null)
         {
             var avatarUrl = User.FindFirst("Avatar")?.Value;
+            @* If the author has an avatar, display it instead of just a letter *@
             if (avatarUrl != null)
             {
                 <img src="@avatarUrl" class="avatar" />
@@ -24,6 +26,7 @@
                 placeholder="What's on your mind?" autocomplete="off"></textarea>
             <span class="text-box-limit">0</span>
         </div>
+        @* Submit button for the comment *@
         <div class="d-flex absolute justify-content-end">
             <button class="btn btn-primary" id="sendCommentButton" type="submit">Comment</button>
         </div>

@@ -17,7 +17,7 @@
                 @if (@cheep.Author.UserName != null)
                 {
                     <a href="/@cheep.Author.UserName" class="avatar">
-                        <!--If the author has an avatar, display it instead of just a letter-->
+                        @* If the author has an avatar, display it instead of just a letter *@
                         @if (cheep.Author.Avatar != null)
                         {
                             <img src="@cheep.Author.Avatar" class="avatar" />
@@ -30,6 +30,7 @@
                 }
                 <div class="cheep">
                     <div class="cheep-user">
+                        @* Link to the author's profile with the username *@
                         <a class="cheep-author" href="/@cheep.Author.UserName">@cheep.Author.UserName</a>
                         <div class="cheep-timestamp-tooltip">
                             &sdot;<span>@Chirp.Web.Utilities.TimeUtilties.FormatDateTimePretty(@cheep.Revisions.Last().TimeStamp)</span>
@@ -43,6 +44,7 @@
                             <div class="dropdown cheep-timestamp-tooltip">
                                 <span data-bs-toggle="dropdown" role="button" aria-expanded="false" href="#" id="dropdownMenuLink">Edited</span>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="width: max-content;">
+                                    @* Display all revisions of the cheep *@
                                     @{
                                         List<CheepRevision> revisionsList = cheep.Revisions.ToList();
                                         for (int i = revisionsList.Count - 1; i > -1; i--)
@@ -84,6 +86,7 @@
                     </div>
                     <div style="margin-top: .5rem; display: flex; gap: 0.5em; align-items: center;">
                         <form asp-page-handler="Like" method="post" asp-route-cheepId="@cheep.Id">
+                            @* If the user is logged in, display the like button as active/clickable *@
                             @if (User.Identity != null && User.Identity.IsAuthenticated)
                             {
                                 <div>
@@ -96,12 +99,14 @@
                                             }
                                         </div>
                                     </button>
+                                    @* Displays the amount of likes on the like button. *@
                                     <span class="@(cheep.Likes.Any(a => a.Id == userId) == true ? "active" : "font-sec")" style="vertical-align: middle;">@cheep.Likes.Count</span>
                                 </div>
 
                             }
                             else
                             {
+                                @* If the user is not logged in, display the like button as inactive *@
                                 <div>
                                     <div class="like-btn btn">
                                         <div class="deactive icon">
@@ -129,6 +134,8 @@
                             </button>
                             <span class="font-sec">@cheep.Comments.Count</span>
                         }
+                        @* If the user is logged in and the displayed cheep is not owned by this user,
+                        the follow button is displayed *@
                         @if (User.Identity != null && User.Identity.IsAuthenticated && cheep.Author.Id != userId)
                         {
                             <form method="post">
@@ -146,6 +153,8 @@
                                 </button>
                             </form>
                         }
+                        @* If the user is logged in and the displayed cheep is owned by this user,
+                        a dropdown menu with a edit and delete button is displayed *@
                         @if (User.Identity != null && User.Identity.IsAuthenticated && cheep.AuthorId.Equals(userId))
                         {
                             <div class="cheep-dropdown">
