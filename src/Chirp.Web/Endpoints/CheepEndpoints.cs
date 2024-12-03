@@ -8,11 +8,9 @@ public static class CheepEndpoints
 {
     public static void MapCheepEndpoints(this WebApplication app)
     {
-        var _authorService = app.Services.CreateScope().ServiceProvider.GetService<AuthorService>() ?? throw new Exception("AuthorService not found!");
-
-        app.MapGet("/searchField", async (string SearchQuery) =>
+        app.MapGet("/searchField", async (string SearchQuery, AuthorService authorService) =>
         {
-            List<Author> authors = await _authorService.SearchAuthors(SearchQuery, 1);
+            List<Author> authors = await authorService.SearchAuthors(SearchQuery, 1);
 
             List<CreateAuthorDto> authorDtos = [];
             foreach (var author in authors)
