@@ -30,7 +30,11 @@ public class AuthorRepositoryTests
         Assert.That(authors, Has.Count.EqualTo(4));
     }
 
-
+    /// <summary>
+    /// Test if the author is found by the name
+    /// </summary>
+    /// <param name="searchName">The name to get from</param>
+    /// <returns></returns>
     [TestCase("John Doe")]
     [TestCase("Jane Smith")]
     [TestCase("John")]
@@ -49,7 +53,11 @@ public class AuthorRepositoryTests
 
     }
 
-
+    /// <summary>
+    /// Test if the author is found by a search query
+    /// </summary>
+    /// <param name="search">Search query</param>
+    /// <param name="expected">Expected author results</param>
     // Setup: InlineData("Search", "Expected")
     [TestCase("", new[] { "John Doe", "John Smith", "Jane Smith", "Jane Doe" })]
     [TestCase("t", new[] { "Jane Smith", "John Smith" })] // 't' only in Smith
@@ -67,6 +75,10 @@ public class AuthorRepositoryTests
         }
     }
 
+    /// <summary>
+    /// Test if cheeps are valid upon retrieval
+    /// </summary>
+    /// <param name="author"></param>
     [TestCase("John Doe")]
     [TestCase("Jane Smith")]
     public async Task GetCheepsTest(string author)
@@ -85,6 +97,12 @@ public class AuthorRepositoryTests
         }
     }
 
+    /// <summary>
+    /// Test if cheeps come with likes
+    /// </summary>
+    /// <param name="name">The author name to test cheeps from</param>
+    /// <param name="cheepID">The cheepId to test for expected likes</param>
+    /// <param name="expectedLikes">Amount of expected like on a cheepId</param>
     // (Author, cheepId, expectedLikes)
     [TestCase("John Doe", 1, 1)]
     [TestCase("John Smith", 3, 2)]
@@ -106,6 +124,10 @@ public class AuthorRepositoryTests
         }
     }
 
+    /// <summary>
+    /// Test if the author has followers or is following
+    /// </summary>
+    /// <param name="name">The author to test</param>
     [TestCase("John Doe")]
     [TestCase("John Smith")]
     public async Task GetFollowersByAuthorTest(string name)
@@ -126,6 +148,13 @@ public class AuthorRepositoryTests
         }
     }
 
+    /// <summary>
+    /// Unit test for searching authors
+    /// </summary>
+    /// <param name="search"></param>
+    /// <param name="page"></param>
+    /// <param name="expected"></param>
+    /// <returns></returns>
     [TestCase("John", 1, 2)]
     [TestCase("o", 1, 3)]
     [TestCase("smith", 1, 2)]
