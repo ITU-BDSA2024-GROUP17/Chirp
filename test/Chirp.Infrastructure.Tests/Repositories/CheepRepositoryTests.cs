@@ -4,6 +4,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Tests.Repositories;
 
+/// <summary>
+/// Tests for CheepRepository.cs
+/// </summary>
+/// <remarks>
+/// This class contains unit tests for the CheepRepository class.
+/// TTests for updating/deleting cheeps, liking/unliking cheeps, commenting, search, and max length of cheeps.
+/// </remarks>
+/// <seealso cref="CheepRepository"/>
 [TestFixture]
 public class CheepRepositoryTests
 {
@@ -25,6 +33,15 @@ public class CheepRepositoryTests
         _authorRepository = new AuthorRepository(_cheepDbContext);
     }
 
+    /// <summary>
+    /// Test GetCheeps method
+    /// </summary>
+    /// <remarks>
+    ///  Note: Test case 2 is only 30 cheeps because two cheeps are comments on another cheep.
+    /// </remarks>
+    /// <param name="page">The pagination index</param>
+    /// <param name="expected">Expected amount of cheeps on each page</param>
+    /// <returns></returns>
     [TestCase(1, 32), Order(1)]
     [TestCase(2, 30)] // - 2 cheeps for 2 comments (comments gets saved as cheeps under a ´likes´ in another cheep)
     public async Task GetCheeps(int page, int expected)
@@ -34,6 +51,9 @@ public class CheepRepositoryTests
         Assert.That(cheeps, Has.Count.EqualTo(expected));
     }
 
+    /// <summary>
+    /// Test Update method
+    /// </summary>
     [Test]
     public async Task UpdateCheep()
     {
@@ -53,6 +73,9 @@ public class CheepRepositoryTests
         Assert.That(updatedCheep.Revisions.Last().Message, Is.EqualTo("Updated message"));
     }
 
+    /// <summary>
+    /// Test Delete method
+    /// </summary>
     [Test, Order(999)]
     public async Task DeleteCheep()
     {
@@ -66,6 +89,9 @@ public class CheepRepositoryTests
         Assert.That(cheepAfterDelete, Is.Null);
     }
 
+    /// <summary>
+    /// Test Like and Unlike methods for cheeps
+    /// </summary>
     [Test]
     public async Task LikeAndUnlikeCheep()
     {
@@ -88,9 +114,16 @@ public class CheepRepositoryTests
         Assert.That(cheep.Likes, Has.Count.EqualTo(1));
     }
 
+    /// <summary>
+    /// Test PostComment method
+    /// </summary>
+    /// <param name="i">The iteration for testcases</param>
+    /// <param name="commentMessage">The string message to comment on the cheep</param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     [TestCase(1, "Comment 1")]
     [TestCase(2, "Comment 2")]
-    public async Task PostComment(int c, string commentMessage)
+    public async Task PostComment(int i, string commentMessage)
     {
         const int CHEEP_ID = 1;
         var cheep = await _cheepRepository.GetCheep(CHEEP_ID) ?? throw new Exception("Test: Cheep not found");
@@ -112,7 +145,7 @@ public class CheepRepositoryTests
 
         await _cheepRepository.PostComment(CHEEP_ID, comment);
 
-        switch (c)
+        switch (i)
         {
             case 1:
                 // c = 1 => 1 comment on cheep
@@ -129,7 +162,13 @@ public class CheepRepositoryTests
         }
     }
 
-
+    /// <summary>
+    /// Test SearchCheeps method
+    /// </summary>
+    /// <param name="search">Search query</param>
+    /// <param name="page">pagination page</param>
+    /// <param name="expected">Expected count of search results</param>
+    /// <returns></returns>
     [TestCase("first", 1, 2)]
     [TestCase("watch", 1, 2)]
     [TestCase("at", 1, 32)]
@@ -140,6 +179,12 @@ public class CheepRepositoryTests
         Assert.That(cheeps, Has.Count.EqualTo(expected));
     }
 
+    /// <summary>
+    /// Test CreateCheep method
+    /// </summary>
+    /// <param name="messageLength">The length of a cheep message</param>
+    /// <param name="shouldPass">If the messageLength should be allowed</param>
+    /// <returns></returns>
     [TestCase(10, true)]
     [TestCase(159, true)]
     [TestCase(160, true)]
