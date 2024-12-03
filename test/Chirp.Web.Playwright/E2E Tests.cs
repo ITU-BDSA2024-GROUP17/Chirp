@@ -141,5 +141,11 @@ public class E2ETests : PageTest
         await Page.WaitForURLAsync("http://localhost:5163/?page=1");
 
         await Expect(Page.Locator(".cheep").GetByText("Second time testing today!").Locator("visible=true").First).ToBeVisibleAsync();
+
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Playwright" + userId }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { NameString = "Logout" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Expect(Page.Locator(".cheep-dropdown")).ToHaveCountAsync(0);
     }
 }
