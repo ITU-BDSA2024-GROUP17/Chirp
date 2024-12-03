@@ -70,6 +70,9 @@ public class E2ETests : PageTest
         await Page.GetByRole(AriaRole.Button, new() { NameString = "Playwright" + userId }).ClickAsync();
         await Page.GetByRole(AriaRole.Link, new() { NameString = "Logout" }).ClickAsync();
         await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+        await Expect(Page.GetByRole(AriaRole.Button, new() { NameString = "Playwright" + userId })).ToBeHiddenAsync();
+        await Expect(Page.GetByRole(AriaRole.Button, new() { NameString = "Login" })).ToBeVisibleAsync();
+
     }
 
     [Test]
@@ -120,5 +123,29 @@ public class E2ETests : PageTest
         await Page.WaitForURLAsync("http://localhost:5163/Identity/Account/Manage");
 
         await Expect(Page.GetByRole(AriaRole.Img, new()).Nth(1)).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task EditCheepTest()
+    {
+        int userId = await HelperCreateAccount();
+
+        await Page.GetByPlaceholder("Whats on your mind?").FillAsync("I am testing today!");
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Page.Locator(".cheep-dropdown").First.Locator("button.btn").First.ClickAsync();
+        await Page.Locator("button.dropdown-item").First.ClickAsync();
+        await Page.Locator(".cheepeditbox").First.FillAsync("Second time testing today!");
+        await Page.Keyboard.PressAsync("Enter");
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Expect(Page.Locator(".cheep").GetByText("Second time testing today!").Locator("visible=true").First).ToBeVisibleAsync();
+
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Playwright" + userId }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { NameString = "Logout" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Expect(Page.Locator(".cheep-dropdown")).ToHaveCountAsync(0);
     }
 }
