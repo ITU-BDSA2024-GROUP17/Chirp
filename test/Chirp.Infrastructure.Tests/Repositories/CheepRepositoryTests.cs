@@ -34,6 +34,25 @@ public class CheepRepositoryTests
         Assert.That(cheeps, Has.Count.EqualTo(expected));
     }
 
+    [Test]
+    public async Task UpdateCheep()
+    {
+        const int CHEEP_ID = 1;
+        var cheep = await _cheepRepository.GetCheep(CHEEP_ID);
+        var revision = new CheepRevision()
+        {
+            Message = "Updated message",
+            TimeStamp = DateTime.UtcNow
+        };
+        var updatedCheep = await _cheepRepository.UpdateCheep(CHEEP_ID, revision);
+
+
+        Assert.That(updatedCheep.Revisions, Has.Count.EqualTo(2));
+
+        Assert.That(updatedCheep.Revisions.First().Message, Is.EqualTo(cheep!.Revisions.First().Message));
+        Assert.That(updatedCheep.Revisions.Last().Message, Is.EqualTo("Updated message"));
+    }
+
     [Test, Order(999)]
     public async Task DeleteCheep()
     {
@@ -46,6 +65,70 @@ public class CheepRepositoryTests
         var cheepAfterDelete = await _cheepRepository.GetCheep(CHEEP_ID);
         Assert.That(cheepAfterDelete, Is.Null);
     }
+
+    [Test]
+    public async Task LikeAndUnlikeCheep()
+    {
+        const int CHEEP_ID = 1;
+        var cheep = await _cheepRepository.GetCheep(CHEEP_ID) ?? throw new Exception("Test: Cheep not found");
+        var author = await _authorRepository.GetAuthor(cheep.AuthorId) ?? throw new Exception("Test: Author not found");
+
+        // author already has a like on the cheep (expected = 1)
+        Assert.That(cheep.Likes, Has.Count.EqualTo(1));
+
+        await _cheepRepository.LikeCheep(CHEEP_ID, author.Id);
+        // author liked his own cheep (expected = 2)
+        Assert.That(cheep.Likes, Has.Count.EqualTo(2));
+
+        /*
+        *   Test Unlike of cheep
+        */
+        await _cheepRepository.UnlikeCheep(CHEEP_ID, author.Id);
+        // author unliked his own cheep (expected = 1)
+        Assert.That(cheep.Likes, Has.Count.EqualTo(1));
+    }
+
+    [TestCase(1, "Comment 1")]
+    [TestCase(2, "Comment 2")]
+    public async Task PostComment(int c, string commentMessage)
+    {
+        const int CHEEP_ID = 1;
+        var cheep = await _cheepRepository.GetCheep(CHEEP_ID) ?? throw new Exception("Test: Cheep not found");
+        var author = await _authorRepository.GetAuthor(cheep.AuthorId) ?? throw new Exception("Test: Author not found");
+
+        var comment = new Cheep()
+        {
+            Author = author,
+            AuthorId = author.Id,
+            Revisions = new List<CheepRevision>
+            {
+                new CheepRevision
+                {
+                    Message = commentMessage,
+                    TimeStamp = DateTime.UtcNow
+                }
+            }
+        };
+
+        await _cheepRepository.PostComment(CHEEP_ID, comment);
+
+        switch (c)
+        {
+            case 1:
+                // c = 1 => 1 comment on cheep
+                Assert.That(cheep.Comments, Has.Count.EqualTo(1));
+                Assert.That(cheep.Comments.First().Revisions.First().Message, Is.EqualTo(commentMessage));
+                break;
+            case 2:
+                // c = 2 => 2 comments on cheep
+                Assert.That(cheep.Comments, Has.Count.EqualTo(2));
+                Assert.That(cheep.Comments.Last().Revisions.First().Message, Is.EqualTo(commentMessage));
+                break;
+            default:
+                throw new Exception("Invalid test case");
+        }
+    }
+
 
     [TestCase("first", 1, 2)]
     [TestCase("watch", 1, 2)]
