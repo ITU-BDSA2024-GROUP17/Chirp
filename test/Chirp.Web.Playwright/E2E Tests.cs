@@ -136,4 +136,21 @@ public class E2ETests : PageTest
 
         await Expect(Page.Locator(".cheep-dropdown")).ToHaveCountAsync(0);
     }
+
+    [Test]
+    public async Task LikeCheepTest()
+    {
+        await HelperCreateAccount();
+
+        await Page.GetByPlaceholder("Whats on your mind?").FillAsync("I am testing likes today!");
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Expect(Page.Locator(".font-sec").First).ToHaveTextAsync("0");
+
+        await Page.Locator(".like-btn").First.ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Expect(Page.Locator(".active").First).ToContainTextAsync("1");
+    }
 }
