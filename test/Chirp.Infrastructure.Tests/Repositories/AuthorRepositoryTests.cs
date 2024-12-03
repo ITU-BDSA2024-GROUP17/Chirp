@@ -44,7 +44,7 @@ public class AuthorRepositoryTests
         }
         else
         {
-            Assert.Equals(searchName, author?.UserName);
+            Assert.That(author?.UserName, Is.EqualTo(searchName));
         }
 
     }
@@ -59,7 +59,7 @@ public class AuthorRepositoryTests
     {
         var authors = await _authorRepository.SearchAuthors(search, 1);
 
-        Assert.Equals(expected.Length, authors.Count);
+        Assert.That(authors.Count, Is.EqualTo(expected.Length));
 
         foreach (var item in authors)
         {
@@ -97,7 +97,7 @@ public class AuthorRepositoryTests
         {
             if (cheep.Id == cheepID)
             {
-                Assert.Equals(cheep.Likes.Count, expectedLikes);
+                Assert.That(cheep.Likes.Count, Is.EqualTo(expectedLikes));
             }
             else
             {
@@ -114,12 +114,14 @@ public class AuthorRepositoryTests
 
         if (name == "John Doe")
         {
-            Assert.Equals(1, await _authorRepository.GetFollowers(author.Id));
+            var followers = await _authorRepository.GetFollowers(author.Id);
+            Assert.That(followers.Count, Is.EqualTo(1));
             Assert.IsEmpty(await _authorRepository.GetFollowing(author.Id));
         }
         else if (name == "John Smith")
         {
-            Assert.Equals(1, await _authorRepository.GetFollowing(author.Id));
+            var followers = await _authorRepository.GetFollowers(author.Id);
+            Assert.That(followers.Count, Is.EqualTo(1));
             Assert.IsEmpty(await _authorRepository.GetFollowers(author.Id));
         }
     }
