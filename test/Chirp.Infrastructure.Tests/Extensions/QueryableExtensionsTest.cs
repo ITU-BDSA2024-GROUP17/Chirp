@@ -1,11 +1,13 @@
-namespace Chirp.Infrastructure.Extensions.Tests;
+using Chirp.Infrastructure.Extensions;
+
+namespace Chirp.Infrastructure.Tests.Extensions;
 
 public class QueryableExtensionsTest
 {
-    [Fact]
+    [Test]
     public void PaginateIEnumarableTest()
     {
-        List<int> list = new List<int>();
+        List<int> list = [];
         for (int i = 0; i < 100; i++)
         {
             list.Add(i);
@@ -16,9 +18,10 @@ public class QueryableExtensionsTest
 
         foreach (int nr in returnedList)
         {
-            Assert.True(nr >= 0 && nr < 32);
+            Assert.That(nr, Is.GreaterThanOrEqualTo(0));
+            Assert.That(nr, Is.LessThan(32));
         }
 
-        Assert.Equal(32, returnedList.Count());
+        Assert.That(returnedList.Count(), Is.EqualTo(32));
     }
 }

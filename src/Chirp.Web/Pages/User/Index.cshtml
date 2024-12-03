@@ -10,7 +10,7 @@
 
 @if (User.Identity != null && User.Identity.IsAuthenticated && routeName?.ToString() == User.Identity.Name)
 {
-    @await Html.PartialAsync("_SendCheepPartial", Model)
+    @await Html.PartialAsync("_SendCheepPartial")
 }
 
 <div>

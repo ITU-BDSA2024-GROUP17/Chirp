@@ -6,6 +6,7 @@ namespace Chirp.Infrastructure.Tests.Repositories;
 
 public class AuthorRepositoryTests
 {
+
     private readonly CheepDbContext _cheepDbContext;
     private readonly AuthorRepository _authorRepository;
 
@@ -21,19 +22,18 @@ public class AuthorRepositoryTests
         _authorRepository = new AuthorRepository(_cheepDbContext);
     }
 
-    [Fact]
-    public async Task GetAllAuthorsTest()
+    [Test]
+    public async Task GetAllAuthors()
     {
         var authors = await _authorRepository.GetAuthors(1);
 
-        Assert.Equal(4, authors.Count);
+        Assert.That(authors, Has.Count.EqualTo(4));
     }
 
 
-    [Theory]
-    [InlineData("John Doe")]
-    [InlineData("Jane Smith")]
-    [InlineData("John")]
+    [TestCase("John Doe")]
+    [TestCase("Jane Smith")]
+    [TestCase("John")]
     public async Task GetAuthorByNameTest(string searchName)
     {
         var author = await _authorRepository.GetAuthorByName(searchName);
@@ -44,23 +44,22 @@ public class AuthorRepositoryTests
         }
         else
         {
-            Assert.Equal(searchName, author?.UserName);
+            Assert.Equals(searchName, author?.UserName);
         }
 
     }
 
 
-    [Theory]
     // Setup: InlineData("Search", "Expected")
-    [InlineData("", new[] { "John Doe", "John Smith", "Jane Smith", "Jane Doe" })]
-    [InlineData("t", new[] { "Jane Smith", "John Smith" })] // 't' only in Smith
-    [InlineData("John", new[] { "John Doe", "John Smith" })]
-    [InlineData("smith", new[] { "Jane Smith", "John Smith" })]
+    [TestCase("", new[] { "John Doe", "John Smith", "Jane Smith", "Jane Doe" })]
+    [TestCase("t", new[] { "Jane Smith", "John Smith" })] // 't' only in Smith
+    [TestCase("John", new[] { "John Doe", "John Smith" })]
+    [TestCase("smith", new[] { "Jane Smith", "John Smith" })]
     public async Task SearchAuthorsTest(string search, string[] expected)
     {
         var authors = await _authorRepository.SearchAuthors(search, 1);
 
-        Assert.Equal(expected.Length, authors.Count);
+        Assert.Equals(expected.Length, authors.Count);
 
         foreach (var item in authors)
         {
@@ -68,9 +67,8 @@ public class AuthorRepositoryTests
         }
     }
 
-    [Theory]
-    [InlineData("John Doe")]
-    [InlineData("Jane Smith")]
+    [TestCase("John Doe")]
+    [TestCase("Jane Smith")]
     public async Task GetCheepsTest(string author)
     {
         var cheeps = await _authorRepository.GetCheeps(author, 1);
@@ -87,11 +85,10 @@ public class AuthorRepositoryTests
         }
     }
 
-    [Theory]
     // (Author, cheepId, expectedLikes)
-    [InlineData("John Doe", 1, 1)]
-    [InlineData("John Smith", 3, 2)]
-    [InlineData("Jane Smith", 4, 3)]
+    [TestCase("John Doe", 1, 1)]
+    [TestCase("John Smith", 3, 2)]
+    [TestCase("Jane Smith", 4, 3)]
     public async Task GetCheepsWithLikesByAuthorTest(string name, int cheepID, int expectedLikes)
     {
         var author = await _authorRepository.GetAuthorByName(name) ?? throw new Exception("Author not found");
@@ -100,31 +97,46 @@ public class AuthorRepositoryTests
         {
             if (cheep.Id == cheepID)
             {
-                Assert.Equal(cheep.Likes.Count, expectedLikes);
+                Assert.Equals(cheep.Likes.Count, expectedLikes);
             }
             else
             {
-                Assert.Empty(cheep.Likes);
+                Assert.IsEmpty(cheep.Likes);
             }
         }
     }
 
-    [Theory]
-    [InlineData("John Doe")]
-    [InlineData("John Smith")]
+    [TestCase("John Doe")]
+    [TestCase("John Smith")]
     public async Task GetFollowersByAuthorTest(string name)
     {
         var author = await _authorRepository.GetAuthorByName(name) ?? throw new Exception("Author not found");
 
         if (name == "John Doe")
         {
-            Assert.Single(await _authorRepository.GetFollowers(author.Id));
-            Assert.Empty(await _authorRepository.GetFollowing(author.Id));
+            Assert.Equals(1, await _authorRepository.GetFollowers(author.Id));
+            Assert.IsEmpty(await _authorRepository.GetFollowing(author.Id));
         }
         else if (name == "John Smith")
         {
-            Assert.Single(await _authorRepository.GetFollowing(author.Id));
-            Assert.Empty(await _authorRepository.GetFollowers(author.Id));
+            Assert.Equals(1, await _authorRepository.GetFollowing(author.Id));
+            Assert.IsEmpty(await _authorRepository.GetFollowers(author.Id));
         }
+    }
+
+    [TestCase("John", 1, 2)]
+    [TestCase("o", 1, 3)]
+    [TestCase("smith", 1, 2)]
+    public async Task SearchCheeps(string search, int page, int expected)
+    {
+        var authors = (await _authorRepository.SearchAuthors(search, page)).ToList();
+
+        Assert.That(authors, Has.Count.EqualTo(expected));
+    }
+
+    [OneTimeTearDown]
+    public void TearDown()
+    {
+        _cheepDbContext.Dispose();
     }
 }

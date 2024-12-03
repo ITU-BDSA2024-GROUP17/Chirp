@@ -4,10 +4,11 @@ using Chirp.Core.Entities;
 using Chirp.Infrastructure.Services;
 using System.Security.Claims;
 using Chirp.Web.Interfaces.Pages;
+using Chirp.Core.Interfaces;
 
 namespace Chirp.Web.Pages.User;
 
-public class UserLikesModel(AuthorService authorService, CheepService cheepService) : PageModel, IUserPage
+public class UserLikesModel(AuthorService authorService, CheepService cheepService) : PageModel, IUserPage, ICheepModel
 {
     private readonly AuthorService _authorService = authorService;
     private readonly CheepService _cheepService = cheepService;
@@ -18,6 +19,8 @@ public class UserLikesModel(AuthorService authorService, CheepService cheepServi
     public IEnumerable<Cheep> LikedCheeps { get; set; } = [];
     public int TotalCheeps { get; set; }
     public int TotalLikedCheeps { get; set; }
+    public IEnumerable<Cheep> Cheeps { get; set; } = [];
+    public string CheepMessage { get; set; } = "";
 
     public async Task<IActionResult> OnGet(string author, [FromQuery] int page)
     {
@@ -29,6 +32,7 @@ public class UserLikesModel(AuthorService authorService, CheepService cheepServi
         Author = await _authorService.GetAuthorByName(author);
         LikedCheeps = await _authorService.GetLiked(author, page);
         TotalLikedCheeps = await _authorService.GetLikedCount(author);
+        Cheeps = LikedCheeps;
 
         if (Author != null)
         {

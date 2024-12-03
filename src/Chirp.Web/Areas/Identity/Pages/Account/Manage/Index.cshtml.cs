@@ -2,35 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+using System.Security.Claims;
 using Chirp.Core.Entities;
+using Chirp.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Areas.Identity.Pages.Account.Manage
 {
-    public class IndexModel : PageModel
+    public class IndexModel(UserManager<Author> userManager, SignInManager<Author> signInManager, AuthorService authorService) : PageModel
     {
-        private readonly UserManager<Author> _userManager;
-        private readonly SignInManager<Author> _signInManager;
-
-        public IndexModel(
-            UserManager<Author> userManager,
-            SignInManager<Author> signInManager)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+        private readonly UserManager<Author> _userManager = userManager;
+        private readonly SignInManager<Author> _signInManager = signInManager;
+        private readonly AuthorService _authorService = authorService;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string Username { get; set; }
+
+        [BindProperty]
+        public string Avatar { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -67,6 +62,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
+            Avatar = user.Avatar;
 
             Input = new InputModel
             {
@@ -100,16 +96,22 @@ namespace Chirp.Web.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            // Remove previous avatar claim
+            if (user.Avatar != null)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
-                }
+                await _userManager.RemoveClaimAsync(user, new Claim("Avatar", user.Avatar));
             }
+
+            // Create new avatar claim
+            if (Avatar != null)
+            {
+                await _userManager.AddClaimAsync(user, new Claim("Avatar", Avatar));
+            }
+
+            await _userManager.UpdateAsync(user);
+
+            user = await _authorService.UpdateAuthorAvatar(user.Id, Avatar);
+            user = await _authorService.UpdateAuthorPhoneNumber(user.Id, Input.PhoneNumber);
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

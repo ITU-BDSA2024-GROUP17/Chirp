@@ -299,6 +299,7 @@ Cheeps
     cursor: default;
 }
 
+
 .cheep-timestamp-tooltip .cheep-timestamp::after {
     content: " ";
     position: absolute;
@@ -311,6 +312,38 @@ Cheeps
 }
 
 .cheep-timestamp-tooltip:hover .cheep-timestamp {
+    visibility: visible;
+    transition: visibility 0s ease-out 0.5s;
+}
+
+.cheep-timestamp-tooltip .cheep-revisions {
+    visibility: hidden;
+    width: 95px;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 1;
+    top: 45px;
+    left: 0;
+    background-color: var(--border);
+    text-wrap: wrap;
+    padding: 3px 4px 3px 4px;
+    cursor: default;
+}
+
+.cheep-timestamp-tooltip .cheep-revisions::after {
+    content: " ";
+    position: absolute;
+    top: 100%; /* At the bottom of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--border) transparent transparent transparent;
+}
+
+.cheep-timestamp-tooltip:hover .cheep-revisions {
     visibility: visible;
     transition: visibility 0s ease-out 0.5s;
 }

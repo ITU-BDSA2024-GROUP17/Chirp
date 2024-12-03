@@ -27,6 +27,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
             .Include(a => a.Cheeps)
             .Include(a => a.Following)
             .Include(a => a.Followers)
+            .AsSplitQuery()
             .FirstOrDefaultAsync();
 
         return author;
@@ -65,6 +66,8 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
             .Include(c => c.Revisions)
             .Include(c => c.Author)
             .Include(c => c.Likes)
+            .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
+            .AsSplitQuery()
             .OrderByDescending(c => c.Revisions.First().TimeStamp)
             .Paginate(page)
             .ToList();
@@ -90,9 +93,11 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         .Where(a => a.UserName == author)
         .SelectMany(a => a.Cheeps)
         .Include(c => c.Author)
+        .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
         .Include(c => c.Likes)
         .Include(c => c.Revisions)
         .Include(c => c.Comments)
+        .AsSplitQuery()
         .ToListAsync();
 
         // Cheeps form follwing
@@ -101,15 +106,17 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         .Include(a => a.Following)
         .SelectMany(a => a.Following.SelectMany(f => f.Cheeps))
         .Include(c => c.Author)
+        .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
         .Include(c => c.Likes)
         .Include(c => c.Revisions)
         .Include(c => c.Comments)
+        .AsSplitQuery()
         .ToListAsync();
 
         // Combine results
         var combinedCheeps = authorCheeps
         .Concat(followingCheeps)
-        .OrderByDescending(c => new List<CheepRevision>(c.Revisions).First().TimeStamp)
+        .OrderByDescending(c => c.Revisions.First().TimeStamp)
         .Paginate(page)
         .ToList();
 
@@ -135,9 +142,10 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         var cheeps = _context.Authors
             .Where(a => a.UserName == author)
             .SelectMany(a => a.LikedCheeps)
-            .Include(c => c.Revisions)
+            .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
             .Include(c => c.Author)
             .Include(c => c.Likes)
+            .AsSplitQuery()
             .OrderByDescending(c => c.Revisions.First().TimeStamp)
             .Paginate(page)
             .ToList();
@@ -221,5 +229,27 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         _context.SaveChanges();
 
         return Task.FromResult(follower);
+    }
+
+    public Task<Author> UpdateAuthorPhoneNumber(string id, string phoneNumber)
+    {
+        var author = _context.Authors.Find(id) ?? throw new InvalidDataException("Author is not avaliable");
+
+        author.PhoneNumber = phoneNumber;
+
+        _context.SaveChanges();
+
+        return Task.FromResult(author);
+    }
+
+    public Task<Author> UpdateAuthorAvatar(string id, string avatar)
+    {
+        var author = _context.Authors.Find(id) ?? throw new InvalidDataException("Author is not avaliable");
+
+        author.Avatar = avatar;
+
+        _context.SaveChanges();
+
+        return Task.FromResult(author);
     }
 }
