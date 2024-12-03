@@ -23,6 +23,12 @@ public class UserModel(AuthorService authorService, CheepService cheepService) :
     [BindProperty]
     public string CheepMessage { get; set; } = "";
 
+    /// <summary>
+    /// Retrieves the Author and Cheeps for the current page.
+    /// </summary>
+    /// <param name="author">The requested author.</param>
+    /// <param name="page">Page number to be retrieved.</param>
+    /// <returns>The page of the user's cheeps, or page 1 of the user's cheeps if current page is less than 1.</returns>
     public async Task<IActionResult> OnGet(string author, [FromQuery] int page)
     {
         if (page < 1)
@@ -54,6 +60,13 @@ public class UserModel(AuthorService authorService, CheepService cheepService) :
         return Page();
     }
 
+    /// <summary>
+    /// Like or unlike a Cheep.
+    /// </summary>
+    /// <param name="cheepId">The id of the cheep to be liked.</param>
+    /// <param name="returnUrl"></param>
+    /// <returns>Page reload.</returns>
+    /// <exception cref="Exception"></exception>
     public async Task<IActionResult> OnPostLikeAsync(int cheepId, string returnUrl)
     {
         var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found!");
@@ -61,6 +74,7 @@ public class UserModel(AuthorService authorService, CheepService cheepService) :
         var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
         var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
 
+        // If the user has already liked the Cheep, unlike it.
         if (cheep.Likes.Contains(author))
         {
             await _cheepService.UnlikeCheep(cheepId, UserId);
@@ -73,11 +87,23 @@ public class UserModel(AuthorService authorService, CheepService cheepService) :
         return LocalRedirect(Request.Path.ToString());
     }
 
+    /// <summary>
+    /// Paginate to a new page.
+    /// </summary>
+    /// <param name="newPage">The requested new page.</param>
+    /// <returns>A redirect to the requested page.</returns>
     public IActionResult OnPostPaginationAsync(int newPage)
     {
         return Redirect($"{Request.Path}?page={newPage}");
     }
 
+    /// <summary>
+    /// Create a new Cheep.
+    /// </summary>
+    /// <param name="returnUrl"></param>
+    /// <returns>Page reload.</returns>
+    /// <exception cref="UnauthorizedAccessException"></exception>
+    /// <exception cref="Exception"></exception>
     public async Task<IActionResult> OnPostCheepAsync(string returnUrl)
     {
         if (User.Identity == null || !User.Identity.IsAuthenticated) throw new UnauthorizedAccessException("User is not logged in!");

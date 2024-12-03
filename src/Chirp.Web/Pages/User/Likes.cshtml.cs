@@ -22,6 +22,12 @@ public class UserLikesModel(AuthorService authorService, CheepService cheepServi
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
     public string CheepMessage { get; set; } = "";
 
+    /// <summary>
+    /// Retrieves the Author and Cheeps for the current page.
+    /// </summary>
+    /// <param name="author">The requested author.</param>
+    /// <param name="page">Page number to be retrieved.</param>
+    /// <returns>The current page of the user's liked cheeps, or page 1 of the user's liked cheeps if current page is less than 1.</returns>
     public async Task<IActionResult> OnGet(string author, [FromQuery] int page)
     {
         if (page < 1)
@@ -52,6 +58,13 @@ public class UserLikesModel(AuthorService authorService, CheepService cheepServi
         return Page();
     }
 
+    /// <summary>
+    /// Like or unlike a Cheep.
+    /// </summary>
+    /// <param name="cheepId">The id of the cheep to be liked.</param>
+    /// <param name="returnUrl"></param>
+    /// <returns>Page reload.</returns>
+    /// <exception cref="Exception"></exception>
     public async Task<IActionResult> OnPostLikeAsync(int cheepId, string returnUrl)
     {
         var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found!");
@@ -59,6 +72,7 @@ public class UserLikesModel(AuthorService authorService, CheepService cheepServi
         var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
         var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
 
+        // If the user has already liked the cheep, unlike it.
         if (cheep.Likes.Contains(author))
         {
             await _cheepService.UnlikeCheep(cheepId, UserId);
@@ -71,6 +85,11 @@ public class UserLikesModel(AuthorService authorService, CheepService cheepServi
         return LocalRedirect(Request.Path.ToString());
     }
 
+    /// <summary>
+    /// Paginate to a new page.
+    /// </summary>
+    /// <param name="newPage">The requested new page.</param>
+    /// <returns>A redirect to the requested page.</returns>
     public IActionResult OnPostPaginationAsync(int newPage)
     {
         return Redirect($"{Request.Path}?page={newPage}");
