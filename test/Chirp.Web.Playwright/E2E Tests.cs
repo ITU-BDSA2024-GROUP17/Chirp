@@ -16,7 +16,7 @@ public class E2ETests : PageTest
         await Page.GotoAsync("http://localhost:5163/");
     }
 
-    // [Test] // Skipped because it does not work
+    [Test]
     public async Task SearchForUserTest()
     {
         await Page.GetByPlaceholder("Search...").ClickAsync();
@@ -115,7 +115,8 @@ public class E2ETests : PageTest
     [Test]
     public async Task EditCheepTest()
     {
-        int userId = await HelperCreateAccount();
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
 
         await Page.GetByPlaceholder("Whats on your mind?").FillAsync("I am testing today!");
         await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
