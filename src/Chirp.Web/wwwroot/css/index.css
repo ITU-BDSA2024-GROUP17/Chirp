@@ -137,6 +137,7 @@ header {
     overflow: hidden;
     resize: none;
 }
+
 .text-box-cheep {
     padding: 10px 10px 20px 10px !important;
 }
@@ -298,7 +299,6 @@ Cheeps
     padding: 3px 4px 3px 4px;
     cursor: default;
 }
-
 
 .cheep-timestamp-tooltip .cheep-timestamp::after {
     content: " ";

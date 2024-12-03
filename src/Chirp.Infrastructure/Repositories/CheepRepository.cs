@@ -123,6 +123,8 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
 
     public async Task PostComment(int CheepToCommentId, Cheep comment)
     {
+        if (new List<CheepRevision>(comment.Revisions)[0].Message.Length > 160) throw new InvalidDataException("Message is too long");
+
         var cheepToComment = await GetCheep(CheepToCommentId) ?? throw new Exception("Cheep not found to comment!");
         cheepToComment.Comments.Add(comment);
         await _context.SaveChangesAsync();
