@@ -4,25 +4,23 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 
-public class CheepDbContext : IdentityDbContext
+public class CheepDbContext(DbContextOptions<CheepDbContext> options) : IdentityDbContext(options)
 {
-    public CheepDbContext()
-    {
+    #region DB Sets
+    public DbSet<Cheep> Cheeps => Set<Cheep>();
+    public DbSet<Author> Authors => Set<Author>();
+    #endregion
 
-    }
-
-    public CheepDbContext(DbContextOptions<CheepDbContext> options) : base(options)
-    {
-
-    }
-
+    #region OnConfiguring
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (optionsBuilder.IsConfigured) return;
 
         optionsBuilder.UseSqlite("Data Source=SQLiteDB.db");
     }
+    #endregion
 
+    #region OnModelCreating
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -61,7 +59,5 @@ public class CheepDbContext : IdentityDbContext
             .WithOne(c => c.CheepOwner)
             .HasForeignKey(c => c.CheepOwnerId);
     }
-
-    public DbSet<Cheep> Cheeps { get; set; }
-    public DbSet<Author> Authors { get; set; }
+    #endregion
 }
