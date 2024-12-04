@@ -92,11 +92,17 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         var authorCheeps = await _context.Authors
         .Where(a => a.UserName == author)
         .SelectMany(a => a.Cheeps)
+        .Where(c => c.CheepOwnerId == null) // Should not include comments
         .Include(c => c.Author)
         .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
         .Include(c => c.Likes)
         .Include(c => c.Revisions)
-        .Include(c => c.Comments)
+
+        // Comment inclusion
+        .Include(c => c.Comments).ThenInclude(c => c.Revisions)
+        .Include(c => c.Comments).ThenInclude(c => c.Author).ThenInclude(a => a.Followers)
+        .Include(c => c.Comments).ThenInclude(c => c.Likes)
+
         .AsSplitQuery()
         .ToListAsync();
 
@@ -109,7 +115,12 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
         .Include(c => c.Likes)
         .Include(c => c.Revisions)
-        .Include(c => c.Comments)
+
+        // Comment inclusion
+        .Include(c => c.Comments).ThenInclude(c => c.Revisions)
+        .Include(c => c.Comments).ThenInclude(c => c.Author).ThenInclude(a => a.Followers)
+        .Include(c => c.Comments).ThenInclude(c => c.Likes)
+
         .AsSplitQuery()
         .ToListAsync();
 
@@ -136,6 +147,33 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
 
         return cheeps;
     }
+
+    public Task<List<Cheep>> GetCheepsCommented(string author, int page)
+    {
+        var cheeps = _context.Cheeps
+            .Include(c => c.Comments).ThenInclude(c => c.Revisions)
+            .Include(c => c.Comments).ThenInclude(c => c.Author).ThenInclude(a => a.Followers)
+            .Include(c => c.Comments).ThenInclude(c => c.Likes)
+
+            .Where(c => c.Comments.Any(comment => comment.AuthorId == author))
+            .OrderByDescending(c => c.Revisions.First().TimeStamp)
+            .Paginate(page)
+            .AsSplitQuery()
+            .ToList();
+
+        return Task.FromResult(cheeps);
+    }
+
+    public Task<int> GetCheepsCommentedCount(string author)
+    {
+        var count = _context.Cheeps
+            .Include(c => c.Comments)
+            .Where(c => c.Comments.Any(comment => comment.AuthorId == author))
+            .CountAsync();
+
+        return count;
+    }
+
 
     public Task<List<Cheep>> GetLiked(string author, int page)
     {
