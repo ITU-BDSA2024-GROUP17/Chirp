@@ -64,7 +64,7 @@
                     @if (User.Identity != null && User.Identity.IsAuthenticated && cheep.AuthorId.Equals(userId))
                     {
                         <div class="cheep-message" id="cheepedit-@cheep.Id" style="display: none;">
-                            <form asp-page-handler="UpdateCheep" method="post" asp-route-cheepId="@cheep.Id">
+                            <form asp-page-handler="UpdateCheep" method="post" asp-route-cheepId="@cheep.Id" asp-page="/Public"  asp-route-returnUrl="@Context.Request.Path">
                                 <input name="updateCheep" id="cheepeditbox-@cheep.Id" class="cheepeditbox" type="text" autocomplete="off" maxlength="160" style="resize: none; width: 40rem;" value="@cheep.Revisions.First().Message">
                             </form>
                         </div>
@@ -83,7 +83,7 @@
                         }
                     </div>
                     <div style="margin-top: .5rem; display: flex; gap: 0.5em; align-items: center;">
-                        <form asp-page-handler="Like" method="post" asp-route-cheepId="@cheep.Id">
+                        <form asp-page-handler="Like" method="post" asp-route-cheepId="@cheep.Id" asp-page="/Public"  asp-route-returnUrl="@Context.Request.Path">
                             @if (User.Identity != null && User.Identity.IsAuthenticated)
                             {
                                 <div>
@@ -133,9 +133,10 @@
                         {
                             <form method="post">
                                 @{
+
                                     string action = cheep.Author.Followers.Any(f => f.Id == userId) == true ? "unfollow" : "follow";
                                 }
-                                <button class="btn @action" type="submit" asp-page-handler="@action" asp-route-followeeId="@cheep.AuthorId" style="padding: 0.25rem;"  >
+                                <button class="btn @action" type="submit" asp-page="/Public" asp-page-handler="@action" asp-route-followeeId="@cheep.AuthorId" asp-route-returnUrl="@Context.Request.Path" style="padding: 0.25rem;" >
 
                                 @if(cheep.Author.Followers.Any(f => f.Id == userId) == true){
                                     <svg class="icon @action" style="fill: #0d6efd" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com" viewBox="3.125 2.187 32.731 31.948" width="32.731px" height="31.948px"><defs><bx:export><bx:file format="svg" href="#object-0"/><bx:file format="svg" href="#_Transparent_Rectangle_" path="Untitled 4.svg"/></bx:export></defs><title>user--follow</title><path d="M 172.751 94.344 L 172.751 176.344 L 90.751 176.344 L 90.751 94.344 Z M 140.751 144.344 L 140.751 126.344 L 122.751 126.344 L 122.751 144.344 Z" style="fill: none;"/><path d="M 172.751 94.344 L 172.751 176.344 L 90.751 176.344 L 90.751 94.344 Z M 140.751 144.344 L 140.751 126.344 L 122.751 126.344 L 122.751 144.344 Z" style="fill: none;"/><title>user--follow</title><title>user--follow</title>
@@ -157,7 +158,7 @@
 
                                         <li><button class="dropdown-item" onclick="ToggleEditCheep(@cheep.Id)">Edit</button></li>
 
-                                        <form asp-page-handler="Delete" method="post" asp-route-UserAuth="@userId" asp-route-cheepId="@cheep.Id">
+                                        <form asp-page-handler="Delete" method="post" asp-route-UserAuth="@userId" asp-route-cheepId="@cheep.Id" asp-page="/Public" asp-route-returnUrl="@Context.Request.Path">
                                             <li><button class="dropdown-item" type="submit">Delete</button></li>
                                         </form>
 
