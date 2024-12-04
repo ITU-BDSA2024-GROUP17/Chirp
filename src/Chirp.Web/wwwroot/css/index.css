@@ -84,8 +84,10 @@ body {
 
 header {
     display: flex;
-    width: 72rem;
+    max-width: 72rem;
+    width: 100%;
     display: flex;
+    justify-content: space-between;
     gap: 1em;
     justify-content: space-between;
     align-items: center;
@@ -97,7 +99,8 @@ footer {
 }
 
 main {
-    width: 72rem;
+    max-width: 72rem;
+    width: 100%;
 }
 
 .font-sec {
