@@ -120,12 +120,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    /**
+     * Resets the currentLI to -1 and clears the listItems array
+     */
     function resetkeydownIndex() {
         currentLI = -1;
         listItems = [];
     }
 });
 
+/**
+ * Function to render the search results that drop down from the search bar
+ * @param {CreateAuthorDto[]} data
+ */
 function renderAuthorsInSearch(data) {
     data.forEach((user) => {
         let name = user.userName;

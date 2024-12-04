@@ -1,3 +1,8 @@
+/**
+ * Function to skip pages based on the number of pages to skip
+ * @param {int} pagesToSkip
+ * @returns
+ */
 function skipPages(pagesToSkip) {
     if (pagesToSkip == 0) throw new Error("pagesToSkip cannot be 0");
     const urlParams = new URLSearchParams(window.location.search);
@@ -19,6 +24,11 @@ function skipPages(pagesToSkip) {
     window.location.href = `/search?SearchQuery=${searchQuery}&page=${newPageNum}`;
 }
 
+/**
+ * Function to show or hide the comment field for a cheep
+ * @param {int} id
+ * @returns
+ */
 function showCommentField(id) {
     if (!Number.isInteger(id)) {
         console.error("id must be an integer.");
@@ -66,6 +76,7 @@ window.addEventListener("DOMContentLoaded", () => {
                     }
                     comment.parentElement.parentElement.submit();
                 }
+                // Grows the text area as the user types. Parent elements are also grown to accommodate the text area.
                 auto_grow(comment);
                 auto_grow(comment.parentElement.parentElement);
 
