@@ -136,4 +136,41 @@ public class E2ETests : PageTest
 
         await Expect(Page.Locator(".cheep-dropdown")).ToHaveCountAsync(0);
     }
+
+    [Test]
+    public async Task CommentTest()
+    {
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
+        var msg1 = "I am testing today!";
+        var msg2 = "Second time testing today!";
+
+        await Page.GetByPlaceholder("Whats on your mind?").FillAsync(msg1);
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Page.Locator(".cheep:has-text(\"Playwright" + userId + "\")").First.GetByRole(AriaRole.Button, new() { NameString = "Add comment" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Textbox, new() { NameString = "What's on your mind?" }).FillAsync(msg2);
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Comment" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+        await Expect(Page.Locator(".cheep").GetByText(msg2).First).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task DeleteTest()
+    {
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
+        var msg1 = "I am testing today!";
+
+        await Page.GetByPlaceholder("Whats on your mind?").FillAsync(msg1);
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        var cheep = Page.Locator(".cheep:has-text(\"Playwright" + userId + "\")").First;
+        await cheep.GetByRole(AriaRole.Button, new() { NameString = "More options" }).ClickAsync();
+        await cheep.GetByRole(AriaRole.Button, new() { NameString = "Delete" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+        await Expect(Page.Locator(".cheep:has-text(\"Playwright" + userId + "\")").GetByText(msg1).First).ToBeHiddenAsync();
+    }
 }

@@ -10,7 +10,7 @@ public class TestHelpers(PageTest pageTest)
 
     public async Task<int> HelperCreateAccount()
     {
-        int userId = new Random().Next(1000, 10000);
+        int userId = new Random().Next(1000, 1000000);
 
         await Page.GetByRole(AriaRole.Button, new() { NameString = "Register" }).ClickAsync();
         await Page.WaitForURLAsync("http://localhost:5163/Identity/Account/Register");
