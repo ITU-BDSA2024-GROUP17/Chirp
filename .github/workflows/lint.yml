@@ -49,7 +49,7 @@ jobs:
       - name: Install playwright
         run: pwsh test/Chirp.Web.Playwright/bin/Debug/net8.0/playwright.ps1 install chromium
       - name: Change directory
-        run: cd test/%matrix.projects
+        run: cd test/%matrix.project
       - name: Test
         run: dotnet test
       - name: Finalizing
