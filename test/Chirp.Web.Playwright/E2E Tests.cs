@@ -210,12 +210,12 @@ public class E2ETests : PageTest
         await Page.WaitForURLAsync($"http://localhost:5163/Playwright{userId2}?page=1");
 
         // Go to author comments page
-        await Page.GetByRole(AriaRole.Button, new() { NameRegex = new Regex(".*Comments.*") }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { NameRegex = new Regex(".*Comments.*") }).ClickAsync();
         await Page.WaitForURLAsync($"http://localhost:5163/Playwright{userId2}/comments?page=1");
 
         // Comment should be visible
         var commentLocator = Page.Locator(".cheep").GetByText(commentMessage);
-        await Expect(commentLocator).ToBeVisibleAsync();
+        await Expect(commentLocator.First).ToBeVisibleAsync();
     }
 
     [Test]
