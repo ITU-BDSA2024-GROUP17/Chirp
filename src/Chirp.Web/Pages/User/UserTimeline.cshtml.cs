@@ -54,24 +54,6 @@ public class UserModel(AuthorService authorService, CheepService cheepService) :
         return Page();
     }
 
-    public async Task<IActionResult> OnPostFollowAsync(string followeeId)
-    {
-        var FollowerId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
-
-        await _authorService.Follow(FollowerId, followeeId);
-
-        return LocalRedirect(Request.Path.ToString());
-    }
-
-    public async Task<IActionResult> OnPostUnfollowAsync(string followeeId)
-    {
-        var FollowerId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
-
-        await _authorService.Unfollow(FollowerId, followeeId);
-
-        return LocalRedirect(Request.Path.ToString());
-    }
-
     public async Task<IActionResult> OnPostLikeAsync(int cheepId, string returnUrl)
     {
         var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found!");

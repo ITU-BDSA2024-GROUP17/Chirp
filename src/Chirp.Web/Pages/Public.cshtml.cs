@@ -121,22 +121,22 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         }
     }
 
-    public async Task<IActionResult> OnPostFollowAsync(string followeeId)
+    public async Task<IActionResult> OnPostFollowAsync(string followeeId, string returnUrl = "/")
     {
         var FollowerId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
 
         await _authorService.Follow(FollowerId, followeeId);
 
-        return LocalRedirect(Url.Content("~/"));
+        return LocalRedirect(Url.Content(returnUrl));
     }
 
-    public async Task<IActionResult> OnPostUnfollowAsync(string followeeId)
+    public async Task<IActionResult> OnPostUnfollowAsync(string followeeId, string returnUrl = "/")
     {
         var FollowerId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
 
         await _authorService.Unfollow(FollowerId, followeeId);
 
-        return LocalRedirect(Url.Content("~/"));
+        return LocalRedirect(Url.Content(returnUrl));
     }
 
     public async Task<IActionResult> OnPostCommentCheepAsync(int CommentCheep, string CommentText, string returnUrl = "/")
