@@ -48,6 +48,16 @@ function showCommentField(id) {
     });
 }
 
+/**
+ * Grows the text area as the user types
+ * @param {HTMLElement} element The requested html element to grow
+ */
+function auto_grow(element) {
+    element.style.height = "5px";
+    element.style.height = (element.scrollHeight - 5) + "px";
+}
+
+// Event listener for the cheep comment input fields
 window.addEventListener("DOMContentLoaded", () => {
     const fields = document.querySelectorAll("#cheepComment");
     fields.forEach((comment) => {
@@ -92,6 +102,39 @@ window.addEventListener("DOMContentLoaded", () => {
                     cheepInputFieldLimit.style.color = "var(--gray-600)";
                 }
             });
+        });
+    });
+});
+
+// Event listener for the cheep message input field
+window.addEventListener("DOMContentLoaded", () => {
+    const textA = document.getElementById("cheepMessage");
+
+    auto_grow(textA);
+    textA.addEventListener("keypress", event => {
+        if (!event.shiftKey && event.key == "Enter") {
+            event.preventDefault();
+            document.getElementById("cheepInputForm").submit();
+        }
+    });
+
+    const textLengthLimit = 160;
+    const cheepInputFieldLimit = document.querySelector(".text-box-limit")
+    cheepInputFieldLimit.innerHTML = "0 / " + textLengthLimit; // init length
+
+
+    const cheepInputField = document.querySelector("#cheepMessage");
+    ['keyup', 'change'].forEach((type) => {
+        cheepInputField.addEventListener(type, (event) => {
+            const inputFieldValue = document.getElementById("cheepMessage").value;
+            cheepInputFieldLimit.innerHTML = inputFieldValue.length + " / " + textLengthLimit;
+            if (inputFieldValue.length > textLengthLimit) {
+                cheepInputFieldLimit.style.color = "red";
+                document.getElementById("cheepMessage").style.color = "red";
+            } else {
+                document.getElementById("cheepMessage").style.color = "black";
+                cheepInputFieldLimit.style.color = "var(--gray-600)";
+            }
         });
     });
 });
