@@ -82,7 +82,7 @@
                             }
                         }
                     </div>
-                    <div style="margin-top: .5rem; display: flex; gap: 0.5em; align-items: center;">
+                    <div class="cheep-actions" style="margin-top: .5rem; display: flex; gap: 0.5em; align-items: center;">
                         <form asp-page-handler="Like" method="post" asp-route-cheepId="@cheep.Id">
                             @if (User.Identity != null && User.Identity.IsAuthenticated)
                             {
