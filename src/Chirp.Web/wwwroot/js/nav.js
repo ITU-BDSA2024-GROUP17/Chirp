@@ -67,7 +67,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
         cheepInputFieldLimit.innerHTML = "0 / " + textLengthLimit; // init length
 
-        ["keyup", "keypress", "change"].forEach((type) => {
+        ["keypress", "change"].forEach((type) => {
             comment.addEventListener(type, (event) => {
                 const submitBtn =
                     comment.parentElement.parentElement.querySelector(

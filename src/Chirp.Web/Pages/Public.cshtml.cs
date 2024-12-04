@@ -38,10 +38,11 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
     /// Post a new Cheep.
     /// </summary>
     /// <param name="cheepMessage">The message string of the cheep being created.</param>
+    /// <param name="returnUrl">The page to return to when the method finishes.</param>
     /// <returns>Page reload.</returns>
     /// <exception cref="UnauthorizedAccessException"></exception>
     /// <exception cref="Exception"></exception>
-    public async Task<IActionResult> OnPostCheepAsync([FromForm] string cheepMessage)
+    public async Task<IActionResult> OnPostCheepAsync([FromForm] string cheepMessage, string returnUrl = "/")
     {
         if (User.Identity == null || !User.Identity.IsAuthenticated) throw new UnauthorizedAccessException("User is not logged in!");
 
@@ -69,11 +70,11 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
             await _cheepService.CreateCheep(cheep);
 
             // Reload page
-            return LocalRedirect(Url.Content("~/"));
+            return LocalRedirect(Url.Content(returnUrl));
         }
         catch (InvalidDataException)
         {
-            return LocalRedirect(Url.Content("~/"));
+            return LocalRedirect(Url.Content(returnUrl));
         }
     }
 
@@ -82,15 +83,16 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
     /// </summary>
     /// <param name="UserAuth">The id of the user trying to delete the cheep.</param>
     /// <param name="cheepId">The id of the cheep to be deleted.</param>
+    /// <param name="returnUrl">The page to return to when the method finishes.</param>
     /// <returns>Page reload.</returns>
     /// <exception cref="Exception"></exception>
-    public async Task<IActionResult> OnPostDeleteAsync(string UserAuth, int cheepId)
+    public async Task<IActionResult> OnPostDeleteAsync(string UserAuth, int cheepId, string returnUrl)
     {
         var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found for delete!");
         if (cheep.AuthorId.Equals(UserAuth))
         {
             await _cheepService.DeleteCheep(cheep.Id);
-            return LocalRedirect("~/");
+            return LocalRedirect(Url.Content(returnUrl));
         }
         else
         {
@@ -103,9 +105,10 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
     /// Like or unlike a Cheep.
     /// </summary>
     /// <param name="cheepId">The id of the cheep to be liked.</param>
+    /// <param name="returnUrl">The page to return to when the method finishes.</param>
     /// <returns>Page reload.</returns>
     /// <exception cref="Exception"></exception>
-    public async Task<IActionResult> OnPostLikeAsync(int cheepId)
+    public async Task<IActionResult> OnPostLikeAsync(int cheepId, string returnUrl = "/")
     {
         var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found for like!");
 
@@ -121,7 +124,7 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
             await _cheepService.LikeCheep(cheepId, UserId);
         }
 
-        return LocalRedirect(Url.Content("~/"));
+        return LocalRedirect(Url.Content(returnUrl));
     }
 
     /// <summary>
@@ -129,9 +132,10 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
     /// </summary>
     /// <param name="cheepId">The id of the cheep to be updated.</param>
     /// <param name="updateCheep">The updated message of the cheep.</param>
+    /// <param name="returnUrl">The page to return to when the method finishes.</param>
     /// <returns>Page reload.</returns>
     /// <exception cref="UnauthorizedAccessException"></exception>
-    public async Task<IActionResult> OnPostUpdateCheepAsync(int cheepId, [FromForm] string updateCheep)
+    public async Task<IActionResult> OnPostUpdateCheepAsync(int cheepId, [FromForm] string updateCheep, string returnUrl = "/")
     {
         if (User.Identity == null || !User.Identity.IsAuthenticated) throw new UnauthorizedAccessException("User is not logged in!");
         try
@@ -145,11 +149,11 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
             await _cheepService.UpdateCheep(cheepId, revision);
 
             // Reload page
-            return LocalRedirect(Url.Content("~/"));
+            return LocalRedirect(Url.Content(returnUrl));
         }
         catch (InvalidDataException)
         {
-            return LocalRedirect(Url.Content("~/"));
+            return LocalRedirect(Url.Content(returnUrl));
         }
     }
 
@@ -157,30 +161,32 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
     /// Follow a user.
     /// </summary>
     /// <param name="followeeId">The id of the user to be followed.</param>
+    /// <param name="returnUrl">The page to return to when the method finishes.</param>
     /// <returns>Page reload.</returns>
     /// <exception cref="Exception"></exception>
-    public async Task<IActionResult> OnPostFollowAsync(string followeeId)
+    public async Task<IActionResult> OnPostFollowAsync(string followeeId, string returnUrl = "/")
     {
         var FollowerId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
 
         await _authorService.Follow(FollowerId, followeeId);
 
-        return LocalRedirect(Url.Content("~/"));
+        return LocalRedirect(Url.Content(returnUrl));
     }
 
     /// <summary>
     /// Unfollow a user.
     /// </summary>
     /// <param name="followeeId">The id of the followed user.</param>
+    /// <param name="returnUrl">The page to return to when the method finishes.</param>
     /// <returns>Page reload.</returns>
     /// <exception cref="Exception"></exception>/
-    public async Task<IActionResult> OnPostUnfollowAsync(string followeeId)
+    public async Task<IActionResult> OnPostUnfollowAsync(string followeeId, string returnUrl = "/")
     {
         var FollowerId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
 
         await _authorService.Unfollow(FollowerId, followeeId);
 
-        return LocalRedirect(Url.Content("~/"));
+        return LocalRedirect(Url.Content(returnUrl));
     }
 
     /// <summary>
@@ -188,9 +194,10 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
     /// </summary>
     /// <param name="CommentCheep">The id of the parent of the comment.</param>
     /// <param name="CommentText">The message of the comment.</param>
+    /// <param name="returnUrl">The page to return to when the method finishes.</param>
     /// <returns>Page reload.</returns>
     /// <exception cref="Exception"></exception>
-    public async Task<IActionResult> OnPostCommentCheepAsync(int CommentCheep, string CommentText)
+    public async Task<IActionResult> OnPostCommentCheepAsync(int CommentCheep, string CommentText, string returnUrl = "/")
     {
         if (string.IsNullOrWhiteSpace(CommentText))
         {
@@ -202,7 +209,6 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
 
 
-
         try
         {
 
@@ -210,29 +216,28 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
             {
                 AuthorId = UserId,
                 Author = author,
-                Revisions = new List<CheepRevision>
-                {
+                Revisions =
+                [
                     new CheepRevision
                     {
                         Message = CommentText,
                         TimeStamp = DateTime.UtcNow
                     }
-                },
+                ],
                 Likes = []
             };
 
             await _cheepService.PostComment(CommentCheep, cheep);
 
             // Reload page
-            return LocalRedirect(Url.Content("~/"));
+            return LocalRedirect(Url.Content(returnUrl));
         }
         catch (InvalidDataException)
         {
-            return LocalRedirect(Url.Content("~/"));
+            return LocalRedirect(Url.Content(returnUrl));
         }
 
     }
-
 
     /// <summary>
     /// Paginate to a new page.

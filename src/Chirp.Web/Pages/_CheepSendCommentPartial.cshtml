@@ -19,7 +19,8 @@
         }
     </div>
     <form class="flex-grow-1 d-flex flex-row gap-2" style="height: 51px;" id="cheepCommentInputForm" method="post"
-        asp-page-handler="CommentCheep" asp-route-CommentCheep="@Model.Id" defaultbutton="sendCommentButton">
+        asp-page="/Public" asp-page-handler="CommentCheep" asp-route-CommentCheep="@Model.Id"
+        asp-route-returnUrl="@Context.Request.Path" defaultbutton="sendCommentButton">
 
         <div class="text-box-container">
             <textarea name="CommentText" class="text-box-cheep cheep-input" id="cheepComment"

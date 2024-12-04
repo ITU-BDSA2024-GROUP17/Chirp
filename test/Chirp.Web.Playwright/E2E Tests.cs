@@ -16,18 +16,6 @@ public class E2ETests : PageTest
         await Page.GotoAsync("http://localhost:5163/");
     }
 
-    // [Test] // Skipped because it does not work
-    public async Task SearchForUserTest()
-    {
-        await Page.GetByPlaceholder("Search...").ClickAsync();
-        await Page.GetByPlaceholder("Search...").FillAsync("helge");
-
-        await Page.GetByRole(AriaRole.Link, new() { NameString = "H Helge" }).ClickAsync();
-        await Page.WaitForURLAsync("http://localhost:5163/Helge");
-
-        await Expect(Page.GetByText("Hello, BDSA students!")).ToBeVisibleAsync();
-    }
-
     [Test]
     public async Task SearchForTextTest()
     {
@@ -138,6 +126,43 @@ public class E2ETests : PageTest
     }
 
     [Test]
+    public async Task CommentTest()
+    {
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
+        var msg1 = "I am testing today!";
+        var msg2 = "Second time testing today!";
+
+        await Page.GetByPlaceholder("Whats on your mind?").FillAsync(msg1);
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Page.Locator(".cheep:has-text(\"Playwright" + userId + "\")").First.GetByRole(AriaRole.Button, new() { NameString = "Add comment" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Textbox, new() { NameString = "What's on your mind?" }).FillAsync(msg2);
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Comment" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+        await Expect(Page.Locator(".cheep").GetByText(msg2).First).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task DeleteTest()
+    {
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
+        var msg1 = "I am testing today!";
+
+        await Page.GetByPlaceholder("Whats on your mind?").FillAsync(msg1);
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        var cheep = Page.Locator(".cheep:has-text(\"Playwright" + userId + "\")").First;
+        await cheep.GetByRole(AriaRole.Button, new() { NameString = "More options" }).ClickAsync();
+        await cheep.GetByRole(AriaRole.Button, new() { NameString = "Delete" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+        await Expect(Page.Locator(".cheep:has-text(\"Playwright" + userId + "\")").GetByText(msg1).First).ToBeHiddenAsync();
+    }
+
+    [Test]
     public async Task LikeCheepTest()
     {
         if (helpers == null) return;
@@ -156,21 +181,64 @@ public class E2ETests : PageTest
     }
 
     [Test]
-    public async Task DeleteCheepTest()
+    public async Task RevisionsTest()
     {
         if (helpers == null) return;
         int userId = await helpers.HelperCreateAccount();
 
-        await Page.GetByPlaceholder("Whats on your mind?").FillAsync("I am testing deleting today!");
+        await Page.GetByPlaceholder("Whats on your mind?").FillAsync("I am testing revisions today!");
         await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
         await Page.WaitForURLAsync("http://localhost:5163/?page=1");
 
         await Page.Locator(".cheep-dropdown").First.Locator("button.btn").First.ClickAsync();
-        await Page.Locator("button.dropdown-item").Last.ClickAsync();
-
+        await Page.Locator("button.dropdown-item").First.ClickAsync();
+        await Page.Locator(".cheepeditbox").First.FillAsync("Second time testing revisions today!");
+        await Page.Keyboard.PressAsync("Enter");
         await Page.WaitForURLAsync("http://localhost:5163/?page=1");
 
-        await Expect(Page.GetByText("I am testing deleting today!")).ToHaveCountAsync(0);
+        await Page.GetByText("Edited").First.ClickAsync();
+
+        await Expect(Page.Locator(".dropdown:has-text('Edited')").First.GetByText("I am testing revisions today!").First).ToBeVisibleAsync();
+        await Expect(Page.Locator(".dropdown:has-text('Edited')").First.GetByText("Second time testing revisions today!").First).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task AccountTimelineTest()
+    {
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
+
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Playwright" + userId }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { NameString = "Profile" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/" + "Playwright" + userId + "?page=1");
+
+        await Expect(Page.GetByText("" + userId).First).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task UserTimelineTest()
+    {
+        if (helpers == null) return;
+        int otherUserId = await helpers.HelperCreateAccount();
+
+        await Page.GetByPlaceholder("Whats on your mind?").FillAsync("We are testing search and user timeline today!");
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Playwright" + otherUserId }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { NameString = "Logout" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        if (helpers == null) return;
+        await helpers.HelperCreateAccount();
+
+        await Page.GetByPlaceholder("Search...").FillAsync("Playwright" + otherUserId);
+        await Expect(Page.GetByText("Playwright" + otherUserId).First).ToBeVisibleAsync();
+        await Page.Keyboard.PressAsync("ArrowDown");
+        await Page.Keyboard.PressAsync("Enter");
+
+        await Page.WaitForURLAsync("http://localhost:5163/" + "Playwright" + otherUserId + "?page=1");
+        await Expect(Page.GetByText("We are testing search and user timeline today!").Locator("visible=true").First).ToBeVisibleAsync();
 
     }
 }
