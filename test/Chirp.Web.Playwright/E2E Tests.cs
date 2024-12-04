@@ -173,4 +173,22 @@ public class E2ETests : PageTest
         await Page.WaitForURLAsync("http://localhost:5163/?page=1");
         await Expect(Page.Locator(".cheep:has-text(\"Playwright" + userId + "\")").GetByText(msg1).First).ToBeHiddenAsync();
     }
+
+    [Test]
+    public async Task LikeCheepTest()
+    {
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
+
+        await Page.GetByPlaceholder("Whats on your mind?").FillAsync("I am testing likes today!");
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Expect(Page.Locator(".font-sec").First).ToHaveTextAsync("0");
+
+        await Page.Locator(".like-btn").First.ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Expect(Page.Locator(".active").First).ToContainTextAsync("1");
+    }
 }

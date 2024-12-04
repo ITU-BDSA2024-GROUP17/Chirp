@@ -1,13 +1,7 @@
 * {
     padding: 0;
     margin: 0;
-}
-
-body {
-    font-family: "Trebuchet MS", sans-serif;
-    font-size: 14px;
-    margin: 1.25rem 0 1.25rem 1.25rem !important;
-    overflow-y: scroll;
+    box-sizing: border-box;
 }
 
 :root {
@@ -77,23 +71,33 @@ body {
 }
 
 body {
-    margin: unset;
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 14px;
+    padding: 1.25rem 0 1.25rem 1.25rem !important;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    min-height: 100vh;
 }
 
 header {
     display: flex;
-    margin: auto;
-    max-width: 72rem;
+    width: 72rem;
     display: flex;
     gap: 1em;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 10px;
 }
 
-.root {
-    margin: auto;
-    max-width: 72rem;
+footer {
+    margin-top: auto;
+    text-align: center;
+}
+
+main {
+    width: 72rem;
 }
 
 .font-sec {
@@ -105,6 +109,7 @@ header {
 }
 
 .line {
+    width: 100%;
     border-bottom: 1px solid var(--gray-300);
 }
 
@@ -137,6 +142,7 @@ header {
     overflow: hidden;
     resize: none;
 }
+
 .text-box-cheep {
     padding: 10px 10px 20px 10px !important;
 }
@@ -146,7 +152,7 @@ header {
     bottom: 0;
     font-size: 12px;
     color: var(--gray-600);
-    margin: 0px 10px 9px 4px;
+    margin: 0px 10px 5px 4px;
 }
 
 .nav-wrapper {
@@ -298,7 +304,6 @@ Cheeps
     padding: 3px 4px 3px 4px;
     cursor: default;
 }
-
 
 .cheep-timestamp-tooltip .cheep-timestamp::after {
     content: " ";

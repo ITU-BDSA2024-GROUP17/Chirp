@@ -2,7 +2,7 @@ using Chirp.Infrastructure.Extensions;
 
 namespace Chirp.Infrastructure.Tests.Extensions;
 
-public class CheepExtensionsTest
+public class QueryableExtensionsTest
 {
     [Test]
     public void PaginateIEnumarableTest()

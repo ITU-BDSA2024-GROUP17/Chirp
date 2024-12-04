@@ -38,40 +38,49 @@ function showCommentField(id) {
     });
 }
 
-function auto_grow(element) {
-    element.style.height = "5px";
-    element.style.height = element.scrollHeight - 5 + "px";
-}
-
 window.addEventListener("DOMContentLoaded", () => {
-    const textLengthLimit = 160;
+    const fields = document.querySelectorAll("#cheepComment");
+    fields.forEach((comment) => {
+        const textLengthLimit = 160;
+        const cheepInputFieldLimit =
+            comment.parentElement.querySelector(".text-box-limit");
 
-    document.querySelectorAll(".cheepComment").forEach((cheepInputField) => {
-        const cheepInputFieldLimit = cheepInputField.nextElementSibling;
         cheepInputFieldLimit.innerHTML = "0 / " + textLengthLimit; // init length
 
-        ["keyup", "change"].forEach((type) => {
-            cheepInputField.addEventListener(type, (event) => {
-                const inputFieldValue = cheepInputField.value;
+        ["keyup", "keypress", "change"].forEach((type) => {
+            comment.addEventListener(type, (event) => {
+                const submitBtn =
+                    comment.parentElement.parentElement.querySelector(
+                        "#sendCommentButton"
+                    );
+                if (comment.value.length > textLengthLimit) {
+                    submitBtn.disabled = true;
+                } else {
+                    submitBtn.disabled = false;
+                }
+
+                if (!event.shiftKey && event.key == "Enter") {
+                    event.preventDefault();
+                    if (comment.value.length > textLengthLimit) {
+                        return;
+                    }
+                    comment.parentElement.parentElement.submit();
+                }
+                auto_grow(comment);
+                auto_grow(comment.parentElement.parentElement);
+
+                auto_grow(comment.parentElement.parentElement.parentElement);
+                const inputFieldValue = comment.value;
                 cheepInputFieldLimit.innerHTML =
                     inputFieldValue.length + " / " + textLengthLimit;
                 if (inputFieldValue.length > textLengthLimit) {
                     cheepInputFieldLimit.style.color = "red";
-                    cheepInputField.style.color = "red";
+                    comment.style.color = "red";
                 } else {
-                    cheepInputField.style.color = "black";
+                    comment.style.color = "black";
                     cheepInputFieldLimit.style.color = "var(--gray-600)";
                 }
             });
         });
-
-        cheepInputField.addEventListener("keypress", (event) => {
-            if (!event.shiftKey && event.key === "Enter") {
-                event.preventDefault();
-                cheepInputField.closest("form").submit();
-            }
-        });
-
-        auto_grow(cheepInputField);
     });
 });

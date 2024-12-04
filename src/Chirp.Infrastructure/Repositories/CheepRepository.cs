@@ -123,21 +123,31 @@ public class CheepRepository(CheepDbContext context) : ICheepRepository
 
     public async Task PostComment(int CheepToCommentId, Cheep comment)
     {
+        if (new List<CheepRevision>(comment.Revisions)[0].Message.Length > 160) throw new InvalidDataException("Comment is too long");
+
         var cheepToComment = await GetCheep(CheepToCommentId) ?? throw new Exception("Cheep not found to comment!");
         cheepToComment.Comments.Add(comment);
         await _context.SaveChangesAsync();
     }
 
-    public Task DeleteCheep(int cheepId)
+    public async Task DeleteCheep(int cheepId)
     {
         var cheepToDelete = _context.Cheeps
             .Where(c => c.Id == cheepId)
             .Include(c => c.Likes)
             .Include(c => c.Revisions)
+            .Include(c => c.Comments)
             .AsSplitQuery()
             .FirstOrDefault() ?? throw new Exception("Cheep not found for delete");
-        _context.Cheeps.Remove(cheepToDelete);
 
-        return Task.FromResult(_context.SaveChangesAsync());
+        var commentIds = cheepToDelete.Comments.Select(c => c.Id).ToList();
+
+        foreach (var commentId in commentIds)
+        {
+            await DeleteCheep(commentId);
+        }
+
+        _context.Cheeps.Remove(cheepToDelete);
+        await _context.SaveChangesAsync();
     }
 }
