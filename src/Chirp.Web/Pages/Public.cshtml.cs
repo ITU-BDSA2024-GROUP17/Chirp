@@ -151,7 +151,6 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
 
 
-
         try
         {
 
