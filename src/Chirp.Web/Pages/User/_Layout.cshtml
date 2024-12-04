@@ -37,6 +37,9 @@
             <a type="button" class="btn @IsActive("/User/Index")" href="/@Model.Author?.UserName">
                 Cheeps <span class="badge text-bg-secondary">@Model.TotalCheeps</span>
             </a>
+            <a type="button" class="btn @IsActive("/User/Comments")" href="/@Model.Author?.UserName/comments">
+                Comments <span class="badge text-bg-secondary">@Model.TotalLikedCheeps</span>
+            </a>
             <a type="button" class="btn @IsActive("/User/Likes")" href="/@Model.Author?.UserName/likes">
                 Likes <span class="badge text-bg-secondary">@Model.TotalLikedCheeps</span>
             </a>
