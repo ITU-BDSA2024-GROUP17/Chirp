@@ -1,4 +1,3 @@
-using Microsoft.Playwright.NUnit;
 using Microsoft.Playwright;
 
 namespace Chirp.Web.Playwright;
@@ -8,30 +7,13 @@ namespace Chirp.Web.Playwright;
 public class E2ETests : PageTest
 {
 
+    TestHelpers? helpers;
+
     [SetUp]
     public async Task Setup()
     {
+        helpers = new(this);
         await Page.GotoAsync("http://localhost:5163/");
-    }
-
-    private async Task<int> HelperCreateAccount()
-    {
-        int userId = new Random().Next(1000, 10000);
-
-        await Page.GetByRole(AriaRole.Button, new() { NameString = "Register" }).ClickAsync();
-        await Page.WaitForURLAsync("http://localhost:5163/Identity/Account/Register");
-
-        await Page.GetByPlaceholder("John Doe").FillAsync("Playwright" + userId);
-        await Page.GetByPlaceholder("name@example.com").FillAsync("play" + userId + "@wright.dev");
-        await Page.GetByRole(AriaRole.Textbox, new() { NameString = "Password" }).FillAsync("aB%" + userId);
-        await Page.GetByLabel("Confirm Password").FillAsync("aB%" + userId);
-
-        await Page.GetByRole(AriaRole.Button, new() { NameString = "Create account" }).ClickAsync();
-        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
-
-        await Expect(Page.GetByRole(AriaRole.Button, new() { NameString = "PlayWright" + userId })).ToBeVisibleAsync();
-
-        return userId;
     }
 
     // [Test] // Skipped because it does not work
@@ -59,23 +41,29 @@ public class E2ETests : PageTest
     [Test]
     public async Task CreateAccountTest()
     {
-        int userId = await HelperCreateAccount();
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
     }
 
     [Test]
     public async Task LogoutTest()
     {
-        int userId = await HelperCreateAccount();
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
 
         await Page.GetByRole(AriaRole.Button, new() { NameString = "Playwright" + userId }).ClickAsync();
         await Page.GetByRole(AriaRole.Link, new() { NameString = "Logout" }).ClickAsync();
         await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+        await Expect(Page.GetByRole(AriaRole.Button, new() { NameString = "Playwright" + userId })).ToBeHiddenAsync();
+        await Expect(Page.GetByRole(AriaRole.Button, new() { NameString = "Login" })).ToBeVisibleAsync();
+
     }
 
     [Test]
     public async Task LoginTest()
     {
-        int userId = await HelperCreateAccount();
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
 
         await Page.GetByRole(AriaRole.Button, new() { NameString = "Playwright" + userId }).ClickAsync();
         await Page.GetByRole(AriaRole.Link, new() { NameString = "Logout" }).ClickAsync();
@@ -96,7 +84,8 @@ public class E2ETests : PageTest
     [Test]
     public async Task CheepTest()
     {
-        int userId = await HelperCreateAccount();
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
 
         await Page.GetByPlaceholder("Whats on your mind?").FillAsync("I am testing today!");
         await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
@@ -108,7 +97,8 @@ public class E2ETests : PageTest
     [Test]
     public async Task AvatarTest()
     {
-        int userId = await HelperCreateAccount();
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
 
         await Page.GetByRole(AriaRole.Button, new() { NameString = "Playwright" + userId }).ClickAsync();
         await Page.GetByRole(AriaRole.Link, new() { NameString = "Settings" }).ClickAsync();
@@ -120,5 +110,67 @@ public class E2ETests : PageTest
         await Page.WaitForURLAsync("http://localhost:5163/Identity/Account/Manage");
 
         await Expect(Page.GetByRole(AriaRole.Img, new()).Nth(1)).ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task EditCheepTest()
+    {
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
+
+        await Page.GetByPlaceholder("Whats on your mind?").FillAsync("I am testing today!");
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Page.Locator(".cheep-dropdown").First.Locator("button.btn").First.ClickAsync();
+        await Page.Locator("button.dropdown-item").First.ClickAsync();
+        await Page.Locator(".cheepeditbox").First.FillAsync("Second time testing today!");
+        await Page.Keyboard.PressAsync("Enter");
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Expect(Page.Locator(".cheep").GetByText("Second time testing today!").Locator("visible=true").First).ToBeVisibleAsync();
+
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Playwright" + userId }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { NameString = "Logout" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Expect(Page.Locator(".cheep-dropdown")).ToHaveCountAsync(0);
+    }
+
+    [Test]
+    public async Task LikeCheepTest()
+    {
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
+
+        await Page.GetByPlaceholder("Whats on your mind?").FillAsync("I am testing likes today!");
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Expect(Page.Locator(".font-sec").First).ToHaveTextAsync("0");
+
+        await Page.Locator(".like-btn").First.ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Expect(Page.Locator(".active").First).ToContainTextAsync("1");
+    }
+
+    [Test]
+    public async Task DeleteCheepTest()
+    {
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
+
+        await Page.GetByPlaceholder("Whats on your mind?").FillAsync("I am testing deleting today!");
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Page.Locator(".cheep-dropdown").First.Locator("button.btn").First.ClickAsync();
+        await Page.Locator("button.dropdown-item").Last.ClickAsync();
+
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Expect(Page.GetByText("I am testing deleting today!")).ToHaveCountAsync(0);
+
     }
 }

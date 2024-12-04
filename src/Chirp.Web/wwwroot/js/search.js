@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const navSearchOutput = document.getElementById("navSearchOutput");
             navSearchOutput.innerHTML = "";
-            renderAuthorsInSeach(data);
+            renderAuthorsInSearch(data);
         } catch (error) {
             console.error(
                 "There was a problem with the fetch operation:",
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-function renderAuthorsInSeach(data) {
+function renderAuthorsInSearch(data) {
     data.forEach((user) => {
         let name = user.userName;
         let avatar = user.avatar;
