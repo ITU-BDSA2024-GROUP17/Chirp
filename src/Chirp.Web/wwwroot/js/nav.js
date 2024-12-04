@@ -66,7 +66,10 @@ window.addEventListener("DOMContentLoaded", () => {
                     }
                     comment.parentElement.parentElement.submit();
                 }
+                auto_grow(comment);
+                auto_grow(comment.parentElement.parentElement);
 
+                auto_grow(comment.parentElement.parentElement.parentElement);
                 const inputFieldValue = comment.value;
                 cheepInputFieldLimit.innerHTML =
                     inputFieldValue.length + " / " + textLengthLimit;
