@@ -31,6 +31,9 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: ["Chirp.Infrastructure.Tests", "Chirp.Web.Playwright", "Chirp.Web.Tests"]
 
     steps:
       - uses: actions/checkout@v4
@@ -45,6 +48,8 @@ jobs:
         run: dotnet run --project src/Chirp.Web &
       - name: Install playwright
         run: pwsh test/Chirp.Web.Playwright/bin/Debug/net8.0/playwright.ps1 install chromium
+      - name: Change directory
+        run: cd test/%matrix.projects
       - name: Test
         run: dotnet test
       - name: Finalizing
