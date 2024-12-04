@@ -139,8 +139,10 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         return LocalRedirect(Url.Content("~/"));
     }
 
-    public async Task<IActionResult> OnPostCommentCheepAsync(int CommentCheep, string CommentText)
+    public async Task<IActionResult> OnPostCommentCheepAsync(int CommentCheep, string CommentText, string returnUrl = "/")
     {
+        Console.WriteLine("id " + CommentCheep);
+
         if (string.IsNullOrWhiteSpace(CommentText))
         {
             ModelState.AddModelError("", "Comment cannot be empty.");
@@ -158,29 +160,28 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
             {
                 AuthorId = UserId,
                 Author = author,
-                Revisions = new List<CheepRevision>
-                {
+                Revisions =
+                [
                     new CheepRevision
                     {
                         Message = CommentText,
                         TimeStamp = DateTime.UtcNow
                     }
-                },
+                ],
                 Likes = []
             };
 
             await _cheepService.PostComment(CommentCheep, cheep);
 
             // Reload page
-            return LocalRedirect(Url.Content("~/"));
+            return LocalRedirect(Url.Content(returnUrl));
         }
         catch (InvalidDataException)
         {
-            return LocalRedirect(Url.Content("~/"));
+            return LocalRedirect(Url.Content(returnUrl));
         }
 
     }
-
 
     public IActionResult OnPostPaginationAsync(int newPage)
     {
