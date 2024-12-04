@@ -122,6 +122,8 @@ header {
     width: 32rem;
 }
 
+/* Text box and nav */
+
 .text-box-container {
     position: relative;
     width: 100%;
@@ -184,11 +186,7 @@ header {
     overflow: hidden;
 }
 
-/*
-
-Cheeps
-
-*/
+/* Cheeps */
 
 .cheeps-container {
     display: flex;
@@ -348,9 +346,7 @@ Cheeps
     transition: visibility 0s ease-out 0.5s;
 }
 
-/*
-mini version of cheep wrapper
-*/
+/* Mini version of cheep wrapper */
 .navSearchOutputWrapper {
     position: absolute;
     background-color: white;
@@ -395,11 +391,7 @@ mini version of cheep wrapper
     width: 35px;
 }
 
-/*
-
-Interface
-
-*/
+/* Interface */
 
 .skip-btn {
     background-image: url(../images/arrow.png);
