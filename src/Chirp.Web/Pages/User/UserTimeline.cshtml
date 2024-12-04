@@ -15,10 +15,10 @@
 
 
 <partial name="_CheepsPartial" model="@Model.Cheeps" />
-@*
+
 <partial name="_PaginationPartial" model="@(new Pagination()
     {
         Current = Int32.Parse(Request.Query["page"].ToString()),
         Pages = (int)Math.Ceiling(Model.TotalCheeps / 32.0)
     }
-)" /> *@
+)" />

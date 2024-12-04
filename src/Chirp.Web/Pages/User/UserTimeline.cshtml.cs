@@ -54,24 +54,6 @@ public class UserModel(AuthorService authorService, CheepService cheepService) :
         return Page();
     }
 
-    public async Task<IActionResult> OnPostLikeAsync(int cheepId, string returnUrl)
-    {
-        var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found!");
-
-        var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
-        var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
-
-        if (cheep.Likes.Contains(author))
-        {
-            await _cheepService.UnlikeCheep(cheepId, UserId);
-        }
-        else
-        {
-            await _cheepService.LikeCheep(cheepId, UserId);
-        }
-
-        return LocalRedirect(Request.Path.ToString());
-    }
 
     public async Task<IActionResult> OnPostCheepAsync(string returnUrl)
     {

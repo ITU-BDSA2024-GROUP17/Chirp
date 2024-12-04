@@ -83,7 +83,7 @@
                         }
                     </div>
                     <div style="margin-top: .5rem; display: flex; gap: 0.5em; align-items: center;">
-                        <form asp-page-handler="Like" method="post" asp-route-cheepId="@cheep.Id">
+                        <form asp-page-handler="Like" method="post" asp-route-cheepId="@cheep.Id" asp-page="/Public"  asp-route-returnUrl="@Context.Request.Path">
                             @if (User.Identity != null && User.Identity.IsAuthenticated)
                             {
                                 <div>

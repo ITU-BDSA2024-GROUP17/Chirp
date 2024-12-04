@@ -80,7 +80,7 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
 
     }
 
-    public async Task<IActionResult> OnPostLikeAsync(int cheepId)
+    public async Task<IActionResult> OnPostLikeAsync(int cheepId, string returnUrl = "/")
     {
         var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found for like!");
 
@@ -96,7 +96,7 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
             await _cheepService.LikeCheep(cheepId, UserId);
         }
 
-        return LocalRedirect(Url.Content("~/"));
+        return LocalRedirect(Url.Content(returnUrl));
     }
 
     public async Task<IActionResult> OnPostUpdateCheepAsync(int cheepId, [FromForm] string updateCheep)
