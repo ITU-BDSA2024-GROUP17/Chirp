@@ -91,6 +91,83 @@ public class UserModel(AuthorService authorService, CheepService cheepService) :
         return LocalRedirect(Request.Path.ToString());
     }
 
+    public async Task<IActionResult> OnPostCommentCheepAsync(int CommentCheep, string CommentText)
+    {
+        if (string.IsNullOrWhiteSpace(CommentText))
+        {
+            ModelState.AddModelError("", "Comment cannot be empty.");
+            return Page();
+        }
+
+        var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
+        var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
+
+
+        try
+        {
+
+            Cheep cheep = new()
+            {
+                AuthorId = UserId,
+                Author = author,
+                Revisions = new List<CheepRevision>
+                {
+                    new CheepRevision
+                    {
+                        Message = CommentText,
+                        TimeStamp = DateTime.UtcNow
+                    }
+                },
+                Likes = []
+            };
+
+            await _cheepService.PostComment(CommentCheep, cheep);
+
+            // Reload page
+            return LocalRedirect(Request.Path.ToString());
+        }
+        catch (InvalidDataException)
+        {
+            return LocalRedirect(Request.Path.ToString());
+        }
+
+    }
+
+
+    public async Task<IActionResult> OnPostCheepAsync(string returnUrl)
+    {
+        if (User.Identity == null || !User.Identity.IsAuthenticated) throw new UnauthorizedAccessException("User is not logged in!");
+
+        var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
+        var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
+
+        try
+        {
+            CheepRevision cheepRevision = new()
+            {
+                Message = CheepMessage,
+                TimeStamp = DateTime.UtcNow
+            };
+            List<CheepRevision> revList = [cheepRevision];
+            Cheep cheep = new()
+            {
+                AuthorId = UserId,
+                Revisions = revList,
+                Author = author,
+                Likes = []
+            };
+
+            await _cheepService.CreateCheep(cheep);
+
+            // Reload page
+            return LocalRedirect(Url.Content($"~/{author}"));
+        }
+        catch (InvalidDataException)
+        {
+            return LocalRedirect(Url.Content($"~/{author}"));
+        }
+    }
+
 
     public IActionResult OnPostPaginationAsync(int newPage)
     {
