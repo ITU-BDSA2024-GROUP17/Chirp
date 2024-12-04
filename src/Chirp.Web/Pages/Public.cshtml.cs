@@ -141,8 +141,6 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
 
     public async Task<IActionResult> OnPostCommentCheepAsync(int CommentCheep, string CommentText, string returnUrl = "/")
     {
-        Console.WriteLine("id " + CommentCheep);
-
         if (string.IsNullOrWhiteSpace(CommentText))
         {
             ModelState.AddModelError("", "Comment cannot be empty.");
