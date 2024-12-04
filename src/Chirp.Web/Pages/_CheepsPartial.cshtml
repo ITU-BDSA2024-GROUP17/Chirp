@@ -64,7 +64,7 @@
                     @if (User.Identity != null && User.Identity.IsAuthenticated && cheep.AuthorId.Equals(userId))
                     {
                         <div class="cheep-message" id="cheepedit-@cheep.Id" style="display: none;">
-                            <form asp-page-handler="UpdateCheep" method="post" asp-route-cheepId="@cheep.Id">
+                            <form asp-page-handler="UpdateCheep" method="post" asp-route-cheepId="@cheep.Id" asp-page="/Public"  asp-route-returnUrl="@Context.Request.Path">
                                 <input name="updateCheep" id="cheepeditbox-@cheep.Id" class="cheepeditbox" type="text" autocomplete="off" maxlength="160" style="resize: none; width: 40rem;" value="@cheep.Revisions.First().Message">
                             </form>
                         </div>

@@ -99,7 +99,7 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         return LocalRedirect(Url.Content(returnUrl));
     }
 
-    public async Task<IActionResult> OnPostUpdateCheepAsync(int cheepId, [FromForm] string updateCheep)
+    public async Task<IActionResult> OnPostUpdateCheepAsync(int cheepId, [FromForm] string updateCheep, string returnUrl = "/")
     {
         if (User.Identity == null || !User.Identity.IsAuthenticated) throw new UnauthorizedAccessException("User is not logged in!");
         try
@@ -113,11 +113,11 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
             await _cheepService.UpdateCheep(cheepId, revision);
 
             // Reload page
-            return LocalRedirect(Url.Content("~/"));
+            return LocalRedirect(Url.Content(returnUrl));
         }
         catch (InvalidDataException)
         {
-            return LocalRedirect(Url.Content("~/"));
+            return LocalRedirect(Url.Content(returnUrl));
         }
     }
 
