@@ -2,26 +2,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Core.Entities;
 using Chirp.Infrastructure.Services;
-using System.Security.Claims;
 using Chirp.Core.Interfaces;
 using Chirp.Web.Interfaces.Pages;
 
 namespace Chirp.Web.Pages.User;
 
-public class UserModel(AuthorService authorService, CheepService cheepService) : PageModel, IUserPage, ICheepModel
+public class UserModel(AuthorService authorService) : PageModel, IUserPage
 {
     private readonly AuthorService _authorService = authorService;
-    private readonly CheepService _cheepService = cheepService;
 
     public Author? Author { get; set; }
     public ICollection<Author> Following { get; set; } = [];
     public ICollection<Author> Followers { get; set; } = [];
-    public IEnumerable<Cheep> Cheeps { get; set; } = [];
+    public ICollection<Cheep> Cheeps { get; set; } = [];
     public int TotalCheeps { get; set; }
     public int TotalLikedCheeps { get; set; }
-
-    [BindProperty]
-    public string CheepMessage { get; set; } = "";
+    public int TotalCommentedCheeps { get; set; }
 
     /// <summary>
     /// Retrieves the Author and Cheeps for the current page.
@@ -51,7 +47,8 @@ public class UserModel(AuthorService authorService, CheepService cheepService) :
                 TotalCheeps = await _authorService.GetCheepsCount(author);
             }
 
-            TotalLikedCheeps = await _authorService.GetLikedCount(author);
+            TotalLikedCheeps = await _authorService.GetLikedCount(Author.Id);
+            TotalCommentedCheeps = await _authorService.GetCheepsCommentedCount(Author.Id);
 
             Following = await _authorService.GetFollowing(Author.Id);
             Followers = await _authorService.GetFollowers(Author.Id);

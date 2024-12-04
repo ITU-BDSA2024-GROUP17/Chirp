@@ -4,10 +4,10 @@
 
 @model Chirp.Web.Pages.User.UserCommentsModel
 
-@await Html.PartialAsync("_CheepsPartial", Model.LikedCheeps)
+@await Html.PartialAsync("_CheepsPartial", Model.CommentedCheeps)
 
 @await Html.PartialAsync("_PaginationPartial", new Pagination()
 {
     Current = Int32.Parse(Request.Query["page"].ToString()),
-    Pages = (int)Math.Ceiling(Model.TotalLikedCheeps / 32.0)
+    Pages = (int)Math.Ceiling(Model.TotalCommentedCheeps / 32.0)
 })

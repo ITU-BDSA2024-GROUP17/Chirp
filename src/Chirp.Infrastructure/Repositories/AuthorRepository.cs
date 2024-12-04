@@ -63,6 +63,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         var cheeps = _context.Authors
             .Where(a => a.UserName == author)
             .SelectMany(a => a.Cheeps)
+            .Where(c => c.CheepOwnerId == null) // Should not include comments
             .Include(c => c.Revisions)
             .Include(c => c.Author)
             .Include(c => c.Likes)
@@ -81,6 +82,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         var cheeps = _context.Authors
             .Where(a => a.UserName == author)
             .SelectMany(a => a.Cheeps)
+            .Where(c => c.CheepOwnerId == null) // Should not include comments
             .CountAsync();
 
         return cheeps;
@@ -108,29 +110,29 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
 
         // Cheeps form follwing
         var followingCheeps = await _context.Authors
-        .Where(a => a.UserName == author)
-        .Include(a => a.Following)
-        .SelectMany(a => a.Following.SelectMany(f => f.Cheeps))
-        .Include(c => c.Author)
-        .ThenInclude(a => a.Followers)
-        .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
-        .Include(c => c.Likes)
-        .Include(c => c.Revisions)
+            .Where(a => a.UserName == author)
+            .Include(a => a.Following)
+            .SelectMany(a => a.Following.SelectMany(f => f.Cheeps))
+            .Include(c => c.Author)
+            .ThenInclude(a => a.Followers)
+            .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
+            .Include(c => c.Likes)
+            .Include(c => c.Revisions)
 
-        // Comment inclusion
-        .Include(c => c.Comments).ThenInclude(c => c.Revisions)
-        .Include(c => c.Comments).ThenInclude(c => c.Author).ThenInclude(a => a.Followers)
-        .Include(c => c.Comments).ThenInclude(c => c.Likes)
+            // Comment inclusion
+            .Include(c => c.Comments).ThenInclude(c => c.Revisions)
+            .Include(c => c.Comments).ThenInclude(c => c.Author).ThenInclude(a => a.Followers)
+            .Include(c => c.Comments).ThenInclude(c => c.Likes)
 
-        .AsSplitQuery()
-        .ToListAsync();
+            .AsSplitQuery()
+            .ToListAsync();
 
         // Combine results
         var combinedCheeps = authorCheeps
-        .Concat(followingCheeps)
-        .OrderByDescending(c => c.Revisions.First().TimeStamp)
-        .Paginate(page)
-        .ToList();
+            .Concat(followingCheeps)
+            .OrderByDescending(c => c.Revisions.First().TimeStamp)
+            .Paginate(page)
+            .ToList();
 
         return combinedCheeps;
     }
@@ -140,23 +142,34 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         var cheeps = _context.Authors
             .Where(a => a.UserName == author)
             .SelectMany(a => a.Cheeps)
+            .Where(c => c.CheepOwnerId == null) // Should not include comments
             .Union(_context.Authors
                 .Where(a => a.UserName == author)
                 .Include(a => a.Following)
                 .SelectMany(a => a.Following.SelectMany(f => f.Cheeps)))
+                .Where(c => c.CheepOwnerId == null) // Should not include comments
             .CountAsync();
 
         return cheeps;
     }
 
-    public Task<List<Cheep>> GetCheepsCommented(string author, int page)
+    public Task<List<Cheep>> GetCheepsCommented(string authorId, int page)
     {
         var cheeps = _context.Cheeps
+
+            .Where(c => c.CheepOwnerId == null) // Should not include comments
+            .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
+            .Include(c => c.Author).ThenInclude(a => a.Followers)
+            .ThenInclude(a => a.Followers)
+            .Include(c => c.Likes)
+
+            // Comment inclusion
             .Include(c => c.Comments).ThenInclude(c => c.Revisions)
             .Include(c => c.Comments).ThenInclude(c => c.Author).ThenInclude(a => a.Followers)
             .Include(c => c.Comments).ThenInclude(c => c.Likes)
 
-            .Where(c => c.Comments.Any(comment => comment.AuthorId == author))
+            .Where(c => c.Comments.Any(comment => comment.AuthorId == authorId))
+
             .OrderByDescending(c => c.Revisions.First().TimeStamp)
             .Paginate(page)
             .AsSplitQuery()
@@ -165,21 +178,21 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         return Task.FromResult(cheeps);
     }
 
-    public Task<int> GetCheepsCommentedCount(string author)
+    public Task<int> GetCheepsCommentedCount(string authorId)
     {
         var count = _context.Cheeps
             .Include(c => c.Comments)
-            .Where(c => c.Comments.Any(comment => comment.AuthorId == author))
+            .Where(c => c.Comments.Any(comment => comment.AuthorId == authorId))
             .CountAsync();
 
         return count;
     }
 
 
-    public Task<List<Cheep>> GetLiked(string author, int page)
+    public Task<List<Cheep>> GetLiked(string authorId, int page)
     {
         var cheeps = _context.Authors
-            .Where(a => a.UserName == author)
+            .Where(a => a.Id == authorId)
             .SelectMany(a => a.LikedCheeps)
             .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
             .Include(c => c.Author)
@@ -192,9 +205,12 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         return Task.FromResult(cheeps);
     }
 
-    public Task<int> GetLikedCount(string author)
+    public Task<int> GetLikedCount(string authorId)
     {
-        var cheeps = _context.Authors.Where(a => a.UserName == author).SelectMany(a => a.LikedCheeps).CountAsync();
+        var cheeps = _context.Authors
+            .Where(a => a.Id == authorId)
+            .SelectMany(a => a.LikedCheeps)
+            .CountAsync();
 
         return cheeps;
     }
