@@ -2,7 +2,6 @@ using Microsoft.Playwright;
 
 namespace Chirp.Web.Playwright;
 
-
 [TestFixture]
 public class TestHelpers(PageTest pageTest)
 {
@@ -27,5 +26,4 @@ public class TestHelpers(PageTest pageTest)
 
         return userId;
     }
-
 }

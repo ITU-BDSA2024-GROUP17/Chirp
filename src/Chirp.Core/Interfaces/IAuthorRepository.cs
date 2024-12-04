@@ -97,6 +97,21 @@ public interface IAuthorRepository
     public Task<int> GetLikedCount(string author);
 
     /// <summary>
+    /// Retrieves the cheeps that a given author have commented on
+    /// </summary>
+    /// <param name="author">Id of the author retrieve the cheeps from.</param>
+    /// <param name="page">Page to retrieve the results from.</param>
+    /// <returns>Task containing a list of cheeps.</returns>
+    public Task<List<Cheep>> GetCheepsCommented(string author, int page);
+
+    /// <summary>
+    /// Retrieves the total count of cheeps that a given author have commented on.
+    /// </summary>
+    /// <param name="author">Id of the author to count the cheeps from.</param>
+    /// <returns>Task containing the total count of cheeps.</returns>
+    public Task<int> GetCheepsCommentedCount(string author);
+
+    /// <summary>
     /// Retrieves a list of authors based on a search term.
     /// Each page includes 32 entries, unless less is found.
     /// </summary>

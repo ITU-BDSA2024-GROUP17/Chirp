@@ -47,7 +47,7 @@ public class CheepRepositoryTests
     public async Task GetCheeps(int page, int expected)
     {
         var cheeps = await _cheepRepository.GetCheeps(page);
-        Console.WriteLine(cheeps);
+
         Assert.That(cheeps, Has.Count.EqualTo(expected));
     }
 

@@ -2,25 +2,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Core.Entities;
 using Chirp.Infrastructure.Services;
-using System.Security.Claims;
 using Chirp.Web.Interfaces.Pages;
-using Chirp.Core.Interfaces;
 
 namespace Chirp.Web.Pages.User;
 
-public class UserLikesModel(AuthorService authorService, CheepService cheepService) : PageModel, IUserPage, ICheepModel
+public class UserLikesModel(AuthorService authorService) : PageModel, IUserPage
 {
     private readonly AuthorService _authorService = authorService;
-    private readonly CheepService _cheepService = cheepService;
 
     public Author? Author { get; set; }
     public ICollection<Author> Following { get; set; } = [];
     public ICollection<Author> Followers { get; set; } = [];
-    public IEnumerable<Cheep> LikedCheeps { get; set; } = [];
+    public ICollection<Cheep> LikedCheeps { get; set; } = [];
     public int TotalCheeps { get; set; }
     public int TotalLikedCheeps { get; set; }
-    public IEnumerable<Cheep> Cheeps { get; set; } = [];
-    public string CheepMessage { get; set; } = "";
+    public int TotalCommentedCheeps { get; set; }
 
     /// <summary>
     /// Retrieves the Author and Cheeps for the current page.
@@ -36,13 +32,10 @@ public class UserLikesModel(AuthorService authorService, CheepService cheepServi
         }
 
         Author = await _authorService.GetAuthorByName(author);
-        LikedCheeps = await _authorService.GetLiked(author, page);
-        TotalLikedCheeps = await _authorService.GetLikedCount(author);
-        Cheeps = LikedCheeps;
 
         if (Author != null)
         {
-            if (Author.UserName == author)
+            if (@User.Identity?.Name == author)
             {
                 TotalCheeps = await _authorService.GetCheepsTimelineCount(author);
             }
@@ -50,6 +43,11 @@ public class UserLikesModel(AuthorService authorService, CheepService cheepServi
             {
                 TotalCheeps = await _authorService.GetCheepsCount(author);
             }
+
+            LikedCheeps = await _authorService.GetLiked(Author.Id, page);
+
+            TotalLikedCheeps = await _authorService.GetLikedCount(Author.Id);
+            TotalCommentedCheeps = await _authorService.GetCheepsCommentedCount(Author.Id);
 
             Following = await _authorService.GetFollowing(Author.Id);
             Followers = await _authorService.GetFollowers(Author.Id);

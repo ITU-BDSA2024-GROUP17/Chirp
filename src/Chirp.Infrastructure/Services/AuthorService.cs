@@ -88,6 +88,16 @@ public class AuthorService(IAuthorRepository authorRepo) : IAuthorRepository
         return _authorRepo.GetLikedCount(author);
     }
 
+    public Task<List<Cheep>> GetCheepsCommented(string author, int page)
+    {
+        return _authorRepo.GetCheepsCommented(author, page);
+    }
+
+    public Task<int> GetCheepsCommentedCount(string author)
+    {
+        return _authorRepo.GetCheepsCommentedCount(author);
+    }
+
     /// <summary>
     /// Creates a new Author.
     /// </summary>
