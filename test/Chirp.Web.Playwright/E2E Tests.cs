@@ -145,6 +145,80 @@ public class E2ETests : PageTest
     }
 
     [Test]
+    public async Task CommentNotVisibleOnAuthorTimelineTest()
+    {
+        if (helpers == null) return;
+        var cheepMessage = "Hello world!";
+        var commentMessage = "Is this visible on the author timeline?";
+
+        // Create cheep
+        int userId1 = await helpers.HelperCreateAccount();
+        await Page.GetByPlaceholder("Whats on your mind?").FillAsync(cheepMessage);
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        // Logout
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Playwright" + userId1 }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { NameString = "Logout" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        // Create comment
+        int userId2 = await helpers.HelperCreateAccount();
+        await Page.Locator(".cheep:has-text(\"Playwright" + userId1 + "\")").First.GetByRole(AriaRole.Button, new() { NameString = "Add comment" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Textbox, new() { NameString = "What's on your mind?" }).FillAsync(commentMessage);
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Comment" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        // Go to author page
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Playwright" + userId2 }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { NameString = "Profile" }).ClickAsync();
+        await Page.WaitForURLAsync($"http://localhost:5163/Playwright{userId2}?page=1");
+
+        // Comment should not be visible
+        var commentLocator = Page.Locator(".cheep").GetByText(commentMessage);
+        await Expect(commentLocator).Not.ToBeVisibleAsync();
+    }
+
+    [Test]
+    public async Task CommentVisibleOnAuthorCommentsTest()
+    {
+        if (helpers == null) return;
+        var cheepMessage = "Hello world!";
+        var commentMessage = "Is this visible on the author timeline?";
+
+        // Create cheep
+        int userId1 = await helpers.HelperCreateAccount();
+        await Page.GetByPlaceholder("Whats on your mind?").FillAsync(cheepMessage);
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        // Logout
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Playwright" + userId1 }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { NameString = "Logout" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        // Create comment
+        int userId2 = await helpers.HelperCreateAccount();
+        await Page.Locator(".cheep:has-text(\"Playwright" + userId1 + "\")").First.GetByRole(AriaRole.Button, new() { NameString = "Add comment" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Textbox, new() { NameString = "What's on your mind?" }).FillAsync(commentMessage);
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Comment" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        // Go to author page
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Playwright" + userId2 }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { NameString = "Profile" }).ClickAsync();
+        await Page.WaitForURLAsync($"http://localhost:5163/Playwright{userId2}?page=1");
+
+        // Go to author comments page
+        await Page.GetByRole(AriaRole.Button, new() { NameRegex = new Regex(".*Comments.*") }).ClickAsync();
+        await Page.WaitForURLAsync($"http://localhost:5163/Playwright{userId2}/comments?page=1");
+
+        // Comment should be visible
+        var commentLocator = Page.Locator(".cheep").GetByText(commentMessage);
+        await Expect(commentLocator).ToBeVisibleAsync();
+    }
+
+    [Test]
     public async Task DeleteTest()
     {
         if (helpers == null) return;
