@@ -171,7 +171,7 @@ public class CheepRepositoryTests
     /// <returns></returns>
     [TestCase("first", 1, 2)]
     [TestCase("watch", 1, 2)]
-    [TestCase("at", 1, 32)]
+    [TestCase("at", 1, 32), Order(1)]
     public async Task SearchCheeps(string search, int page, int expected)
     {
         var cheeps = (await _cheepRepository.SearchCheeps(search, page)).ToList();
