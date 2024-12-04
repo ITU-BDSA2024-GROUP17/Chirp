@@ -15,8 +15,8 @@
             }
         }
     </div>
-    <form class="flex-grow-1 d-flex flex-row gap-2" id="cheepInputForm" asp-page-handler="Cheep" method="post"
-        defaultbutton="sendCheepButton">
+    <form class="flex-grow-1 d-flex flex-row gap-2" id="cheepInputForm" asp-page-handler="Cheep"
+        asp-route-returnUrl="@Context.Request.Path" asp-page="/Public" method="post" defaultbutton="sendCheepButton">
 
         <div class="text-box-container" oninput="auto_grow(this)">
             <textarea type="text" name="cheepMessage" class="text-box-cheep cheep-input" id="cheepMessage"

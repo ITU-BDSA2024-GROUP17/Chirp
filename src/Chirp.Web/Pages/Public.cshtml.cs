@@ -29,7 +29,7 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         return Page();
     }
 
-    public async Task<IActionResult> OnPostCheepAsync([FromForm] string cheepMessage)
+    public async Task<IActionResult> OnPostCheepAsync([FromForm] string cheepMessage, string returnUrl = "/")
     {
         if (User.Identity == null || !User.Identity.IsAuthenticated) throw new UnauthorizedAccessException("User is not logged in!");
 
@@ -57,11 +57,11 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
             await _cheepService.CreateCheep(cheep);
 
             // Reload page
-            return LocalRedirect(Url.Content("~/"));
+            return LocalRedirect(Url.Content(returnUrl));
         }
         catch (InvalidDataException)
         {
-            return LocalRedirect(Url.Content("~/"));
+            return LocalRedirect(Url.Content(returnUrl));
         }
     }
 
