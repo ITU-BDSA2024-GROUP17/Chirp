@@ -23,6 +23,12 @@ public class UserModel(AuthorService authorService, CheepService cheepService) :
     [BindProperty]
     public string CheepMessage { get; set; } = "";
 
+    /// <summary>
+    /// Retrieves the Author and Cheeps for the current page.
+    /// </summary>
+    /// <param name="author">The requested author.</param>
+    /// <param name="page">Page number to be retrieved.</param>
+    /// <returns>The page of the user's cheeps, or page 1 of the user's cheeps if current page is less than 1.</returns>
     public async Task<IActionResult> OnGet(string author, [FromQuery] int page)
     {
         if (page < 1)
@@ -54,61 +60,13 @@ public class UserModel(AuthorService authorService, CheepService cheepService) :
         return Page();
     }
 
-    public async Task<IActionResult> OnPostLikeAsync(int cheepId, string returnUrl)
-    {
-        var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found!");
-
-        var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
-        var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
-
-        if (cheep.Likes.Contains(author))
-        {
-            await _cheepService.UnlikeCheep(cheepId, UserId);
-        }
-        else
-        {
-            await _cheepService.LikeCheep(cheepId, UserId);
-        }
-
-        return LocalRedirect(Request.Path.ToString());
-    }
-
+    /// <summary>
+    /// Paginate to a new page.
+    /// </summary>
+    /// <param name="newPage">The requested new page.</param>
+    /// <returns>A redirect to the requested page.</returns>
     public IActionResult OnPostPaginationAsync(int newPage)
     {
         return Redirect($"{Request.Path}?page={newPage}");
-    }
-
-    public async Task<IActionResult> OnPostCheepAsync(string returnUrl)
-    {
-        if (User.Identity == null || !User.Identity.IsAuthenticated) throw new UnauthorizedAccessException("User is not logged in!");
-
-        var UserId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
-        var author = await _authorService.GetAuthor(UserId) ?? throw new Exception("User not found!");
-
-        try
-        {
-            CheepRevision cheepRevision = new()
-            {
-                Message = CheepMessage,
-                TimeStamp = DateTime.UtcNow
-            };
-            List<CheepRevision> revList = [cheepRevision];
-            Cheep cheep = new()
-            {
-                AuthorId = UserId,
-                Revisions = revList,
-                Author = author,
-                Likes = []
-            };
-
-            await _cheepService.CreateCheep(cheep);
-
-            // Reload page
-            return LocalRedirect(Url.Content($"~/{author}"));
-        }
-        catch (InvalidDataException)
-        {
-            return LocalRedirect(Url.Content($"~/{author}"));
-        }
     }
 }

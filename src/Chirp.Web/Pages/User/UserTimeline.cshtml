@@ -1,0 +1,23 @@
+@page "/{author}"
+@using Chirp.Web.Models
+
+@model Chirp.Web.Pages.User.UserModel
+
+@{
+    var routeName = HttpContext.GetRouteValue("author");
+    ViewData["Title"] = @routeName + "'s Timeline";
+}
+@* If the user is on their own timeline, they will be able to post cheeps *@
+@if (User.Identity != null && User.Identity.IsAuthenticated && routeName?.ToString() == User.Identity.Name)
+{
+    @await Html.PartialAsync("_SendCheepPartial")
+}
+
+<partial name="_CheepsPartial" model="@Model.Cheeps" />
+
+<partial name="_PaginationPartial" model="@(new Pagination()
+    {
+        Current = Int32.Parse(Request.Query["page"].ToString()),
+        Pages = (int)Math.Ceiling(Model.TotalCheeps / 32.0)
+    }
+)" />

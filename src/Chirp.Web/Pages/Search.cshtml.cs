@@ -19,6 +19,12 @@ public class SearchModel(AuthorService authorService, CheepService cheepService)
     public string? SearchQuery { get; set; }
     public string CheepMessage { get; set; } = "";
 
+    /// <summary>
+    /// Retrieves the Authors and Cheeps for the current page.
+    /// </summary>
+    /// <param name="SearchQuery"></param>
+    /// <param name="page"></param>
+    /// <returns>The page containing the search result.</returns>
     public async Task<IActionResult> OnGet([FromQuery] string SearchQuery, [FromQuery] int page = 1)
     {
         if (string.IsNullOrEmpty(SearchQuery))
@@ -34,9 +40,11 @@ public class SearchModel(AuthorService authorService, CheepService cheepService)
         // Focus search by symbol
         switch (SearchQuery.First())
         {
+            // Search by Author
             case '@':
                 Authors = await _authorService.SearchAuthors(SearchQuery.Split("@")[1], page);
                 break;
+            // Search by Cheep
             case '#':
                 Cheeps = await _cheepService.SearchCheeps(SearchQuery.Split("#")[1], page);
                 foreach (var c in Cheeps)
@@ -44,6 +52,7 @@ public class SearchModel(AuthorService authorService, CheepService cheepService)
                     Authors.Append(c.Author);
                 }
                 break;
+            // Search by both
             default:
                 Authors = await _authorService.SearchAuthors(SearchQuery, page);
                 Cheeps = await _cheepService.SearchCheeps(SearchQuery, page);

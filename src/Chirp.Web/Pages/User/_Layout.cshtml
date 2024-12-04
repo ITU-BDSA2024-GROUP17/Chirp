@@ -11,8 +11,9 @@
 @if (Model.Author != null)
 {
     <div style="display: flex; flex-direction: column; gap: 1.5rem">
-    <div class="avatar" style="width: 120px; height: 120px;">
-        @if (Model.Author?.Avatar != null)
+        @* The avatar is displayed if it exists, otherwise the first letter of the username is displayed. *@
+        <div class="avatar" style="width: 120px; height: 120px;">
+            @if (Model.Author?.Avatar != null)
             {
                 <img src="@Model.Author.Avatar" style="width: 120px; height: 120px;" />
             }
@@ -24,6 +25,7 @@
             }
         </div>
 
+        @* Display authors username and the amount of followers/following *@
         <div class="d-flex flex-column gap-2">
             <p class="profileName">@Model.Author?.UserName</p>
 
@@ -33,6 +35,8 @@
             </div>
         </div>
 
+        @* Buttons displaying the amount of cheeps and likes.
+        The active page changes which button is set as active. *@
         <div>
             <a type="button" class="btn @IsActive("/User/Index")" href="/@Model.Author?.UserName">
                 Cheeps <span class="badge text-bg-secondary">@Model.TotalCheeps</span>

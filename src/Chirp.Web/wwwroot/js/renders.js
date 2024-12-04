@@ -1,3 +1,7 @@
+/**
+ * Toggles edit mode for a cheep
+ * @param {int} cheepId The id of the cheep to toggle edit for
+ */
 function ToggleEditCheep(cheepId) {
     let messageElem = document.getElementById("cheepmessage-" + cheepId);
     let editElem = document.getElementById("cheepedit-" + cheepId);
@@ -16,6 +20,11 @@ function ToggleEditCheep(cheepId) {
     }
 }
 
+/**
+ * Toggles revision list for a cheep
+ * @param {int} cheepId The id of the cheep to toggle revisions for
+ * @returns
+ */
 function ToggleRevisions(cheepId) {
     if (document.getElementById("cheepedit-" + cheepId).style.display == "") {
         return;

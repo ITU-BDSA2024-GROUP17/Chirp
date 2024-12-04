@@ -7,6 +7,7 @@
     ViewData["Title"] = "Public Timeline";
 }
 
+@* If the user logged in they will be able to post cheeps from here *@
 @if (User.Identity != null && User.Identity.IsAuthenticated)
 {
     @await Html.PartialAsync("_SendCheepPartial")

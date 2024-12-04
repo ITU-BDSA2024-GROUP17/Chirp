@@ -1,13 +1,7 @@
 * {
     padding: 0;
     margin: 0;
-}
-
-body {
-    font-family: "Trebuchet MS", sans-serif;
-    font-size: 14px;
-    margin: 1.25rem 0 1.25rem 1.25rem !important;
-    overflow-y: scroll;
+    box-sizing: border-box;
 }
 
 :root {
@@ -77,23 +71,36 @@ body {
 }
 
 body {
-    margin: unset;
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 14px;
+    padding: 1.25rem 0 1.25rem 1.25rem !important;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    min-height: 100vh;
 }
 
 header {
     display: flex;
-    margin: auto;
     max-width: 72rem;
+    width: 100%;
     display: flex;
+    justify-content: space-between;
     gap: 1em;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 10px;
 }
 
-.root {
-    margin: auto;
+footer {
+    margin-top: auto;
+    text-align: center;
+}
+
+main {
     max-width: 72rem;
+    width: 100%;
 }
 
 .font-sec {
@@ -105,6 +112,7 @@ header {
 }
 
 .line {
+    width: 100%;
     border-bottom: 1px solid var(--gray-300);
 }
 
@@ -121,6 +129,8 @@ header {
     max-width: 32rem;
     width: 32rem;
 }
+
+/* Text box and nav */
 
 .text-box-container {
     position: relative;
@@ -184,11 +194,7 @@ header {
     overflow: hidden;
 }
 
-/*
-
-Cheeps
-
-*/
+/* Cheeps */
 
 .cheeps-container {
     display: flex;
@@ -348,9 +354,7 @@ Cheeps
     transition: visibility 0s ease-out 0.5s;
 }
 
-/*
-mini version of cheep wrapper
-*/
+/* Mini version of cheep wrapper */
 .navSearchOutputWrapper {
     position: absolute;
     background-color: white;
@@ -378,20 +382,6 @@ mini version of cheep wrapper
     background-color: var(--gray-200);
 }
 
-.cheep-wrapper-mini .cheep-avatar {
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    margin-right: 10px;
-    background-color: var(--gray-200);
-    text-align: center;
-    font-weight: 500;
-    font-size: 11px;
-    align-content: center;
-    text-decoration: none;
-    color: var(--text);
-    align-self: center;
-}
 .cheep-wrapper-mini .cheep {
     padding: unset;
 }
@@ -409,11 +399,7 @@ mini version of cheep wrapper
     width: 35px;
 }
 
-/*
-
-Interface
-
-*/
+/* Interface */
 
 .skip-btn {
     background-image: url(../images/arrow.png);

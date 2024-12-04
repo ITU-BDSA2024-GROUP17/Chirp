@@ -112,6 +112,7 @@ public class AuthorRepository(CheepDbContext context) : IAuthorRepository
         .Include(a => a.Following)
         .SelectMany(a => a.Following.SelectMany(f => f.Cheeps))
         .Include(c => c.Author)
+        .ThenInclude(a => a.Followers)
         .Include(c => c.Revisions.OrderByDescending(r => r.TimeStamp))
         .Include(c => c.Likes)
         .Include(c => c.Revisions)
