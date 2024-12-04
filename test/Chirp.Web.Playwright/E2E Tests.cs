@@ -140,7 +140,8 @@ public class E2ETests : PageTest
     [Test]
     public async Task LikeCheepTest()
     {
-        await HelperCreateAccount();
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
 
         await Page.GetByPlaceholder("Whats on your mind?").FillAsync("I am testing likes today!");
         await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
@@ -152,5 +153,24 @@ public class E2ETests : PageTest
         await Page.WaitForURLAsync("http://localhost:5163/?page=1");
 
         await Expect(Page.Locator(".active").First).ToContainTextAsync("1");
+    }
+
+    [Test]
+    public async Task DeleteCheepTest()
+    {
+        if (helpers == null) return;
+        int userId = await helpers.HelperCreateAccount();
+
+        await Page.GetByPlaceholder("Whats on your mind?").FillAsync("I am testing deleting today!");
+        await Page.GetByRole(AriaRole.Button, new() { NameString = "Cheep" }).ClickAsync();
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Page.Locator(".cheep-dropdown").First.Locator("button.btn").First.ClickAsync();
+        await Page.Locator("button.dropdown-item").Last.ClickAsync();
+
+        await Page.WaitForURLAsync("http://localhost:5163/?page=1");
+
+        await Expect(Page.GetByText("I am testing deleting today!")).ToHaveCountAsync(0);
+
     }
 }
