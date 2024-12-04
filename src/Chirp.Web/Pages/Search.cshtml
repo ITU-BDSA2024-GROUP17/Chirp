@@ -6,6 +6,8 @@
     ViewData["Title"] = "Search for " + "'" + @Model.SearchQuery + "'";
 }
 <div>
+    @* If the search returns any cheeps or authors, display those.
+    Otherwise display a message about nothing corresponding to the search *@
     @if (Model.Authors.Any() || Model.Cheeps.Any())
 
     {

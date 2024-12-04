@@ -31,10 +31,13 @@
             </div>
         </div>
 
+        @* Displays the username and potentially an avatar if it exists.
+        Otherwise a login and register button will be displayed. *@
         @if (User.Identity != null && User.Identity.IsAuthenticated)
         {
             <div class="dropdown">
                 <div role="button" data-bs-toggle="dropdown">
+                    @* Displays an avatar if it exists *@
                     @if (avatarUrl != null)
                     {
                         <img class="avatar" src="@avatarUrl" />
@@ -42,6 +45,7 @@
                     @User.Identity?.Name
                 </div>
 
+                @* Dropdown menu where user can choose to see their profile, user settings or logout *@
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="/@User.Identity?.Name">Profile</a></li>
                     <li><a class="dropdown-item" href="/Identity/Account/Manage">Settings</a></li>
@@ -51,6 +55,7 @@
         }
         else
         {
+            @* A login and register button *@
             <div style="display: flex; gap: 1.5rem;">
                 <a class="btn" role="button" href="/Identity/Account/Login">Login</a>
                 <a class="btn btn-primary" role="button" href="/Identity/Account/Register">Register</a>
