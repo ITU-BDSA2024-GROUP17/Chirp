@@ -17,6 +17,11 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
     public int TotalCheeps { get; set; }
     public string CheepMessage { get; set; } = "";
 
+    /// <summary>
+    /// Retrieves the Cheeps for the current page.
+    /// </summary>
+    /// <param name="page">Page number to be retrieved.</param>
+    /// <returns>The requested page and all cheeps belonging to it.</returns>
     public async Task<ActionResult> OnGet([FromQuery] int page)
     {
         // Redirect if user try 0 or negative page
@@ -29,6 +34,14 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         return Page();
     }
 
+    /// <summary>
+    /// Post a new Cheep.
+    /// </summary>
+    /// <param name="cheepMessage">The message string of the cheep being created.</param>
+    /// <param name="returnUrl">The page to return to when the method finishes.</param>
+    /// <returns>Page reload.</returns>
+    /// <exception cref="UnauthorizedAccessException"></exception>
+    /// <exception cref="Exception"></exception>
     public async Task<IActionResult> OnPostCheepAsync([FromForm] string cheepMessage, string returnUrl = "/")
     {
         if (User.Identity == null || !User.Identity.IsAuthenticated) throw new UnauthorizedAccessException("User is not logged in!");
@@ -65,6 +78,14 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         }
     }
 
+    /// <summary>
+    /// Delete a Cheep.
+    /// </summary>
+    /// <param name="UserAuth">The id of the user trying to delete the cheep.</param>
+    /// <param name="cheepId">The id of the cheep to be deleted.</param>
+    /// <param name="returnUrl">The page to return to when the method finishes.</param>
+    /// <returns>Page reload.</returns>
+    /// <exception cref="Exception"></exception>
     public async Task<IActionResult> OnPostDeleteAsync(string UserAuth, int cheepId, string returnUrl)
     {
         var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found for delete!");
@@ -80,6 +101,13 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
 
     }
 
+    /// <summary>
+    /// Like or unlike a Cheep.
+    /// </summary>
+    /// <param name="cheepId">The id of the cheep to be liked.</param>
+    /// <param name="returnUrl">The page to return to when the method finishes.</param>
+    /// <returns>Page reload.</returns>
+    /// <exception cref="Exception"></exception>
     public async Task<IActionResult> OnPostLikeAsync(int cheepId, string returnUrl = "/")
     {
         var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found for like!");
@@ -99,6 +127,14 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         return LocalRedirect(Url.Content(returnUrl));
     }
 
+    /// <summary>
+    /// Update a Cheep.
+    /// </summary>
+    /// <param name="cheepId">The id of the cheep to be updated.</param>
+    /// <param name="updateCheep">The updated message of the cheep.</param>
+    /// <param name="returnUrl">The page to return to when the method finishes.</param>
+    /// <returns>Page reload.</returns>
+    /// <exception cref="UnauthorizedAccessException"></exception>
     public async Task<IActionResult> OnPostUpdateCheepAsync(int cheepId, [FromForm] string updateCheep, string returnUrl = "/")
     {
         if (User.Identity == null || !User.Identity.IsAuthenticated) throw new UnauthorizedAccessException("User is not logged in!");
@@ -121,6 +157,13 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         }
     }
 
+    /// <summary>
+    /// Follow a user.
+    /// </summary>
+    /// <param name="followeeId">The id of the user to be followed.</param>
+    /// <param name="returnUrl">The page to return to when the method finishes.</param>
+    /// <returns>Page reload.</returns>
+    /// <exception cref="Exception"></exception>
     public async Task<IActionResult> OnPostFollowAsync(string followeeId, string returnUrl = "/")
     {
         var FollowerId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
@@ -130,6 +173,13 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         return LocalRedirect(Url.Content(returnUrl));
     }
 
+    /// <summary>
+    /// Unfollow a user.
+    /// </summary>
+    /// <param name="followeeId">The id of the followed user.</param>
+    /// <param name="returnUrl">The page to return to when the method finishes.</param>
+    /// <returns>Page reload.</returns>
+    /// <exception cref="Exception"></exception>/
     public async Task<IActionResult> OnPostUnfollowAsync(string followeeId, string returnUrl = "/")
     {
         var FollowerId = (User.FindFirst(ClaimTypes.NameIdentifier)?.Value) ?? throw new Exception("User not found!");
@@ -139,6 +189,14 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         return LocalRedirect(Url.Content(returnUrl));
     }
 
+    /// <summary>
+    /// Comment on a Cheep.
+    /// </summary>
+    /// <param name="CommentCheep">The id of the parent of the comment.</param>
+    /// <param name="CommentText">The message of the comment.</param>
+    /// <param name="returnUrl">The page to return to when the method finishes.</param>
+    /// <returns>Page reload.</returns>
+    /// <exception cref="Exception"></exception>
     public async Task<IActionResult> OnPostCommentCheepAsync(int CommentCheep, string CommentText, string returnUrl = "/")
     {
         if (string.IsNullOrWhiteSpace(CommentText))
@@ -181,6 +239,11 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
 
     }
 
+    /// <summary>
+    /// Paginate to a new page.
+    /// </summary>
+    /// <param name="newPage">The requested new page.</param>
+    /// <returns>A redirect to the requested page.</returns>
     public IActionResult OnPostPaginationAsync(int newPage)
     {
         return LocalRedirect(Url.Content($"~/?page={newPage}"));

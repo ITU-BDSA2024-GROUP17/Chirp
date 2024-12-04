@@ -22,6 +22,12 @@ public class UserLikesModel(AuthorService authorService, CheepService cheepServi
     public IEnumerable<Cheep> Cheeps { get; set; } = [];
     public string CheepMessage { get; set; } = "";
 
+    /// <summary>
+    /// Retrieves the Author and Cheeps for the current page.
+    /// </summary>
+    /// <param name="author">The requested author.</param>
+    /// <param name="page">Page number to be retrieved.</param>
+    /// <returns>The current page of the user's liked cheeps, or page 1 of the user's liked cheeps if current page is less than 1.</returns>
     public async Task<IActionResult> OnGet(string author, [FromQuery] int page)
     {
         if (page < 1)
@@ -52,6 +58,11 @@ public class UserLikesModel(AuthorService authorService, CheepService cheepServi
         return Page();
     }
 
+    /// <summary>
+    /// Paginate to a new page.
+    /// </summary>
+    /// <param name="newPage">The requested new page.</param>
+    /// <returns>A redirect to the requested page.</returns>
     public IActionResult OnPostPaginationAsync(int newPage)
     {
         return Redirect($"{Request.Path}?page={newPage}");

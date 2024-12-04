@@ -130,6 +130,8 @@ main {
     width: 32rem;
 }
 
+/* Text box and nav */
+
 .text-box-container {
     position: relative;
     width: 100%;
@@ -192,11 +194,7 @@ main {
     overflow: hidden;
 }
 
-/*
-
-Cheeps
-
-*/
+/* Cheeps */
 
 .cheeps-container {
     display: flex;
@@ -356,9 +354,7 @@ Cheeps
     transition: visibility 0s ease-out 0.5s;
 }
 
-/*
-mini version of cheep wrapper
-*/
+/* Mini version of cheep wrapper */
 .navSearchOutputWrapper {
     position: absolute;
     background-color: white;
@@ -386,20 +382,6 @@ mini version of cheep wrapper
     background-color: var(--gray-200);
 }
 
-.cheep-wrapper-mini .cheep-avatar {
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    margin-right: 10px;
-    background-color: var(--gray-200);
-    text-align: center;
-    font-weight: 500;
-    font-size: 11px;
-    align-content: center;
-    text-decoration: none;
-    color: var(--text);
-    align-self: center;
-}
 .cheep-wrapper-mini .cheep {
     padding: unset;
 }
@@ -417,11 +399,7 @@ mini version of cheep wrapper
     width: 35px;
 }
 
-/*
-
-Interface
-
-*/
+/* Interface */
 
 .skip-btn {
     background-image: url(../images/arrow.png);
