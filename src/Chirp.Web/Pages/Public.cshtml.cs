@@ -65,13 +65,13 @@ public class PublicModel(AuthorService authorService, CheepService cheepService)
         }
     }
 
-    public async Task<IActionResult> OnPostDeleteAsync(string UserAuth, int cheepId)
+    public async Task<IActionResult> OnPostDeleteAsync(string UserAuth, int cheepId, string returnUrl)
     {
         var cheep = await _cheepService.GetCheep(cheepId) ?? throw new Exception("Cheep not found for delete!");
         if (cheep.AuthorId.Equals(UserAuth))
         {
             await _cheepService.DeleteCheep(cheep.Id);
-            return LocalRedirect("~/");
+            return LocalRedirect(Url.Content(returnUrl));
         }
         else
         {

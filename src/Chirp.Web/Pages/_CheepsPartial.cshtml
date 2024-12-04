@@ -158,7 +158,7 @@
 
                                         <li><button class="dropdown-item" onclick="ToggleEditCheep(@cheep.Id)">Edit</button></li>
 
-                                        <form asp-page-handler="Delete" method="post" asp-route-UserAuth="@userId" asp-route-cheepId="@cheep.Id">
+                                        <form asp-page-handler="Delete" method="post" asp-route-UserAuth="@userId" asp-route-cheepId="@cheep.Id" asp-page="/Public" asp-route-returnUrl="@Context.Request.Path">
                                             <li><button class="dropdown-item" type="submit">Delete</button></li>
                                         </form>
 
