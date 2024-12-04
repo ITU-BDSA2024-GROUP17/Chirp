@@ -233,6 +233,7 @@ public class E2ETests : PageTest
         await helpers.HelperCreateAccount();
 
         await Page.GetByPlaceholder("Search...").FillAsync("Playwright" + otherUserId);
+        await Expect(Page.GetByText("Playwright" + otherUserId).First).ToBeVisibleAsync();
         await Page.Keyboard.PressAsync("ArrowDown");
         await Page.Keyboard.PressAsync("Enter");
 
