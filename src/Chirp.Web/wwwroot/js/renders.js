@@ -30,7 +30,6 @@ function ToggleRevisions(cheepId) {
         return;
     }
 
-    console.log("Toggle Edit!");
     let revisionList = document.getElementById("cheeprevision-" + cheepId);
     let messageElem = document.getElementById("cheepmessage-" + cheepId);
 
