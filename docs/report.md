@@ -36,4 +36,6 @@ numbersections: true
 
 ## License
 
+[MIT](https://opensource.org/license/mit)
+
 ## LLMs, ChatGPT, CoPilot, and others
