@@ -62,6 +62,6 @@ _Note: To enable login via GitHub OAuth, the following environment variables nee
 
 ## License
 
-[MIT](https://opensource.org/license/mit)
+Chirp is licensed under [MIT](https://opensource.org/license/mit)
 
 ## LLMs, ChatGPT, CoPilot, and others
