@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
@@ -74,6 +75,6 @@ public static class TimeUtilties
     /// <returns>A pretty formatted string</returns>
     public static string FormatUnixTimeRaw(DateTime timestamp)
     {
-        return timestamp.ToString("yyyy-MM-dd HH:mm:ss");
+        return timestamp.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
     }
 }
