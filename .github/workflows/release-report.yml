@@ -17,10 +17,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Compile diagrams
-        uses: Timmy/plantuml-action@v1
+      - name: Generate diagrams
+        uses: holowinski/plantuml-github-action@main
         with:
-          args: '-tsvg ./docs/diagrams/'
+          args: '-v -tsvg ./docs/diagrams/'
 
       - name: Convert
         uses: docker://pandoc/latex:3.6
