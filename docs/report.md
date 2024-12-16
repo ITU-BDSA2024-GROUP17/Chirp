@@ -79,3 +79,6 @@ dotnet test
 Chirp is licensed under [MIT](https://opensource.org/license/mit)
 
 ## LLMs, ChatGPT, CoPilot, and others
+As it gets normalized to use LLM's while coding in a project, it gets more important to be transparent when using these tools to create. Therefore we have taken steps to document when using LLM's, both directly and indirectly.
+To be transparent about these tools, the members of our group are obilgated to co-author every commit and pull-request that was realized with the help of these tools. But as a general non-formal consensus, we did not extensively
+make use of LLM's and generative tools to directly write code for our program, but rather used it for inspiration for what solutions exists.
