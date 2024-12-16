@@ -14,7 +14,7 @@ numbersections: true
 
 ## Domain model
 
-![](./docs/diagrams/domain-model.svg)
+![](./docs/images/domain-model.svg)
 
 ## Architecture — In the small
 
@@ -29,13 +29,13 @@ numbersections: true
 ## Build, test, release, and deployment
 
 When a commit is pushed to a branch which currently is used for a pull request a workflow is ran on the commit. The workflow, builds, run all the tests and lints the code. If any of these fail or if any warning occour then the workflow will fail. Preventing the proposed changes from being merged into the main branch.
-![](./docs/diagrams/build-test-lint-workflow.svg)
+![](./docs/images/build-test-lint-workflow.svg)
 
 The following diagram shows one of the workflows that is being ran when a tag is pushed to the main branch. This workflow is building the artifacts for Linux, MacOS and Windows, which is then included in the GitHub release for that tag.
-![](./docs/diagrams/build-release-workflow.svg)
+![](./docs/images/build-release-workflow.svg)
 
 The other workflow that is being ran when a tag is pushed to main, is the workflow responsible for Azure deployments.
-![](./docs/diagrams/deploy-workflow.svg)
+![](./docs/images/deploy-workflow.svg)
 
 ## Team work
 
