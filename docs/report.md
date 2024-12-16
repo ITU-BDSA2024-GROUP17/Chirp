@@ -67,7 +67,7 @@ _Note: To enable login via GitHub OAuth, the following environment variables nee
 
 ## How to run test suite locally
 
-While being in the Chirp directory, which was cloned previosly, the following command can be used to run all the tests.
+While being in the Chirp directory, which was cloned previously, the following command can be used to run all the tests.
 ```sh
 dotnet test
 ```
