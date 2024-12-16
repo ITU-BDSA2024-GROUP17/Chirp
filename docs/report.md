@@ -96,13 +96,37 @@ dotnet test
 
 Change directory to desired test directory
 ```sh
-cd test/Chirp.Web.Tests # Example directory
+cd test/Chirp.Web.Tests
 ```
+
+_Note: See "The different test suites" section for available test suites._
 
 Run tests in the desired directory
 ```sh
 dotnet test
 ```
+
+### The different test suites
+
+Chirp currently includes 3 suites.
+
+* Chirp.Infrastructure.Tests
+* Chirp.Web.Playwright
+* Chirp.Web.Tests
+
+#### Chirp.Infrastructure.Tests
+
+Contains Unit tests regarding the infrastructure project. Along with integration tests that focuses on how the infrastructure project and the database is working togheter.
+
+#### Chirp.Web.Playwright
+
+All of the end-to-end tests are located in this suite. To run these tests a development server needs to be running before the tests are started.
+
+#### Chirp.Web.Tests
+
+Unit tests and integration tests involving the Web project is location in this test suite.
+
+These includes various helper methods and endpoints.
 
 # Ethics
 
