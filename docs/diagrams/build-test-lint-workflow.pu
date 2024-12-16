@@ -1,11 +1,29 @@
 @startuml build-test-lint-workflow
 start
-fork
-  :Build;
-fork again
-  :Test;
-fork again
-  :Lint;
-end merge
-stop
+split
+    partition Build **job** {
+        :Run actions/checkout@v4;
+        :Run actions/setup-dotnet@v4;
+        :Restore dependencies;
+        :Build project;
+    }
+    kill
+split again
+    partition Test **job** {
+        :Run actions/checkout@v4;
+        :Run actions/setup-dotnet@v4;
+        :Build project;
+        :Start development server;
+        :Install Playwright;
+        :Run tests;
+    }
+    kill
+split again
+    partition Lint **job** {
+        :Run actions/checkout@v4;
+        :Run actions/setup-dotnet@v4;
+        :Run zyactions/dotnet-lint@v1;
+    }
+    kill
+end split
 @enduml
