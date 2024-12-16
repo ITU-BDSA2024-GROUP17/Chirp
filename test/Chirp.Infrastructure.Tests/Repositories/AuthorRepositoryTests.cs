@@ -149,6 +149,29 @@ public class AuthorRepositoryTests
     }
 
     /// <summary>
+    /// Test if a user can follow another
+    /// </summary>
+    /// <param name="follower">The author to test</param>
+    /// <param name="followee">The author to test</param>
+    [TestCase("John Smith", "John Doe")]
+    [TestCase("Jane Smith", "Jane Doe")]
+    public async Task FollowTest(string follower, string followee)
+    {
+        var author1 = await _authorRepository.GetAuthorByName(follower) ?? throw new Exception("Author not found");
+        var author2 = await _authorRepository.GetAuthorByName(followee) ?? throw new Exception("Author not found");
+
+        var followers = await _authorRepository.GetFollowers(author1.Id);
+        Assert.That(followers, Has.Count.EqualTo(0));
+        await _authorRepository.Follow(author2.Id, author1.Id);
+        followers = await _authorRepository.GetFollowers(author1.Id);
+        Assert.That(followers, Has.Count.EqualTo(1));
+        Assert.That(followers[0], Is.EqualTo(author2));
+        await _authorRepository.Unfollow(author2.Id, author1.Id);
+        followers = await _authorRepository.GetFollowers(author1.Id);
+        Assert.That(followers, Has.Count.EqualTo(0));
+    }
+
+    /// <summary>
     /// Unit test for searching authors
     /// </summary>
     /// <param name="search"></param>
