@@ -11,28 +11,25 @@ env:
 jobs:
   release:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./docs
     steps:
       - uses: actions/checkout@v4
 
       - name: Compile diagrams
         uses: Timmy/plantuml-action@v1
         with:
-          args: '-tsvg diagrams/'
+          args: '-tsvg ./docs/diagrams/'
 
       - name: Convert
         uses: docker://pandoc/core:3.5
         with:
-          args: "./report.md -o ./docs/2024_itubdsa_group_${{ env.GROUP_NUMBER }}_report.pdf"
+          args: "./docs/report.md -o ./docs/2024_itubdsa_group_${{ env.GROUP_NUMBER }}_report.pdf"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           name: Release report ${{ github.ref_name }}
-          files: "./2024_itubdsa_group_${{ env.GROUP_NUMBER }}_report.pdf"
+          files: "./docs/2024_itubdsa_group_${{ env.GROUP_NUMBER }}_report.pdf"
           draft: false
           prerelease: false
         env:
