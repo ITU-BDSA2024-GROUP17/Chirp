@@ -17,6 +17,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Generate SVG diagrams
+        uses: Timmy/plantuml-action@v1
+        with:
+          args: '-v -tpng ./docs/diagrams/'
+
+      - name: Upload diagrams
+        uses: actions/upload-artifact@v4
+        with:
+          name: diagram
+          path: ./docs/diagrams/*.png
+
       - name: Generate PDF
         uses: docker://pandoc/latex:3.6
         with:
