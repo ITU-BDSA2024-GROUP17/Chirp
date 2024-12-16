@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Generate diagrams
-        uses: holowinski/plantuml-github-action@main
+        uses: holowinski/plantuml-github-action@1.2021.1
         with:
           args: '-v -tsvg ./docs/diagrams/'
 
