@@ -51,6 +51,15 @@ Change directory
 cd Chirp
 ```
 
+_Note: To enable login via GitHub OAuth, the following environment variables needs to be set._
+
+| Environment variable | Description                            |
+|:--------------------:|----------------------------------------|
+|    GHUB_CLIENT_ID    | Id of the GitHub OAuth application     |
+|  GHUB_CLIENT_SECRET  | Secret of the GitHub OAuth application |
+
+### How to run development instance
+
 Run the 'Chirp.Web' project
 ```sh
 dotnet run --project ./src/Chirp.Web
@@ -58,14 +67,28 @@ dotnet run --project ./src/Chirp.Web
 
 Chirp will now begin to build and then run when it is finished.
 
-Then website can then be accessed via http://localhost:5163 in a browser.
+The website can then be accessed via http://localhost:5163 in a browser.
 
-_Note: To enable login via GitHub OAuth, the following environment variables needs to be set._
+### How to run production build
 
-| Environment variable | Description                            |
-|:--------------------:|----------------------------------------|
-|    GHUB_CLIENT_ID    | Id of the GitHub OAuth application     |
-|  GHUB_CLIENT_SECRET  | Secret of the GitHub OAuth application |
+Build the project for production
+```sh
+dotnet publish src/Chirp.Web -c Release
+```
+
+Change directory
+```sh
+cd src/Chirp.Web/bin/Release/net8.0/publish
+```
+
+Run production build
+```sh
+dotnet Chirp.Web.dll
+```
+
+The website can then be accessed via http://localhost:5000 in a browser.
+
+_Note: To expose the site to the general internet, either a port forward or, a deployment to a hosting provider would be required.
 
 ## How to run test suite locally
 
