@@ -28,14 +28,25 @@ numbersections: true
 
 ## Build, test, release, and deployment
 
+The Chirp repo is currently relying on three workflows that are managing, tests, releases and deployments.
+
+### Build, test and linting workflow
+
 When a commit is pushed to a branch which currently is used for a pull request a workflow is ran on the commit. The workflow, builds, run all the tests and lints the code. If any of these fail or if any warning occour then the workflow will fail. Preventing the proposed changes from being merged into the main branch.
-![](./docs/images/build-test-lint-workflow.svg)
+
+![Diagram illustrating the build, test and linting workflow](./docs/images/build-test-lint-workflow.svg)
+
+### Release workflow
 
 The following diagram shows one of the workflows that is being ran when a tag is pushed to the main branch. This workflow is building the artifacts for Linux, MacOS and Windows, which is then included in the GitHub release for that tag.
-![](./docs/images/build-release-workflow.svg)
+
+![Diagram illustrating the release workflow](./docs/images/build-release-workflow.svg)
+
+### Deployement workflow
 
 The other workflow that is being ran when a tag is pushed to main, is the workflow responsible for Azure deployments.
-![](./docs/images/deploy-workflow.svg)
+
+![Diagram illustrating the deployment workflow](./docs/images/deploy-workflow.svg)
 
 ## Team work
 
