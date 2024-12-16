@@ -1,4 +1,4 @@
-@startuml build-release-workflow
+@startuml build-test-lint-workflow
 start
 fork
   :Build;
