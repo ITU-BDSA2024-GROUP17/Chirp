@@ -69,7 +69,36 @@ _Note: To enable login via GitHub OAuth, the following environment variables nee
 
 ## How to run test suite locally
 
-While being in the Chirp directory, which was cloned previously, the following command can be used to run all the tests.
+_Note: The following steps should be performed from the root of the repo._
+
+Build the solution
+```sh
+dotnet build
+```
+
+Install required browsers
+```sh
+pwsh test/Chirp.Web.Playwright/bin/Debug/net8.0/playwright.ps1 install
+```
+
+Start a development server
+```sh
+dotnet run --project src/Chirp.Web
+```
+
+_Note: The tests needs to be ran from another terminal, since Playwright needs to access an actual running instance of Chirp!._
+
+```sh
+dotnet test
+```
+
+### Run individual tests
+
+Change directory to desired test directory
+```sh
+cd test/Chirp.Web.Tests # Example directory
+```
+
 ```sh
 dotnet test
 ```
