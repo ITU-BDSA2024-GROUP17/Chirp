@@ -43,8 +43,7 @@ When requirements from the course were published, the group would either delegat
 
 Similarly, if a bug was found, or group members agreed on a new functionality of the program, someone was quickly assigned to make an issue. A single issue was usually worked on by anywhere between 1 and 3 group members according to the scale of the issue.
 
-The group utilized some pair programming at the start of the project, although it developed into more individually focused programming. If a member needed help on they would usually contact other members on some communication platform.
-The primary communication platfrom utilized by the group was a discord server. This server also included a bot that sent a message whenever there was activity with issues or pull requests on the repository.
+The group utilized some pair programming at the start of the project, although it developed into more individually focused programming. If a member needed help on they would usually contact other members on a discord server, which was the primary communication platfrom utilized by the group. This server also included a bot that sent a message whenever there was activity with issues or pull requests on the repository.
 
 When a feature was done, an effort was made to test this feature. Unfortunately this was not done for every feature, and is something the group has agreed to work more on in future projects. This resulted a backlog of testing that had to be worked on by all group members towards the end of the project.
 
