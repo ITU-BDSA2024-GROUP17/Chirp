@@ -6,13 +6,6 @@ public class FormattersTest
 {
     static readonly DateTime now = DateTime.UtcNow;
 
-    public static readonly TheoryData<DateTime> CasesStatic =
-    new()
-    {
-        { DateTime.UnixEpoch },
-        { new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
-    };
-
     public static readonly TheoryData<int, DateTime> CasesDynamic =
     new()
     {
@@ -24,10 +17,11 @@ public class FormattersTest
         { 4, now.AddYears(1) },
     };
 
-    [Theory, MemberData(nameof(CasesStatic))]
-    public void FormatUnixTimeTest(DateTime UnixTimeStamp)
+    [Fact]
+    public void FormatUnixTimeTest()
     {
-        string t = TimeUtilties.FormatUnixTimeRaw(UnixTimeStamp);
+        DateTime dateTime = DateTime.UnixEpoch;
+        string t = TimeUtilties.FormatUnixTimeRaw(dateTime);
         Assert.Equal("1970-01-01 00:00:00", t);
         Assert.NotEqual("1970-01-01 00:00:01", t);
     }
