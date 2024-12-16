@@ -14,6 +14,8 @@ numbersections: true
 
 ## Domain model
 
+![](./docs/diagrams/domain-model.svg)
+
 ## Architecture — In the small
 
 ## Architecture of deployed application
