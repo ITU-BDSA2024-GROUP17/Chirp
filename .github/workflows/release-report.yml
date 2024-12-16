@@ -17,7 +17,7 @@ jobs:
       - name: Compile diagrams
         uses: Timmy/plantuml-action@v1
         with:
-          args: '-tsvg ./diagrams'
+          args: '-tsvg ./diagrams/*.pu'
 
       - name: Convert
         uses: docker://pandoc/core:3.5
