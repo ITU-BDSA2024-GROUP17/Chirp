@@ -28,6 +28,11 @@ jobs:
           name: diagram
           path: ./docs/diagrams/*.svg
 
+      - name: Install fonts
+        run: |
+          docker run --rm pandoc/latex:3.6 bash -c "\
+          apt update && apt install -y fonts-lmodern"
+
       - name: Generate PDF
         uses: docker://pandoc/latex:3.6
         with:
