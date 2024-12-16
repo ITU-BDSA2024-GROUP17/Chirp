@@ -99,6 +99,7 @@ Change directory to desired test directory
 cd test/Chirp.Web.Tests # Example directory
 ```
 
+Run tests in the desired directory
 ```sh
 dotnet test
 ```
