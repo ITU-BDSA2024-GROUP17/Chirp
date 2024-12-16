@@ -69,6 +69,8 @@ Chirp will now begin to build and then run when it is finished.
 
 The website can then be accessed via http://localhost:5163 in a browser.
 
+_Note: Informatory logs (some libaries are set to only print warnings) will be printed to standard out (the terminal)._
+
 ### How to run production build
 
 Build the project for production
@@ -88,7 +90,9 @@ dotnet Chirp.Web.dll
 
 The website can then be accessed via http://localhost:5000 in a browser.
 
-_Note: To expose the site to the general internet, either a port forward or, a deployment to a hosting provider would be required.
+_Note: Informatory logs (some libaries are set to only print warnings) will be printed to standard out (the terminal)._
+
+_Note: To expose the site to the general internet, either a port forward or, a deployment to a hosting provider would be required._
 
 ## How to run test suite locally
 
