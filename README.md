@@ -60,3 +60,17 @@ or `feature/<branch-title>` depending on the branch type.
 - [Link to resource](https://google.com)
 - [Link to requirement session notes - iff a requirement issue](URL)
 ```
+
+### Generating the report
+
+Generate PlantUML SVG diagrams
+```sh
+plantuml -tsvg ./docs/diagrams/ -o ../images/
+```
+> **_NOTE:_** Needs to be ran from root of project
+
+Generate PDF - Needs to be ran from root of project
+```sh
+pandoc ./docs/report.md -o ./docs/2024_itubdsa_group_17_report.pdf
+```
+> **_NOTE:_** Needs to be ran from root of project
