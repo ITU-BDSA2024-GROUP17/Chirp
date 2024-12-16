@@ -3,7 +3,7 @@ using Chirp.Core.Entities;
 
 namespace Chirp.Infrastructure.Services;
 
-public class CheepService(ICheepRepository cheepRepo) : ICheepRepository
+public class CheepService(ICheepRepository cheepRepo) : ICheepService
 {
     private readonly ICheepRepository _cheepRepo = cheepRepo;
 
@@ -85,7 +85,12 @@ public class CheepService(ICheepRepository cheepRepo) : ICheepRepository
         return _cheepRepo.UnlikeCheep(cheepId, authorId);
     }
 
-
+    /// <summary>
+    /// Post a comment to an existing cheep
+    /// </summary>
+    /// <param name="CheepToCommentId">The id of the cheep to comment on</param>
+    /// <param name="cheep">The comment cheep</param>
+    /// <returns>Returns a new comment to the Cheep of CheepToCommentId</returns>
     public Task PostComment(int CheepToCommentId, Cheep cheep)
     {
         return _cheepRepo.PostComment(CheepToCommentId, cheep);

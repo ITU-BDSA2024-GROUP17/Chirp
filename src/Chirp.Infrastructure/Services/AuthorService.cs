@@ -3,7 +3,7 @@ using Chirp.Core.Entities;
 
 namespace Chirp.Infrastructure.Services;
 
-public class AuthorService(IAuthorRepository authorRepo) : IAuthorRepository
+public class AuthorService(IAuthorRepository authorRepo) : IAuthorService
 {
     private readonly IAuthorRepository _authorRepo = authorRepo;
 
