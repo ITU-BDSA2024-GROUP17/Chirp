@@ -17,20 +17,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Latin Modern Fonts
-        run: sudo apt update && sudo apt install fonts-lmodern -y
-
-      - name: Generate SVG diagrams
-        uses: Timmy/plantuml-action@v1
-        with:
-          args: '-DPLANTUML_FONT_NAME="Latin Modern" -v -tsvg ./docs/diagrams/'
-
-      - name: Upload diagrams
-        uses: actions/upload-artifact@v4
-        with:
-          name: diagram
-          path: ./docs/diagrams/*.svg
-
       - name: Generate PDF
         uses: docker://pandoc/latex:3.6
         with:
