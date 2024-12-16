@@ -1,6 +1,6 @@
 using Chirp.Core.Entities;
 
-namespace Chirp.Core.Interfaces;
+namespace Chirp.Web.Interfaces;
 
 /// <summary>
 /// This model is no longer need because the webforms that required this have been updated.

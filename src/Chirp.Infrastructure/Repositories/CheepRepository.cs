@@ -1,6 +1,6 @@
-using Chirp.Core.Interfaces;
 using Chirp.Core.Entities;
 using Chirp.Infrastructure.Extensions;
+using Chirp.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Repositories;

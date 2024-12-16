@@ -1,4 +1,4 @@
-using Chirp.Core.Interfaces;
+using Chirp.Infrastructure.Interfaces;
 using Chirp.Core.Entities;
 
 namespace Chirp.Infrastructure.Services;

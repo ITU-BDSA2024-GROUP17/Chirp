@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Chirp.Infrastructure.Services;
-using Chirp.Core.Interfaces;
+using Chirp.Web.Interfaces;
+
 
 namespace Chirp.Web.Pages;
 [BindProperties]
