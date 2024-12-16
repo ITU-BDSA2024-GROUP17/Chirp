@@ -1,0 +1,6 @@
+@startuml deploy-workflow
+start
+:Build;
+:Deploy to Azure;
+stop
+@enduml

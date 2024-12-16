@@ -1,0 +1,37 @@
+name: Release Report
+
+on:
+  push:
+    tags:
+      - 'report-v[0-9]+.[0-9]+.[0-9]+'
+
+env:
+  GROUP_NUMBER: '17'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compile diagrams
+        uses: Timmy/plantuml-action@v1
+        with:
+          args: '-tsvg ./diagrams'
+
+      - name: Convert
+        uses: docker://pandoc/core:3.5
+        with:
+          args: "./docs/report.md -o ./docs/2024_itubdsa_group_${{ env.GROUP_NUMBER }}_report.pdf"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release report ${{ github.ref_name }}
+          files: "./docs/2024_itubdsa_group_${{ env.GROUP_NUMBER }}_report.pdf"
+          draft: false
+          prerelease: false
+        env:
+          GHUB_CLIENT_ID: ${{ secrets.GHUB_CLIENT_ID }}
+          GHUB_CLIENT_SECRET: ${{ secrets.GHUB_CLIENT_SECRET }}

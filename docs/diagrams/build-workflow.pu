@@ -1,0 +1,13 @@
+@startuml build-release-workflow
+start
+fork
+  :Build linux;
+fork again
+  :Build MacOS;
+fork again
+  :Build Windows;
+end merge
+:Create GitHub release
+With the builded artificats included;
+stop
+@enduml

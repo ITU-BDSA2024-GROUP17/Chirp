@@ -1,0 +1,11 @@
+@startuml build-release-workflow
+start
+fork
+  :Build;
+fork again
+  :Test;
+fork again
+  :Lint;
+end merge
+stop
+@enduml
