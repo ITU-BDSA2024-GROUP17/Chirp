@@ -1,0 +1,68 @@
+@startuml page-fetch-sequence-diagram
+participant Client
+
+box Chirp
+participant Web
+participant Infrastructure
+participant Database
+end box
+
+Client -> Web ++ : Request page
+
+Web -> Infrastructure ++ : GetAuthor()
+
+Infrastructure -> Database ++ : _context.Author
+return Author author
+
+return Author author
+
+
+Web -> Infrastructure ++ : GetCheepsTimeline()
+
+Infrastructure -> Database ++ : _context.Cheeps
+return List<Cheeps> cheeps
+
+return List<Cheeps> cheeps
+
+
+Web -> Infrastructure ++ : GetCheepsTimelineCount()
+
+Infrastructure -> Database ++ : _context.Cheeps
+return int cheepsCount
+
+return int cheepsCount
+
+
+Web -> Infrastructure ++ : GetLikedCount()
+
+Infrastructure -> Database ++ : _context.Author
+return int cheepsCount
+
+return int totalLikedCheeps
+
+
+Web -> Infrastructure ++ : GetCheepsCommentedCount()
+
+Infrastructure -> Database ++ : _context.Author
+return int cheepsCount
+
+return int totalCommentedCheeps
+
+
+Web -> Infrastructure ++ : GetFollowing()
+
+Infrastructure -> Database ++ : _context.Author
+return List<Author> authors
+
+return List<Author> following
+
+
+Web -> Infrastructure ++ : GetFollowers()
+
+Infrastructure -> Database ++ : _context.Author
+return List<Author> authors
+
+return List<Author> followers
+
+return Response page
+@enduml
