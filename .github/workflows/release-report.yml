@@ -8,6 +8,9 @@ on:
 env:
   GROUP_NUMBER: '17'
 
+permissions:
+  contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
