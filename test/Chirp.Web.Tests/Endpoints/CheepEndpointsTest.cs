@@ -2,7 +2,9 @@ using Chirp.Core.DTOs;
 using Chirp.Core.Entities;
 using Chirp.Web.Tests.Integration;
 using Newtonsoft.Json;
+
 namespace Chirp.Web.Tests.Endpoints;
+
 /// <summary>
 /// Integration tests for web endpoints related to searching authors.
 /// </summary>
@@ -66,20 +68,4 @@ public class WebEndpointsTest : IClassFixture<CustomWebApplicationFactory<Progra
         Assert.IsNotType<List<Author>>(authors);
         Assert.Contains(authors, a => a.UserName.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase));
     }
-
-    /// <summary>
-    /// Tests the search field endpoint with an empty query.
-    /// </summary>
-    /// <returns>A task that represents the asynchronous operation.</returns>
-    // [Fact]
-    // public async Task SearchFieldTest_EmptyQuery()
-    // {
-    //     var client = _factory.CreateClient();
-    //     var response = await client.GetAsync("/searchField?searchQuery=&page=1");
-    //     response.EnsureSuccessStatusCode();
-    //     var json = await response.Content.ReadAsStringAsync();
-    //     var authors = JsonConvert.DeserializeObject<List<CreateAuthorDto>>(json);
-    //     Assert.NotNull(authors);
-    //     Assert.Equal(4, authors.Count()); // Total of 4 authors in test db
-    // }
 }

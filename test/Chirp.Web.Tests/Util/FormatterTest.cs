@@ -1,12 +1,10 @@
 using Chirp.Web.Utilities;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Packaging.Signing;
+
 namespace Chirp.Web.Tests.Util;
 
 public class FormattersTest
 {
-
-    static DateTime now = DateTime.UtcNow;
+    static readonly DateTime now = DateTime.UtcNow;
 
     public static readonly TheoryData<DateTime> CasesStatic =
     new()
