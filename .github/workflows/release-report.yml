@@ -20,7 +20,7 @@ jobs:
           args: '-tsvg ./docs/diagrams/'
 
       - name: Convert
-        uses: docker://pandoc/core:3.5
+        uses: docker://pandoc/latex:3.6
         with:
           args: "./docs/report.md -o ./docs/2024_itubdsa_group_${{ env.GROUP_NUMBER }}_report.pdf"
 
