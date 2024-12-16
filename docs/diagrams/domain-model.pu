@@ -1,0 +1,18 @@
+@startuml domain-model
+Author "1" -- "many" Cheep
+Author "1" -- "many" AuthorFollow
+AuthorFollow "1" -- "many" Author
+
+Cheep "1" -- "many" CheepRevistion
+Cheep "many" -- "many" CheepLike
+CheepLike "many" -- "many" Author
+
+Author : string avatar
+
+AuthorFollow : DateTime TimeStamp
+
+CheepLike : DateTime TimeStamp
+
+CheepRevistion : string Message
+CheepRevistion : DateTime TimeStamp
+@enduml
