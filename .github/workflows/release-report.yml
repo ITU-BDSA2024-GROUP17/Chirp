@@ -31,7 +31,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          name: Release report ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
           files: "./docs/2024_itubdsa_group_${{ env.GROUP_NUMBER }}_report.pdf"
           draft: false
           prerelease: false
