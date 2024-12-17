@@ -108,7 +108,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 listItems[currentLI].classList.add("search-highlight"); // Highlight the new element
                 break;
             case 13: // Enter key
-                console.log(listItems[currentLI].href.value);
                 if (currentLI == -1) {
                     const searchQuery = searchInput.value;
                     window.location.href = `/search?SearchQuery=${encodeURIComponent(

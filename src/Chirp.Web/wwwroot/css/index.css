@@ -300,10 +300,11 @@ main {
     z-index: 1;
     top: -45px;
     left: 0;
-    background-color: var(--border);
     text-wrap: wrap;
     padding: 3px 4px 3px 4px;
     cursor: default;
+    background-color: white;
+    border: 2px solid var(--border);
 }
 
 .cheep-timestamp-tooltip .cheep-timestamp::after {

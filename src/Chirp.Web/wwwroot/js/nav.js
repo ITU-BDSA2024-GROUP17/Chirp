@@ -54,7 +54,7 @@ function showCommentField(id) {
  */
 function auto_grow(element) {
     element.style.height = "5px";
-    element.style.height = (element.scrollHeight - 5) + "px";
+    element.style.height = element.scrollHeight - 5 + "px";
 }
 
 // Event listener for the cheep comment input fields
@@ -111,7 +111,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const textA = document.getElementById("cheepMessage");
 
     auto_grow(textA);
-    textA.addEventListener("keypress", event => {
+    textA.addEventListener("keypress", (event) => {
         if (!event.shiftKey && event.key == "Enter") {
             event.preventDefault();
             document.getElementById("cheepInputForm").submit();
@@ -119,15 +119,16 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
     const textLengthLimit = 160;
-    const cheepInputFieldLimit = document.querySelector(".text-box-limit")
+    const cheepInputFieldLimit = document.querySelector(".text-box-limit");
     cheepInputFieldLimit.innerHTML = "0 / " + textLengthLimit; // init length
 
-
     const cheepInputField = document.querySelector("#cheepMessage");
-    ['keyup', 'change'].forEach((type) => {
+    ["keyup", "change"].forEach((type) => {
         cheepInputField.addEventListener(type, (event) => {
-            const inputFieldValue = document.getElementById("cheepMessage").value;
-            cheepInputFieldLimit.innerHTML = inputFieldValue.length + " / " + textLengthLimit;
+            const inputFieldValue =
+                document.getElementById("cheepMessage").value;
+            cheepInputFieldLimit.innerHTML =
+                inputFieldValue.length + " / " + textLengthLimit;
             if (inputFieldValue.length > textLengthLimit) {
                 cheepInputFieldLimit.style.color = "red";
                 document.getElementById("cheepMessage").style.color = "red";
