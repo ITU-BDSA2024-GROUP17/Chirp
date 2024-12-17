@@ -68,11 +68,13 @@ document.addEventListener("DOMContentLoaded", function () {
         resetkeydownIndex();
     });
 
-
     document.addEventListener("keydown", function (event) {
         listItems = document.getElementsByClassName("cheep-wrapper-mini");
         // Check for up/down key presses
-        if (document.activeElement.id != "navSearchInput" && document.activeElement.className != "cheep-wrapper-mini") {
+        if (
+            document.activeElement.id != "navSearchInput" &&
+            document.activeElement.className != "cheep-wrapper-mini"
+        ) {
             return;
         }
         switch (event.keyCode) {
@@ -106,8 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 listItems[currentLI].classList.add("search-highlight"); // Highlight the new element
                 break;
             case 13: // Enter key
-                console.log(currentLI);
-
+                console.log(listItems[currentLI].href.value);
                 if (currentLI == -1) {
                     const searchQuery = searchInput.value;
                     window.location.href = `/search?SearchQuery=${encodeURIComponent(
@@ -139,7 +140,7 @@ function renderAuthorsInSearch(data) {
         let avatar = user.avatar;
         const a = document.createElement("a");
         a.className = "cheep-wrapper-mini";
-        a.href = `${name}`;
+        a.href = `/${name}`;
         if (avatar == null) {
             a.innerHTML = `
                             <div class="avatar">

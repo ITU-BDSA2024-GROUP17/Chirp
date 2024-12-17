@@ -364,7 +364,7 @@ main {
     width: inherit;
     max-height: 20rem;
     overflow-y: auto;
-    z-index: 1;
+    z-index: 10;
 }
 
 #navSearchOutput {
@@ -475,7 +475,7 @@ main {
 }
 
 .active {
-    color: #0d6efd !important;
+    color: #0d6efd;
     fill: #0d6efd;
 }
 
