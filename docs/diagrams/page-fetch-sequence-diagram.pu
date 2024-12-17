@@ -7,62 +7,64 @@ participant Infrastructure
 participant Database
 end box
 
-Client -> Web ++ : Request page
+skinparam sequenceMessageAlign center
 
-Web -> Infrastructure ++ : GetAuthor()
+Client -> Web ++ : HTTP - GET Request\n**Path: /<author>**
 
-Infrastructure -> Database ++ : _context.Author
-return Author author
+Web -> Infrastructure ++ : C# - Method call\n**GetAuthor()**
 
-return Author author
+Infrastructure -> Database ++ : SQL Query - EF Core\n**_context.Author**
+return //Author// author
 
-
-Web -> Infrastructure ++ : GetCheepsTimeline()
-
-Infrastructure -> Database ++ : _context.Cheeps
-return List<Cheeps> cheeps
-
-return List<Cheeps> cheeps
+return //Author// author
 
 
-Web -> Infrastructure ++ : GetCheepsTimelineCount()
+Web -> Infrastructure ++ : C# - Method call\n**GetCheepsTimeline()**
 
-Infrastructure -> Database ++ : _context.Cheeps
-return int cheepsCount
+Infrastructure -> Database ++ : SQL Query - EF Core\n**_context.Cheeps**
+return //List<Cheeps>// cheeps
 
-return int cheepsCount
-
-
-Web -> Infrastructure ++ : GetLikedCount()
-
-Infrastructure -> Database ++ : _context.Author
-return int cheepsCount
-
-return int totalLikedCheeps
+return //List<Cheeps>// cheeps
 
 
-Web -> Infrastructure ++ : GetCheepsCommentedCount()
+Web -> Infrastructure ++ : C# - Method call\n**GetCheepsTimelineCount()**
 
-Infrastructure -> Database ++ : _context.Author
-return int cheepsCount
+Infrastructure -> Database ++ : SQL Query - EF Core\n**_context.Cheeps**
+return //int// cheepsCount
 
-return int totalCommentedCheeps
-
-
-Web -> Infrastructure ++ : GetFollowing()
-
-Infrastructure -> Database ++ : _context.Author
-return List<Author> authors
-
-return List<Author> following
+return //int// cheepsCount
 
 
-Web -> Infrastructure ++ : GetFollowers()
+Web -> Infrastructure ++ : C# - Method call\n**GetLikedCount()**
 
-Infrastructure -> Database ++ : _context.Author
-return List<Author> authors
+Infrastructure -> Database ++ : SQL Query - EF Core\n**_context.Author**
+return //int// cheepsCount
 
-return List<Author> followers
+return //int// totalLikedCheeps
 
-return Response page
+
+Web -> Infrastructure ++ : C# - Method call\n**GetCheepsCommentedCount()**
+
+Infrastructure -> Database ++ : SQL Query - EF Core\n**_context.Author**
+return //int// cheepsCount
+
+return //int// totalCommentedCheeps
+
+
+Web -> Infrastructure ++ : C# - Method call\n**GetFollowing()**
+
+Infrastructure -> Database ++ : SQL Query - EF Core\n**_context.Author**
+return //List<Author>// authors
+
+return //List<Author>// following
+
+
+Web -> Infrastructure ++ : C# - Method call\n**GetFollowers()**
+
+Infrastructure -> Database ++ : SQL Query - EF Core\n**_context.Author**
+return //List<Author>// authors
+
+return //List<Author>// followers
+
+return HTTP - GET Response\n**Path: /<author>**
 @enduml
