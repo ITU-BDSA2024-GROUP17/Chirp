@@ -32,6 +32,12 @@ The http endpoint could also be https, depending on if certificates are provided
 
 ## Sequence of functionality/calls trough _Chirp!_
 
+The sequence diagram below shows the calls that is being made, both internally and externally, when a client requests a profile page on the _Chirp!_ webpage.
+
+It becomes very clear when looking at the diagram, that all the C# calls are are awaited. Most of the calls shown in the diagram could be ran in parralel leading to improved loading time.
+
+![Sequence of events when a client fetches a profile page](./docs/images/page-fetch-sequence-diagram.svg)
+
 # Process
 
 ## Build, test, release, and deployment
