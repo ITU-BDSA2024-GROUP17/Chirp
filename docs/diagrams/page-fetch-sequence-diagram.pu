@@ -1,0 +1,70 @@
+@startuml page-fetch-sequence-diagram
+participant Client
+
+box Chirp
+participant Web
+participant Infrastructure
+participant Database
+end box
+
+skinparam sequenceMessageAlign center
+
+Client -> Web ++ : HTTP - GET Request\n**Path: /<author>**
+
+Web -> Infrastructure ++ : C# - Method call\n**GetAuthor()**
+
+Infrastructure -> Database ++ : SQL Query - EF Core\n**_context.Author**
+return //Author// author
+
+return //Author// author
+
+
+Web -> Infrastructure ++ : C# - Method call\n**GetCheepsTimeline()**
+
+Infrastructure -> Database ++ : SQL Query - EF Core\n**_context.Cheeps**
+return //List<Cheeps>// cheeps
+
+return //List<Cheeps>// cheeps
+
+
+Web -> Infrastructure ++ : C# - Method call\n**GetCheepsTimelineCount()**
+
+Infrastructure -> Database ++ : SQL Query - EF Core\n**_context.Cheeps**
+return //int// cheepsCount
+
+return //int// cheepsCount
+
+
+Web -> Infrastructure ++ : C# - Method call\n**GetLikedCount()**
+
+Infrastructure -> Database ++ : SQL Query - EF Core\n**_context.Author**
+return //int// cheepsCount
+
+return //int// totalLikedCheeps
+
+
+Web -> Infrastructure ++ : C# - Method call\n**GetCheepsCommentedCount()**
+
+Infrastructure -> Database ++ : SQL Query - EF Core\n**_context.Author**
+return //int// cheepsCount
+
+return //int// totalCommentedCheeps
+
+
+Web -> Infrastructure ++ : C# - Method call\n**GetFollowing()**
+
+Infrastructure -> Database ++ : SQL Query - EF Core\n**_context.Author**
+return //List<Author>// authors
+
+return //List<Author>// following
+
+
+Web -> Infrastructure ++ : C# - Method call\n**GetFollowers()**
+
+Infrastructure -> Database ++ : SQL Query - EF Core\n**_context.Author**
+return //List<Author>// authors
+
+return //List<Author>// followers
+
+return HTTP - GET Response\n**Path: /<author>**
+@enduml

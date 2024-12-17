@@ -16,14 +16,29 @@ output: pdf_document
 
 ## Domain model
 
-![](./docs/images/domain-model.svg)
+The `Author` entity in Chirp! is extending the already existing `IdentityUser` entity. Properties for the `IdentityUser` can be found on Microsoft's [documentation](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.entityframeworkcore.identityuser){ width=400px }
+
+![Class diagram showing the domain model of Chirp!](./docs/images/domain-model.svg){ width=400px }
+
+\newpage
 
 ## Architecture — In the small
 **Onion Diagram**
 
-![](./docs/images/ChirpOnionDiagram.drawio-cropped.svg)
+```{=latex}
+\begin{center}
+```
+
+![Onion Architecture](./docs/images/ChirpOnionDiagram.drawio-cropped.svg){ width=400px }
+
+```{=latex}
+\end{center}
+```
+
 Each layer of the onion architecture represents a dotnet project or dotnet test project - A dotnet project may have mutible sub _projects/folders_ that only can _use_ or _implicite use_ from other projects or sub-project.
 Only individual files (classes, interfaces, .cshtml, ...) can inherit from each others, but may only be shown implicitly in the diagram.
+
+\newpage
 
 ## Architecture of deployed application
 
@@ -33,9 +48,21 @@ The http endpoint could also be https, depending on if certificates are provided
 
 ![Architecture diagram](./docs/images/deployed-architecture.svg)
 
+\newpage
+
 ## User activities
 
+![User Activity](./docs/images/UserActivityDiagram.svg)
+
+\newpage
+
 ## Sequence of functionality/calls trough _Chirp!_
+
+The sequence diagram below shows the calls that is being made, both internally and externally, when a client requests a profile page on the _Chirp!_ webpage.
+
+It becomes very clear when looking at the diagram, that all the C# calls are are awaited. Most of the calls shown in the diagram could be ran in parralel leading to improved loading time.
+
+![Sequence of events when a client fetches a profile page](./docs/images/page-fetch-sequence-diagram.svg)
 
 # Process
 
@@ -49,17 +76,24 @@ When a commit is pushed to a branch which currently is used for a pull request a
 
 ![Diagram illustrating the build, test and linting workflow](./docs/images/build-test-lint-workflow.svg)
 
+\newpage
+
 ### Release workflow
 
 The following diagram shows one of the workflows that is being ran when a tag is pushed to the main branch. This workflow is building the artifacts for Linux, MacOS and Windows, which is then included in the GitHub release for that tag.
 
 ![Diagram illustrating the release workflow](./docs/images/build-release-workflow.svg)
 
+\newpage
+
 ### Deployement workflow
 
 The other workflow that is being ran when a tag is pushed to main, is the workflow responsible for Azure deployments.
 
 ![Diagram illustrating the deployment workflow](./docs/images/deploy-workflow.svg)
+
+\newpage
+
 
 ## Team work
 
