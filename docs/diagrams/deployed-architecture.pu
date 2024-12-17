@@ -1,0 +1,31 @@
+@startuml
+skinparam package<<Layout>> {
+  borderColor Transparent
+  backgroundColor Transparent
+  fontColor Transparent
+  stereotypeFontColor Transparent
+}
+node "Github" {
+    (Oauth)
+}
+node "Azure" {
+    node "App container" {
+        database sqlite
+        Oauth - [Webserver]
+        Webserver --> sqlite
+    }
+}
+package layout1 <<layout>> {
+    node "Client1" {
+        () Browser1
+    }
+    node "Client2" {
+        () Browser2
+    }
+}
+Client1 -[Hidden]-> Client2
+() http
+http <. Browser1
+http <. Browser2
+Webserver - http
+@enduml

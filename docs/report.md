@@ -22,6 +22,12 @@ Each layer of the onion architecture represents a dotnet project or dotnet test 
 Only individual files (classes, interfaces, .cshtml, ...) can inherit from each others, but may only be shown implicitly in the diagram.
 ## Architecture of deployed application
 
+The diagram below shows the architecture of our program after it has been deployed.
+The only external service that is used is github, which is used for authenticating our users.
+The http endpoint could also be https, depending on if certificates are provided or not.
+
+![Architecture diagram](./docs/images/deployed-architecture.svg)
+
 ## User activities
 
 ## Sequence of functionality/calls trough _Chirp!_
