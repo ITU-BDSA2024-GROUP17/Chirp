@@ -5,24 +5,27 @@ skinparam package<<Layout>> {
   fontColor Transparent
   stereotypeFontColor Transparent
 }
-node "Github Auth"
+node "Github" {
+    (Oauth)
+}
 node "Azure" {
-    node "Server" {
+    node "App container" {
         database sqlite
-        "Github Auth" - [webserver]
-        webserver --> sqlite
+        Oauth - [Webserver]
+        Webserver --> sqlite
     }
 }
 package layout1 <<layout>> {
     node "Client1" {
-        () browser1
+        () Browser1
     }
     node "Client2" {
-        () browser2
+        () Browser2
     }
 }
 Client1 -[Hidden]-> Client2
-http <. browser1
-http <. browser2
-webserver - http
+() http
+http <. Browser1
+http <. Browser2
+Webserver - http
 @enduml
