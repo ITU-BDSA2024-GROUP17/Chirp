@@ -20,6 +20,12 @@ numbersections: true
 
 ## Architecture of deployed application
 
+The diagram below shows the architecture of our program after it has been deployed.
+The only external service that is used is github, which is used for authenticating our users.
+The http endpoint could also be https, depending on if certificates are provided or not.
+
+![Architecture diagram](./docs/images/deployed-architecture.svg)
+
 ## User activities
 
 ## Sequence of functionality/calls trough _Chirp!_
