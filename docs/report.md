@@ -112,7 +112,6 @@ feature would interact with, they would be requested as a reviewer. Otherwise an
 
 ![Project Board](./docs/images/team_planning_board.png)
 
-\newpage
 
 ![Teamwork flowdiagram](./docs/images/teamwork-flowdiagram.svg){ width=300px }
 
