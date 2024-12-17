@@ -15,9 +15,11 @@ numbersections: true
 ## Domain model
 
 ![](./docs/images/domain-model.svg)
-
 ## Architecture — In the small
-
+**Onion Diagram**
+![](./diagrams/drawio/ChirpOnionDiagram.drawio-cropped.svg)
+Each layer of the onion architecture represents a dotnet project or dotnet test project - A dotnet project may have mutible sub _projects/folders_ that only can _use_ or _implicite use_ from other projects or sub-project.
+Only individual files (classes, interfaces, .cshtml, ...) can inherit from each others, but may only be shown implicitly in the diagram.
 ## Architecture of deployed application
 
 ## User activities
