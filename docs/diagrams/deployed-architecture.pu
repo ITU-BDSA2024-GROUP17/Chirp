@@ -24,7 +24,7 @@ package layout1 <<layout>> {
     }
 }
 Client1 -[Hidden]-> Client2
-() http
+() "http/\nhttps" as http
 http <. Browser1
 http <. Browser2
 Webserver - http
