@@ -14,7 +14,7 @@ numbersections: true
 
 ## Domain model
 
-![](./docs/diagrams/domain-model.svg)
+![](./docs/images/domain-model.svg)
 
 ## Architecture — In the small
 
@@ -29,13 +29,13 @@ numbersections: true
 ## Build, test, release, and deployment
 
 When a commit is pushed to a branch which currently is used for a pull request a workflow is ran on the commit. The workflow, builds, run all the tests and lints the code. If any of these fail or if any warning occour then the workflow will fail. Preventing the proposed changes from being merged into the main branch.
-![](./docs/diagrams/build-test-lint-workflow.svg)
+![](./docs/images/build-test-lint-workflow.svg)
 
 The following diagram shows one of the workflows that is being ran when a tag is pushed to the main branch. This workflow is building the artifacts for Linux, MacOS and Windows, which is then included in the GitHub release for that tag.
-![](./docs/diagrams/build-release-workflow.svg)
+![](./docs/images/build-release-workflow.svg)
 
 The other workflow that is being ran when a tag is pushed to main, is the workflow responsible for Azure deployments.
-![](./docs/diagrams/deploy-workflow.svg)
+![](./docs/images/deploy-workflow.svg)
 
 ## Team work
 
@@ -51,6 +51,15 @@ Change directory
 cd Chirp
 ```
 
+_Note: To enable login via GitHub OAuth, the following environment variables needs to be set._
+
+| Environment variable | Description                            |
+|:--------------------:|----------------------------------------|
+|    GHUB_CLIENT_ID    | Id of the GitHub OAuth application     |
+|  GHUB_CLIENT_SECRET  | Secret of the GitHub OAuth application |
+
+### How to run development instance
+
 Run the 'Chirp.Web' project
 ```sh
 dotnet run --project ./src/Chirp.Web
@@ -58,14 +67,32 @@ dotnet run --project ./src/Chirp.Web
 
 Chirp will now begin to build and then run when it is finished.
 
-Then website can then be accessed via http://localhost:5163 in a browser.
+The website can then be accessed via http://localhost:5163 in a browser.
 
-_Note: To enable login via GitHub OAuth, the following environment variables needs to be set._
+_Note: Informatory logs (some libaries are set to only print warnings) will be printed to standard out (the terminal)._
 
-| Environment variable | Description                            |
-|:--------------------:|----------------------------------------|
-|    GHUB_CLIENT_ID    | Id of the GitHub OAuth application     |
-|  GHUB_CLIENT_SECRET  | Secret of the GitHub OAuth application |
+### How to run production build
+
+Build the project for production
+```sh
+dotnet publish src/Chirp.Web -c Release
+```
+
+Change directory
+```sh
+cd src/Chirp.Web/bin/Release/net8.0/publish
+```
+
+Run production build
+```sh
+dotnet Chirp.Web.dll
+```
+
+The website can then be accessed via http://localhost:5000 in a browser.
+
+_Note: Informatory logs (some libaries are set to only print warnings) will be printed to standard out (the terminal)._
+
+_Note: To expose the site to the general internet, either a port forward or, a deployment to a hosting provider would be required._
 
 ## How to run test suite locally
 
