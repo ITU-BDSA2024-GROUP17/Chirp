@@ -8,32 +8,106 @@ author:
 - "Joakim Andreasen <joaan@itu.dk>"
 - "Johannes Jørgensen <jgjo@itu.dk>"
 numbersections: true
+geometry: margin=2.5cm
+output: pdf_document
 ---
+
+
+```{=latex}
+\begin{center}
+```
+# Table of Contents {-}
+
+**[Design and Architecture of _Chirp!_](#design-and-architecture-of-chirp)**
+
+[Domain model](#domain-model)
+
+[Architecture — In the small](#architecture--in-the-small)
+
+[Architecture of deployed application](#architecture-of-deployed-application)
+
+[User activities](#user-activities)
+
+[Sequence of functionality/calls through _Chirp!_](#sequence-of-functionalitycalls-through-chirp)
+
+**[Process](#process)**
+
+[Build, test, release, and deployment](#build-test-release-and-deployment)
+
+[Build, test and linting workflow](#build-test-and-linting-workflow)
+
+[Release workflow](#release-workflow)
+
+[Deployment workflow](#deployment-workflow)
+
+[Team work](#team-work)
+
+[How to make _Chirp!_ work locally](#how-to-make-chirp-work-locally)
+
+[How to run development instance](#how-to-run-development-instance)
+
+[How to run production build](#how-to-run-production-build)
+
+[How to run test suite locally](#how-to-run-test-suite-locally)
+
+[Run individual tests](#run-individual-tests)
+
+[The different test suites](#the-different-test-suites)
+
+**[Ethics](#ethics)**
+
+[License](#license)
+
+[LLMs, ChatGPT, CoPilot, and others](#llms-chatgpt-copilot-and-others)
+
+```{=latex}
+\end{center}
+```
+
+\newpage
 
 # Design and Architecture of _Chirp!_
 
 ## Domain model
 
-The `Author` entity in Chirp! is extending the already existing `IdentityUser` entity. Properties for the `IdentityUser` can be found on Microsoft's [documentation](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.entityframeworkcore.identityuser)
+The `Author` entity in Chirp! is extending the already existing `IdentityUser` entity. Properties for the `IdentityUser` can be found on Microsoft's [documentation](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.entityframeworkcore.identityuser){ width=400px }.
 
-![Class diagram showing the domain model of Chirp!](./docs/images/domain-model.svg)
+![Class diagram showing the domain model of Chirp!](./docs/images/domain-model.svg){ width=550px }
+
+\newpage
 
 ## Architecture — In the small
-**Onion Diagram**
-![](./docs/images/ChirpOnionDiagram.drawio-cropped.svg)
+```{=latex}
+\begin{center}
+```
+
+![Onion Architecture of Chirp!](./docs/images/ChirpOnionDiagram.drawio-cropped.svg){ width=650px }
+
+```{=latex}
+\end{center}
+```
+
 Each layer of the onion architecture represents a dotnet project or dotnet test project - A dotnet project may have mutible sub _projects/folders_ that only can _use_ or _implicite use_ from other projects or sub-project.
 Only individual files (classes, interfaces, .cshtml, ...) can inherit from each others, but may only be shown implicitly in the diagram.
+
+\newpage
+
 ## Architecture of deployed application
 
 The diagram below shows the architecture of our program after it has been deployed.
 The only external service that is used is github, which is used for authenticating our users.
 The http endpoint could also be https, depending on if certificates are provided or not.
 
-![Architecture diagram](./docs/images/deployed-architecture.svg)
+![Architecture diagram](./docs/images/deployed-architecture.svg){ width=650px }
+
+\newpage
 
 ## User activities
+To ensure an entuitive website we have created an activity diagram that also works as a sitemap. This diagram shows the features available to users when first visiting the site and when logged in.
 
-![User Activity](./docs/images/UserActivityDiagram.svg)
+![User Activity](./docs/images/UserActivityDiagram.svg){ width=365px }
+
+\newpage
 
 ## Sequence of functionality/calls trough _Chirp!_
 
@@ -41,7 +115,9 @@ The sequence diagram below shows the calls that is being made, both internally a
 
 It becomes very clear when looking at the diagram, that all the C# calls are are awaited. Most of the calls shown in the diagram could be ran in parralel leading to improved loading time.
 
-![Sequence of events when a client fetches a profile page](./docs/images/page-fetch-sequence-diagram.svg)
+![Sequence of events when a client fetches a profile page](./docs/images/page-fetch-sequence-diagram.svg){ width=380px }
+
+\newpage
 
 # Process
 
@@ -53,21 +129,31 @@ The Chirp repo is currently relying on three workflows that are managing, tests,
 
 When a commit is pushed to a branch which currently is used for a pull request a workflow is ran on the commit. The workflow, builds, run all the tests and lints the code. If any of these fail or if any warning occour then the workflow will fail. Preventing the proposed changes from being merged into the main branch.
 
-![Diagram illustrating the build, test and linting workflow](./docs/images/build-test-lint-workflow.svg)
+![Diagram illustrating the build, test and linting workflow](./docs/images/build-test-lint-workflow.svg){ width=625px }
+
+\newpage
 
 ### Release workflow
 
 The following diagram shows one of the workflows that is being ran when a tag is pushed to the main branch. This workflow is building the artifacts for Linux, MacOS and Windows, which is then included in the GitHub release for that tag.
 
-![Diagram illustrating the release workflow](./docs/images/build-release-workflow.svg)
+![Diagram illustrating the release workflow](./docs/images/build-release-workflow.svg){ width=625px }
+
+\newpage
 
 ### Deployement workflow
 
 The other workflow that is being ran when a tag is pushed to main, is the workflow responsible for Azure deployments.
 
-![Diagram illustrating the deployment workflow](./docs/images/deploy-workflow.svg)
+![Diagram illustrating the deployment workflow](./docs/images/deploy-workflow.svg){ width=250px }
+
+\newpage
 
 ## Team work
+
+![Teamwork flowdiagram](./docs/images/teamwork-flowdiagram.svg){ width=260px }
+
+\newpage
 
 When requirements from the course were published, the group would either delegate the different issues and users stories to be created by different group members, or one or two individuals would write them out by themselves as quickly as possible. This allowed the group to quickly be aware of what the current issues were, and allowed members to assign themselves to these issues.
 
@@ -77,9 +163,16 @@ The group utilized some pair programming at the start of the project, although i
 
 When a feature was done, an effort was made to test this feature. Unfortunately this was not done for every feature, and is something the group has agreed to work more on in future projects. This resulted a backlog of testing that had to be worked on by all group members towards the end of the project.
 
-When a feature was deemed ready by the creator, a pull request would be made. If any other group member had good knowledge of the part of the program the feature would interact with, they would be requested as a reviewer, although this was not always possible. The reviewer would ensure that the program worked as intended, and then approve it if no further changes were needed. An approval was needed to merge into main, as branch protection was in place.
+When a feature was deemed ready by the creator, a pull request would be made.
+If any other group member had good knowledge of the part of the program the
+feature would interact with, they would be requested as a reviewer. Otherwise any willing group members would be requested as a reviewer. The reviewer would then ensure that the program worked as intended, and then approve it if no further changes were needed. An approval was needed to merge into main, as branch protection was in place.
 
-![Teamwork flowdiagram](./docs/images/teamwork-flowdiagram.svg)
+![Project Board](./docs/images/team_planning_board.png)
+
+Time zones are currently displayed in UTC. JavaScript could be used instead, to let the client choose the time zone automatically. Due to the agreed low priority, this issue have been pushed to allow for time to be allocated elsewhere.
+As applies to the issue of FormatDateTime.
+
+\newpage
 
 ## How to make _Chirp!_ work locally
 
@@ -135,6 +228,8 @@ The website can then be accessed via http://localhost:5000 in a browser.
 _Note: Informatory logs (some libaries are set to only print warnings) will be printed to standard out (the terminal)._
 
 _Note: To expose the site to the general internet, either a port forward or, a deployment to a hosting provider would be required._
+
+\newpage
 
 ## How to run test suite locally
 
@@ -196,6 +291,8 @@ All of the end-to-end tests are located in this suite. To run these tests a deve
 Unit tests and integration tests involving the Web project is location in this test suite.
 
 These includes various helper methods and endpoints.
+
+\newpage
 
 # Ethics
 

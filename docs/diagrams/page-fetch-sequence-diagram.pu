@@ -9,7 +9,7 @@ end box
 
 skinparam sequenceMessageAlign center
 
-Client -> Web ++ : HTTP - GET Request\n**Path: /<author>**
+Client -> Web ++ : HTTP/HTTPS - GET Request\n**Path: /<author>**
 
 Web -> Infrastructure ++ : C# - Method call\n**GetAuthor()**
 
@@ -66,5 +66,5 @@ return //List<Author>// authors
 
 return //List<Author>// followers
 
-return HTTP - GET Response\n**Path: /<author>**
+return HTTP/HTTPS - GET Response\n**Path: /<author>**
 @enduml
