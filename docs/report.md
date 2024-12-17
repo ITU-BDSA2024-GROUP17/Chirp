@@ -16,15 +16,13 @@ output: pdf_document
 
 ## Domain model
 
-The `Author` entity in Chirp! is extending the already existing `IdentityUser` entity. Properties for the `IdentityUser` can be found on Microsoft's [documentation](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.entityframeworkcore.identityuser){ width=400px }
+The `Author` entity in Chirp! is extending the already existing `IdentityUser` entity. Properties for the `IdentityUser` can be found on Microsoft's [documentation](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.entityframeworkcore.identityuser){ width=400px }.
 
 ![Class diagram showing the domain model of Chirp!](./docs/images/domain-model.svg){ width=550px }
 
 \newpage
 
 ## Architecture — In the small
-**Onion Diagram**
-
 ```{=latex}
 \begin{center}
 ```
@@ -51,6 +49,7 @@ The http endpoint could also be https, depending on if certificates are provided
 \newpage
 
 ## User activities
+To ensure an entuitive website we have created an activity diagram that also works as a sitemap. This diagram shows the features available to users when first visiting the site and when logged in.
 
 ![User Activity](./docs/images/UserActivityDiagram.svg){ width=365px }
 
@@ -107,7 +106,13 @@ The group utilized some pair programming at the start of the project, although i
 
 When a feature was done, an effort was made to test this feature. Unfortunately this was not done for every feature, and is something the group has agreed to work more on in future projects. This resulted a backlog of testing that had to be worked on by all group members towards the end of the project.
 
-When a feature was deemed ready by the creator, a pull request would be made. If any other group member had good knowledge of the part of the program the feature would interact with, they would be requested as a reviewer, although this was not always possible. The reviewer would ensure that the program worked as intended, and then approve it if no further changes were needed. An approval was needed to merge into main, as branch protection was in place.
+When a feature was deemed ready by the creator, a pull request would be made.
+If any other group member had good knowledge of the part of the program the
+feature would interact with, they would be requested as a reviewer. Otherwise any willing group members would be requested as a reviewer. The reviewer would then ensure that the program worked as intended, and then approve it if no further changes were needed. An approval was needed to merge into main, as branch protection was in place.
+
+![Project Board](./docs/images/team_planning_board.png)
+
+\newpage
 
 ![Teamwork flowdiagram](./docs/images/teamwork-flowdiagram.svg){ width=300px }
 
@@ -167,6 +172,8 @@ The website can then be accessed via http://localhost:5000 in a browser.
 _Note: Informatory logs (some libaries are set to only print warnings) will be printed to standard out (the terminal)._
 
 _Note: To expose the site to the general internet, either a port forward or, a deployment to a hosting provider would be required._
+
+\newpage
 
 ## How to run test suite locally
 
@@ -228,6 +235,8 @@ All of the end-to-end tests are located in this suite. To run these tests a deve
 Unit tests and integration tests involving the Web project is location in this test suite.
 
 These includes various helper methods and endpoints.
+
+\newpage
 
 # Ethics
 
