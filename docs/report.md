@@ -149,8 +149,11 @@ The other workflow that is being ran when a tag is pushed to main, is the workfl
 
 \newpage
 
-
 ## Team work
+
+![Teamwork flowdiagram](./docs/images/teamwork-flowdiagram.svg){ width=260px }
+
+\newpage
 
 When requirements from the course were published, the group would either delegate the different issues and users stories to be created by different group members, or one or two individuals would write them out by themselves as quickly as possible. This allowed the group to quickly be aware of what the current issues were, and allowed members to assign themselves to these issues.
 
@@ -166,8 +169,8 @@ feature would interact with, they would be requested as a reviewer. Otherwise an
 
 ![Project Board](./docs/images/team_planning_board.png)
 
-
-![Teamwork flowdiagram](./docs/images/teamwork-flowdiagram.svg){ width=300px }
+Time zones are currently displayed in UTC. JavaScript could be used instead, to let the client choose the time zone automatically. Due to the agreed low priority, this issue have been pushed to allow for time to be allocated elsewhere.
+As applies to the issue of FormatDateTime.
 
 \newpage
 
