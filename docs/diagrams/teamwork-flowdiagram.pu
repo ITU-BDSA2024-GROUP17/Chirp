@@ -1,0 +1,23 @@
+@startuml
+start
+:Requirement is seen/bug is found;
+if (Does an issue exist for this?) then (Yes)
+else (No)
+:Some team member writes issue;
+endif
+:Some team member
+assigns themselves or
+is assigned by the team;
+:Feature is developed/fixed;
+if (Does a test exist for the feature?) then (Yes)
+else (No)
+:Test may be created;
+endif
+:Create pull request;
+repeat :Assign team member for review;
+if (Pull request approved?) then (Yes)
+:Merge into main;
+end
+else (No)
+:Rework feature/bugfix;
+@enduml
