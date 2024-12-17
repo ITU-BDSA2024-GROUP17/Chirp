@@ -1,13 +1,31 @@
 @startuml build-release-workflow
 start
-fork
-  :Build linux;
-fork again
-  :Build MacOS;
-fork again
-  :Build Windows;
-end merge
-:Create GitHub release
-With the builded artificats included;
+split
+    partition Build Linux **job** {
+        :Run actions/checkout@v4;
+        :Run actions/setup-dotnet@v4;
+        :Publish project for Linux;
+        :Upload artifact;
+    }
+split again
+    partition Build MacOS **job** {
+        :Run actions/checkout@v4;
+        :Run actions/setup-dotnet@v4;
+        :Publish project for MacOS;
+        :Upload artifact;
+    }
+split again
+    partition Build Windows **job** {
+        :Run actions/checkout@v4;
+        :Run actions/setup-dotnet@v4;
+        :Publish project for Windows;
+        :Upload artifact;
+    }
+end split
+partition Release **job** {
+    :Download artifacts;
+    :Move artifacts to root directory;
+    :Create release;
+}
 stop
 @enduml

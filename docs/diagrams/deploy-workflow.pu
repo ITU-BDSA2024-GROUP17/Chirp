@@ -1,6 +1,15 @@
 @startuml deploy-workflow
 start
-:Build;
-:Deploy to Azure;
+partition Build **job** {
+    :Run actions/checkout@v4;
+    :Run actions/setup-dotnet@v4;
+    :Publish project;
+    :Upload artifact;
+}
+partition Deploy **job** {
+    :Download artifact;
+    :Login to Azure;
+    :Deploy to Azure;
+}
 stop
 @enduml
