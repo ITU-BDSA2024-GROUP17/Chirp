@@ -26,7 +26,7 @@ public class CheepRepositoryTests
             .Options;
 
         _cheepDbContext = new CheepDbContext(options);
-        DbInitializer.SeedDatabase(_cheepDbContext);
+        TestInfrastructureDbInitializer.SeedDatabase(_cheepDbContext);
 
         _cheepRepository = new CheepRepository(_cheepDbContext);
 

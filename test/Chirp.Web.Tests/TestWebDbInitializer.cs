@@ -6,7 +6,7 @@ namespace Chirp.Web.Tests;
 /// <summary>
 /// Test Database used for WebAppFactory tests
 /// </summary>
-public static class WebDbInitializer
+public static class TestWebDbInitializer
 {
     public static void SeedDatabase(CheepDbContext cheepDbContext)
     {

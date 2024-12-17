@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Core.Entities;
 using Chirp.Infrastructure.Services;
 using System.Security.Claims;
-using Chirp.Core.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Chirp.Web.Interfaces;
 
 namespace Chirp.Web.Pages;
 

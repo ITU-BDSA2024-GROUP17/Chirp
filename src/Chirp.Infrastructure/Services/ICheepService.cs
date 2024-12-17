@@ -1,8 +1,8 @@
 using Chirp.Core.Entities;
 
-namespace Chirp.Core.Interfaces;
+namespace Chirp.Infrastructure.Interfaces;
 
-public interface ICheepRepository
+public interface ICheepService
 {
     /// <summary>
     /// Add a new cheep to the database.

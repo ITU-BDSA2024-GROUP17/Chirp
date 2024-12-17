@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Core.Entities;
 using Chirp.Infrastructure.Services;
-using Chirp.Core.Interfaces;
+using Chirp.Infrastructure.Interfaces;
 using Chirp.Web.Interfaces.Pages;
 
 namespace Chirp.Web.Pages.User;

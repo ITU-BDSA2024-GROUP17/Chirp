@@ -1,4 +1,4 @@
-using Chirp.Core.Interfaces;
+using Chirp.Infrastructure.Interfaces;
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Repositories;
 using Chirp.Infrastructure.Services;
