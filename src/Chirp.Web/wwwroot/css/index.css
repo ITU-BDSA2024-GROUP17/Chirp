@@ -300,10 +300,11 @@ main {
     z-index: 1;
     top: -45px;
     left: 0;
-    background-color: var(--border);
     text-wrap: wrap;
     padding: 3px 4px 3px 4px;
     cursor: default;
+    background-color: white;
+    border: 2px solid var(--border);
 }
 
 .cheep-timestamp-tooltip .cheep-timestamp::after {
@@ -364,7 +365,7 @@ main {
     width: inherit;
     max-height: 20rem;
     overflow-y: auto;
-    z-index: 1;
+    z-index: 10;
 }
 
 #navSearchOutput {
@@ -475,7 +476,7 @@ main {
 }
 
 .active {
-    color: #0d6efd !important;
+    color: #0d6efd;
     fill: #0d6efd;
 }
 

@@ -54,3 +54,15 @@ $(document).ready(function () {
         }
     );
 });
+
+function startHoverLogo() {
+    setTimeout(() => {
+        document.querySelector(".logo").src = "/images/icon1EasetEgg.png";
+    }, 1250);
+}
+
+function endHoverLogo() {
+    setTimeout(() => {
+        document.querySelector(".logo").src = "/images/icon1.png";
+    }, 500);
+}
