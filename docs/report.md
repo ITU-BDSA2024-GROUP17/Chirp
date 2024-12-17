@@ -20,7 +20,7 @@ The `Author` entity in Chirp! is extending the already existing `IdentityUser` e
 
 ## Architecture — In the small
 **Onion Diagram**
-![](./images/ChirpOnionDiagram.drawio-cropped.svg)
+![](./docs/images/ChirpOnionDiagram.drawio-cropped.svg)
 Each layer of the onion architecture represents a dotnet project or dotnet test project - A dotnet project may have mutible sub _projects/folders_ that only can _use_ or _implicite use_ from other projects or sub-project.
 Only individual files (classes, interfaces, .cshtml, ...) can inherit from each others, but may only be shown implicitly in the diagram.
 ## Architecture of deployed application
@@ -33,7 +33,7 @@ The http endpoint could also be https, depending on if certificates are provided
 
 ## User activities
 
-![User Activity](.docs/images/UserActivityDiagram.svg)
+![User Activity](./docs/images/UserActivityDiagram.svg)
 
 ## Sequence of functionality/calls trough _Chirp!_
 
