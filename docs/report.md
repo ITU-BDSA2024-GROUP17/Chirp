@@ -52,7 +52,7 @@ The http endpoint could also be https, depending on if certificates are provided
 
 ## User activities
 
-![User Activity](./docs/images/UserActivityDiagram.svg){ width=400px }
+![User Activity](./docs/images/UserActivityDiagram.svg){ width=300px }
 
 \newpage
 
@@ -62,7 +62,9 @@ The sequence diagram below shows the calls that is being made, both internally a
 
 It becomes very clear when looking at the diagram, that all the C# calls are are awaited. Most of the calls shown in the diagram could be ran in parralel leading to improved loading time.
 
-![Sequence of events when a client fetches a profile page](./docs/images/page-fetch-sequence-diagram.svg){ width=400px }
+![Sequence of events when a client fetches a profile page](./docs/images/page-fetch-sequence-diagram.svg){ width=200px }
+
+\newpage
 
 # Process
 
@@ -90,7 +92,7 @@ The following diagram shows one of the workflows that is being ran when a tag is
 
 The other workflow that is being ran when a tag is pushed to main, is the workflow responsible for Azure deployments.
 
-![Diagram illustrating the deployment workflow](./docs/images/deploy-workflow.svg){ width=400px }
+![Diagram illustrating the deployment workflow](./docs/images/deploy-workflow.svg){ width=250px }
 
 \newpage
 
@@ -107,7 +109,9 @@ When a feature was done, an effort was made to test this feature. Unfortunately 
 
 When a feature was deemed ready by the creator, a pull request would be made. If any other group member had good knowledge of the part of the program the feature would interact with, they would be requested as a reviewer, although this was not always possible. The reviewer would ensure that the program worked as intended, and then approve it if no further changes were needed. An approval was needed to merge into main, as branch protection was in place.
 
-![Teamwork flowdiagram](./docs/images/teamwork-flowdiagram.svg)
+![Teamwork flowdiagram](./docs/images/teamwork-flowdiagram.svg){ width=150px }
+
+\newpage
 
 ## How to make _Chirp!_ work locally
 
