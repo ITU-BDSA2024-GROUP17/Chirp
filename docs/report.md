@@ -33,6 +33,8 @@ The http endpoint could also be https, depending on if certificates are provided
 
 ## User activities
 
+![User Activity](.docs/images/UserActivityDiagram.svg)
+
 ## Sequence of functionality/calls trough _Chirp!_
 
 The sequence diagram below shows the calls that is being made, both internally and externally, when a client requests a profile page on the _Chirp!_ webpage.
