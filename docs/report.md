@@ -78,6 +78,7 @@ The group utilized some pair programming at the start of the project, although i
 When a feature was done, an effort was made to test this feature. Unfortunately this was not done for every feature, and is something the group has agreed to work more on in future projects. This resulted a backlog of testing that had to be worked on by all group members towards the end of the project.
 
 When a feature was deemed ready by the creator, a pull request would be made. If any other group member had good knowledge of the part of the program the feature would interact with, they would be requested as a reviewer, although this was not always possible. The reviewer would ensure that the program worked as intended, and then approve it if no further changes were needed. An approval was needed to merge into main, as branch protection was in place.
+
 ![Teamwork flowdiagram](./docs/images/teamwork-flowdiagram.svg)
 
 ## How to make _Chirp!_ work locally
