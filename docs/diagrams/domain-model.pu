@@ -1,18 +1,47 @@
 @startuml domain-model
-Author "1" -- "many" Cheep
-Author "1" -- "many" AuthorFollow
-AuthorFollow "1" -- "many" Author
+class IdentityUser {
+    ...
+}
 
-Cheep "1" -- "many" CheepRevistion
-Cheep "many" -- "many" CheepLike
-CheepLike "many" -- "many" Author
+class Author {
+    +avatar: string
+}
 
-Author : string avatar
+class AuthorFollow {
+    +followerId: string
+    +followeeId: string
+    +timeStamp: DateTime
+}
 
-AuthorFollow : DateTime TimeStamp
+class Cheep {
+    +authorId: string
+    +cheepOwnerId: string
+}
 
-CheepLike : DateTime TimeStamp
+class CheepLike {
+    +timeStamp: DateTime
+}
 
-CheepRevistion : string Message
-CheepRevistion : DateTime TimeStamp
+class CheepRevision {
+    +id: Guid
+    +message: string
+    +timeStamp: DateTime
+}
+
+IdentityUser <|-- Author
+
+Author "1..1" -- "0..N" Cheep
+
+<> follows
+AuthorFollow . follows
+follows - "0..N   " Author
+follows - "0..N   " Author
+
+Cheep "1..1" -- "1..N" CheepRevision
+Cheep "      0..1" -- "      0..1" Cheep
+
+<> likes
+likes . CheepLike
+Author - "0..N" likes
+likes - "0..N" Cheep
 @enduml

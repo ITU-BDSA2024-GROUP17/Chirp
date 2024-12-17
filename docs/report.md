@@ -14,7 +14,9 @@ numbersections: true
 
 ## Domain model
 
-![](./docs/images/domain-model.svg)
+The `Author` entity in Chirp! is extending the already existing `IdentityUser` entity. Properties for the `IdentityUser` can be found on Microsoft's [documentation](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.identity.entityframeworkcore.identityuser)
+
+![Class diagram showing the domain model of Chirp!](./docs/images/domain-model.svg)
 
 ## Architecture — In the small
 
