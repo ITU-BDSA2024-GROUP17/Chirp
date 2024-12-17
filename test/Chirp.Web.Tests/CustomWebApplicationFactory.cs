@@ -46,7 +46,7 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
         using var scope = factory.Services.CreateScope();
         using var context = scope.ServiceProvider.GetService<CheepDbContext>() ?? throw new Exception("TestCheepDbContext not found!");
         DetachAllEntities(context);
-        WebDbInitializer.SeedDatabase(context);
+        TestWebDbInitializer.SeedDatabase(context);
         return context;
     }
 

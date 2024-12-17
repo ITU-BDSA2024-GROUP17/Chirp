@@ -17,7 +17,7 @@ public class AuthorRepositoryTests
             .Options;
 
         _cheepDbContext = new CheepDbContext(options);
-        DbInitializer.SeedDatabase(_cheepDbContext);
+        TestInfrastructureDbInitializer.SeedDatabase(_cheepDbContext);
 
         _authorRepository = new AuthorRepository(_cheepDbContext);
     }

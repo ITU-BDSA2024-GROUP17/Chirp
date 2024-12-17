@@ -2,7 +2,7 @@ using Chirp.Core.Entities;
 
 namespace Chirp.Infrastructure.Tests;
 
-public static class DbInitializer
+public static class TestInfrastructureDbInitializer
 {
     public static void SeedDatabase(CheepDbContext cheepDbContext)
     {
