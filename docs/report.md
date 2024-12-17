@@ -46,13 +46,13 @@ The diagram below shows the architecture of our program after it has been deploy
 The only external service that is used is github, which is used for authenticating our users.
 The http endpoint could also be https, depending on if certificates are provided or not.
 
-![Architecture diagram](./docs/images/deployed-architecture.svg)
+![Architecture diagram](./docs/images/deployed-architecture.svg){ width=400px }
 
 \newpage
 
 ## User activities
 
-![User Activity](./docs/images/UserActivityDiagram.svg)
+![User Activity](./docs/images/UserActivityDiagram.svg){ width=400px }
 
 \newpage
 
@@ -62,7 +62,7 @@ The sequence diagram below shows the calls that is being made, both internally a
 
 It becomes very clear when looking at the diagram, that all the C# calls are are awaited. Most of the calls shown in the diagram could be ran in parralel leading to improved loading time.
 
-![Sequence of events when a client fetches a profile page](./docs/images/page-fetch-sequence-diagram.svg)
+![Sequence of events when a client fetches a profile page](./docs/images/page-fetch-sequence-diagram.svg){ width=400px }
 
 # Process
 
@@ -74,7 +74,7 @@ The Chirp repo is currently relying on three workflows that are managing, tests,
 
 When a commit is pushed to a branch which currently is used for a pull request a workflow is ran on the commit. The workflow, builds, run all the tests and lints the code. If any of these fail or if any warning occour then the workflow will fail. Preventing the proposed changes from being merged into the main branch.
 
-![Diagram illustrating the build, test and linting workflow](./docs/images/build-test-lint-workflow.svg)
+![Diagram illustrating the build, test and linting workflow](./docs/images/build-test-lint-workflow.svg){ width=400px }
 
 \newpage
 
@@ -82,7 +82,7 @@ When a commit is pushed to a branch which currently is used for a pull request a
 
 The following diagram shows one of the workflows that is being ran when a tag is pushed to the main branch. This workflow is building the artifacts for Linux, MacOS and Windows, which is then included in the GitHub release for that tag.
 
-![Diagram illustrating the release workflow](./docs/images/build-release-workflow.svg)
+![Diagram illustrating the release workflow](./docs/images/build-release-workflow.svg){ width=400px }
 
 \newpage
 
@@ -90,7 +90,7 @@ The following diagram shows one of the workflows that is being ran when a tag is
 
 The other workflow that is being ran when a tag is pushed to main, is the workflow responsible for Azure deployments.
 
-![Diagram illustrating the deployment workflow](./docs/images/deploy-workflow.svg)
+![Diagram illustrating the deployment workflow](./docs/images/deploy-workflow.svg){ width=400px }
 
 \newpage
 
