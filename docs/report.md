@@ -10,59 +10,8 @@ author:
 numbersections: true
 geometry: margin=2.5cm
 output: pdf_document
+toc: true
 ---
-
-
-```{=latex}
-\begin{center}
-```
-# Table of Contents {-}
-
-**[Design and Architecture of _Chirp!_](#design-and-architecture-of-chirp)**
-
-[Domain model](#domain-model)
-
-[Architecture — In the small](#architecture--in-the-small)
-
-[Architecture of deployed application](#architecture-of-deployed-application)
-
-[User activities](#user-activities)
-
-[Sequence of functionality/calls through _Chirp!_](#sequence-of-functionalitycalls-through-chirp)
-
-**[Process](#process)**
-
-[Build, test, release, and deployment](#build-test-release-and-deployment)
-
-[Build, test and linting workflow](#build-test-and-linting-workflow)
-
-[Release workflow](#release-workflow)
-
-[Deployment workflow](#deployment-workflow)
-
-[Team work](#team-work)
-
-[How to make _Chirp!_ work locally](#how-to-make-chirp-work-locally)
-
-[How to run development instance](#how-to-run-development-instance)
-
-[How to run production build](#how-to-run-production-build)
-
-[How to run test suite locally](#how-to-run-test-suite-locally)
-
-[Run individual tests](#run-individual-tests)
-
-[The different test suites](#the-different-test-suites)
-
-**[Ethics](#ethics)**
-
-[License](#license)
-
-[LLMs, ChatGPT, CoPilot, and others](#llms-chatgpt-copilot-and-others)
-
-```{=latex}
-\end{center}
-```
 
 \newpage
 
@@ -115,7 +64,7 @@ The sequence diagram below shows the calls that is being made, both internally a
 
 It becomes very clear when looking at the diagram, that all the C# calls are are awaited. Most of the calls shown in the diagram could be ran in parralel leading to improved loading time.
 
-![Sequence of events when a client fetches a profile page](./docs/images/page-fetch-sequence-diagram.svg){ width=380px }
+![Sequence of events when a client fetches a profile page](./docs/images/page-fetch-sequence-diagram.svg){ width=300px }
 
 \newpage
 
