@@ -71,6 +71,6 @@ plantuml -tsvg ./docs/diagrams/ -o ../images/
 
 Generate PDF - Needs to be ran from root of project
 ```sh
-pandoc ./docs/report.md -o ./docs/2024_itubdsa_group_17_report.pdf
+pandoc ./docs/report.md -o ./docs/2024_itubdsa_group_17_report.pdf --highlight-style=tango
 ```
 > **_NOTE:_** Needs to be ran from root of project
