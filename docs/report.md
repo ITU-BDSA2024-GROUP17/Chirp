@@ -161,9 +161,9 @@ Similarly, if a bug was found, or group members agreed on a new functionality of
 
 The group utilized some pair programming at the start of the project, although it developed into more individually focused programming. If a member needed help on they would usually contact other members on a discord server, which was the primary communication platfrom utilized by the group. This server also included a bot that sent a message whenever there was activity with issues or pull requests on the repository.
 
-When a feature was done, an effort was made to test this feature. Unfortunately this was not done for every feature, and is something the group has agreed to work more on in future projects. This resulted a backlog of testing that had to be worked on by all group members towards the end of the project.
+When a feature was done, an effort was made to test this feature. Unfortunately this was not done for every feature, and is something the group has agreed to work more on in future projects. This resulted in a backlog of testing that had to be worked on by all group members towards the end of the project.
 
-When a feature was deemed ready by the creator, a pull request would be made.
+When a feature was deemed ready by the assigned member(s), a pull request would be made.
 If any other group member had good knowledge of the part of the program the
 feature would interact with, they would be requested as a reviewer. Otherwise any willing group members would be requested as a reviewer. The reviewer would then ensure that the program worked as intended, and then approve it if no further changes were needed. An approval was needed to merge into main, as branch protection was in place.
 
