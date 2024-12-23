@@ -12,18 +12,20 @@ public static class DbInitializer
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<Author>>();
 
-            var a1 = new Author() { Id = "182cac86-ec77-417f-83bd-35c6dd7f9391", UserName = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = [] };
-            var a2 = new Author() { Id = "4bf52408-b693-4ba6-a82d-6946ca4619c2", UserName = "Luanna Muro", Email = "Luanna-Muro@ku.dk", Cheeps = [] };
-            var a3 = new Author() { Id = "5e7a3446-d9ca-438e-861e-eb09245429d2", UserName = "Wendell Ballan", Email = "Wendell-Ballan@gmail.com", Cheeps = [] };
-            var a4 = new Author() { Id = "d25286e6-0691-4b6b-b9aa-8bad8343f76a", UserName = "Nathan Sirmon", Email = "Nathan+Sirmon@dtu.dk", Cheeps = [] };
-            var a5 = new Author() { Id = "83daf8c1-cc90-4c84-b4ee-f12a4635620c", UserName = "Quintin Sitts", Email = "Quintin+Sitts@itu.dk", Cheeps = [] };
-            var a6 = new Author() { Id = "82f0c4b9-32ce-43f5-ade1-6082b0d5151c", UserName = "Mellie Yost", Email = "Mellie+Yost@ku.dk", Cheeps = [] };
-            var a7 = new Author() { Id = "a0ea8997-3ba0-46db-9718-5fc15c27dfe6", UserName = "Malcolm Janski", Email = "Malcolm-Janski@gmail.com", Cheeps = [] };
-            var a8 = new Author() { Id = "4e9d45c2-c1b2-455a-b1d3-767fae48c44c", UserName = "Octavio Wagganer", Email = "Octavio.Wagganer@dtu.dk", Cheeps = [] };
-            var a9 = new Author() { Id = "338e3cde-f248-438d-b292-e89f011915ed", UserName = "Johnnie Calixto", Email = "Johnnie+Calixto@itu.dk", Cheeps = [] };
-            var a10 = new Author() { Id = "60ca63fb-e53f-4dba-9969-7482187c782b", UserName = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = [] };
-            var a11 = new Author() { Id = "15c1bc9e-e64b-4ea0-aa49-19b85f5a5dd6", UserName = "Helge", Email = "ropf@itu.dk", Cheeps = [] };
-            var a12 = new Author() { Id = "915ae556-b0d8-4c90-982f-ad0fa74ec85b", UserName = "Adrian", Email = "adho@itu.dk", Cheeps = [] };
+            #region Authors
+            var a1 = new Author() { Id = "182cac86-ec77-417f-83bd-35c6dd7f9391", UserName = "Roger Histand", Email = "Roger+Histand@hotmail.com" };
+            var a2 = new Author() { Id = "4bf52408-b693-4ba6-a82d-6946ca4619c2", UserName = "Luanna Muro", Email = "Luanna-Muro@ku.dk" };
+            var a3 = new Author() { Id = "5e7a3446-d9ca-438e-861e-eb09245429d2", UserName = "Wendell Ballan", Email = "Wendell-Ballan@gmail.com" };
+            var a4 = new Author() { Id = "d25286e6-0691-4b6b-b9aa-8bad8343f76a", UserName = "Nathan Sirmon", Email = "Nathan+Sirmon@dtu.dk" };
+            var a5 = new Author() { Id = "83daf8c1-cc90-4c84-b4ee-f12a4635620c", UserName = "Quintin Sitts", Email = "Quintin+Sitts@itu.dk" };
+            var a6 = new Author() { Id = "82f0c4b9-32ce-43f5-ade1-6082b0d5151c", UserName = "Mellie Yost", Email = "Mellie+Yost@ku.dk" };
+            var a7 = new Author() { Id = "a0ea8997-3ba0-46db-9718-5fc15c27dfe6", UserName = "Malcolm Janski", Email = "Malcolm-Janski@gmail.com" };
+            var a8 = new Author() { Id = "4e9d45c2-c1b2-455a-b1d3-767fae48c44c", UserName = "Octavio Wagganer", Email = "Octavio.Wagganer@dtu.dk" };
+            var a9 = new Author() { Id = "338e3cde-f248-438d-b292-e89f011915ed", UserName = "Johnnie Calixto", Email = "Johnnie+Calixto@itu.dk" };
+            var a10 = new Author() { Id = "60ca63fb-e53f-4dba-9969-7482187c782b", UserName = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com" };
+            var a11 = new Author() { Id = "15c1bc9e-e64b-4ea0-aa49-19b85f5a5dd6", UserName = "Helge", Email = "ropf@itu.dk" };
+            var a12 = new Author() { Id = "915ae556-b0d8-4c90-982f-ad0fa74ec85b", UserName = "Adrian", Email = "adho@itu.dk" };
+            #endregion
 
             await userManager.CreateAsync(a1);
             await userManager.CreateAsync(a2);
@@ -38,26 +40,227 @@ public static class DbInitializer
             await userManager.CreateAsync(a11, "LetM31n!");
             await userManager.CreateAsync(a12, "M32Want_Access");
 
-            var c1 = new Cheep() { Id = 1, AuthorId = a10.Id, Author = a10, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", TimeStamp = DateTime.Parse("2023-08-01 13:14:37") } } };
-            var c2 = new Cheep() { Id = 2, AuthorId = a10.Id, Author = a10, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "And then, as he listened to all that''s left o'' twenty-one people.", TimeStamp = DateTime.Parse("2023-08-01 13:15:21") } } };
-            var c3 = new Cheep() { Id = 3, AuthorId = a10.Id, Author = a10, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "In various enchanted attitudes, like the Sperm Whale.", TimeStamp = DateTime.Parse("2023-08-01 13:14:58") } } };
-            var c4 = new Cheep() { Id = 4, AuthorId = a5.Id, Author = a5, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "Unless we succeed in establishing ourselves in some monomaniac way whatever significance might lurk in them.", TimeStamp = DateTime.Parse("2023-08-01 13:14:34") } } };
-            var c5 = new Cheep() { Id = 5, AuthorId = a10.Id, Author = a10, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "At last we came back!", TimeStamp = DateTime.Parse("2023-08-01 13:14:35") } } };
-            var c6 = new Cheep() { Id = 6, AuthorId = a3.Id, Author = a3, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "At first he had only exchanged one trouble for another.", TimeStamp = DateTime.Parse("2023-08-01 13:14:13") } } };
-            var c7 = new Cheep() { Id = 7, AuthorId = a10.Id, Author = a10, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "In the first watch, and every creditor paid in full.", TimeStamp = DateTime.Parse("2023-08-01 13:16:13") } } };
-            var c8 = new Cheep() { Id = 8, AuthorId = a2.Id, Author = a2, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "It was but a very ancient cluster of blocks generally painted green, and for no other, he shielded me.", TimeStamp = DateTime.Parse("2023-08-01 13:14:01") } } };
-            var c9 = new Cheep() { Id = 9, AuthorId = a10.Id, Author = a10, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "The folk on trust in me!", TimeStamp = DateTime.Parse("2023-08-01 13:15:30") } } };
-            var c10 = new Cheep() { Id = 10, AuthorId = a10.Id, Author = a10, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "It is a damp, drizzly November in my pocket, and switching it backward and forward with a most suspicious aspect.", TimeStamp = DateTime.Parse("2023-08-01 13:13:34") } } };
-            var c11 = new Cheep() { Id = 11, AuthorId = a4.Id, Author = a4, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "I had no difficulty in finding where Sholto lived, and take it and in Canada.", TimeStamp = DateTime.Parse("2023-08-01 13:14:11") } } };
-            var c12 = new Cheep() { Id = 12, AuthorId = a5.Id, Author = a5, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "What did they take?", TimeStamp = DateTime.Parse("2023-08-01 13:14:44") } } };
-            var c13 = new Cheep() { Id = 13, AuthorId = a10.Id, Author = a10, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "It struck cold to see you, Mr. White Mason, to our shores a number of young Alec.", TimeStamp = DateTime.Parse("2023-08-01 13:13:23") } } };
-            var c14 = new Cheep() { Id = 14, AuthorId = a1.Id, Author = a1, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "You are here for at all?", TimeStamp = DateTime.Parse("2023-08-01 13:13:18") } } };
-            var c15 = new Cheep() { Id = 15, AuthorId = a5.Id, Author = a5, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "My friend took the treasure-box to the window.", TimeStamp = DateTime.Parse("2023-08-01 13:15:17") } } };
-            var c16 = new Cheep() { Id = 16, AuthorId = a1.Id, Author = a1, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "But ere I could not find it a name that I come from.", TimeStamp = DateTime.Parse("2023-08-01 13:17:18") } } };
-            var c17 = new Cheep() { Id = 17, AuthorId = a10.Id, Author = a10, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "Then Sherlock looked across at the window, candle in his wilful disobedience of the road.", TimeStamp = DateTime.Parse("2023-08-01 13:14:30") } } };
-            var c18 = new Cheep() { Id = 18, AuthorId = a5.Id, Author = a5, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "The  Message was as well live in this way-- SHERLOCK HOLMES--his limits.", TimeStamp = DateTime.Parse("2023-08-01 13:13:40") } } };
-            var c19 = new Cheep() { Id = 19, AuthorId = a10.Id, Author = a10, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "I commend that fact very carefully in the afternoon.", TimeStamp = DateTime.Parse("2023-08-01 13:13:20") } } };
-            var c20 = new Cheep() { Id = 20, AuthorId = a1.Id, Author = a1, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "In the card-case is a wonderful old man!", TimeStamp = DateTime.Parse("2023-08-01 13:15:42") } } };
+            #region Cheeps
+            var c1 = new Cheep()
+            {
+                Id = 1,
+                AuthorId = a10.Id,
+                Author = a10,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", TimeStamp = DateTime.Parse("2023-08-01 13:14:37") },
+                new CheepRevision() { Message = "The ship sailed smoothly as they reminisced about their journey.", TimeStamp = DateTime.Parse("2023-08-01 14:00:00") }
+            },
+                Likes = new List<Author>() { a1, a5, a7 }
+            };
+            var c2 = new Cheep()
+            {
+                Id = 2,
+                AuthorId = a10.Id,
+                Author = a10,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "And then, as he listened to all that''s left o'' twenty-one people.", TimeStamp = DateTime.Parse("2023-08-01 13:15:21") },
+                new CheepRevision() { Message = "Each voice carried a story of triumph and despair.", TimeStamp = DateTime.Parse("2023-08-01 14:15:00") }
+            },
+                Likes = new List<Author>() { a3, a8 }
+            };
+            var c3 = new Cheep()
+            {
+                Id = 3,
+                AuthorId = a10.Id,
+                Author = a10,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "In various enchanted attitudes, like the Sperm Whale.", TimeStamp = DateTime.Parse("2023-08-01 13:14:58") },
+                new CheepRevision() { Message = "The air seemed filled with mystery and wonder.", TimeStamp = DateTime.Parse("2023-08-01 14:30:00") }
+            },
+                Likes = new List<Author>() { a2, a4, a6 }
+            };
+            var c4 = new Cheep()
+            {
+                Id = 4,
+                AuthorId = a5.Id,
+                Author = a5,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "Unless we succeed in establishing ourselves in some monomaniac way whatever significance might lurk in them.", TimeStamp = DateTime.Parse("2023-08-01 13:14:34") },
+                new CheepRevision() { Message = "The determination to uncover the truth drove us forward.", TimeStamp = DateTime.Parse("2023-08-01 14:45:00") }
+            },
+                Likes = new List<Author>() { a1, a9 }
+            };
+            var c5 = new Cheep()
+            {
+                Id = 5,
+                AuthorId = a10.Id,
+                Author = a10,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "At last we came back!", TimeStamp = DateTime.Parse("2023-08-01 13:14:35") },
+                new CheepRevision() { Message = "Home felt like a distant memory, now vivid and welcoming.", TimeStamp = DateTime.Parse("2023-08-01 15:00:00") }
+            },
+                Likes = new List<Author>() { a2, a5, a7 }
+            };
+            var c6 = new Cheep()
+            {
+                Id = 6,
+                AuthorId = a3.Id,
+                Author = a3,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "At first he had only exchanged one trouble for another.", TimeStamp = DateTime.Parse("2023-08-01 13:14:13") },
+                new CheepRevision() { Message = "But each challenge brought new lessons to cherish.", TimeStamp = DateTime.Parse("2023-08-01 15:30:00") }
+            },
+                Likes = new List<Author>() { a4, a10 }
+            };
+            var c7 = new Cheep()
+            {
+                Id = 7,
+                AuthorId = a10.Id,
+                Author = a10,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "In the first watch, and every creditor paid in full.", TimeStamp = DateTime.Parse("2023-08-01 13:16:13") },
+                new CheepRevision() { Message = "The dawn of a new chapter began, free of past burdens.", TimeStamp = DateTime.Parse("2023-08-01 16:00:00") }
+            },
+                Likes = new List<Author>() { a6, a8, a12 }
+            };
+            var c8 = new Cheep()
+            {
+                Id = 8,
+                AuthorId = a2.Id,
+                Author = a2,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "It was but a very ancient cluster of blocks generally painted green, and for no other, he shielded me.", TimeStamp = DateTime.Parse("2023-08-01 13:14:01") },
+                new CheepRevision() { Message = "The green blocks whispered tales of forgotten eras.", TimeStamp = DateTime.Parse("2023-08-01 16:15:00") }
+            },
+                Likes = new List<Author>() { a3, a11 }
+            };
+            var c9 = new Cheep()
+            {
+                Id = 9,
+                AuthorId = a10.Id,
+                Author = a10,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "The folk on trust in me!", TimeStamp = DateTime.Parse("2023-08-01 13:15:30") },
+                new CheepRevision() { Message = "Trust became the foundation of our thriving community.", TimeStamp = DateTime.Parse("2023-08-01 16:45:00") }
+            },
+                Likes = new List<Author>() { a5, a9, a10 }
+            };
+            var c10 = new Cheep()
+            {
+                Id = 10,
+                AuthorId = a10.Id,
+                Author = a10,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "It is a damp, drizzly November in my pocket, and switching it backward and forward with a most suspicious aspect.", TimeStamp = DateTime.Parse("2023-08-01 13:13:34") },
+                new CheepRevision() { Message = "The chill of November carried whispers of change and hope.", TimeStamp = DateTime.Parse("2023-08-01 17:00:00") }
+            },
+                Likes = new List<Author>() { a7, a8 }
+            };
+            var c11 = new Cheep()
+            {
+                Id = 11,
+                AuthorId = a4.Id,
+                Author = a4,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "I had no difficulty in finding where Sholto lived, and take it and in Canada.", TimeStamp = DateTime.Parse("2023-08-01 13:14:11") },
+                new CheepRevision() { Message = "The journey to Canada was both thrilling and enlightening.", TimeStamp = DateTime.Parse("2023-08-01 14:10:00") }
+            },
+                Likes = new List<Author>() { a2, a10 }
+            };
+            var c12 = new Cheep()
+            {
+                Id = 12,
+                AuthorId = a5.Id,
+                Author = a5,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "What did they take?", TimeStamp = DateTime.Parse("2023-08-01 13:14:44") },
+                new CheepRevision() { Message = "They left behind clues that sparked curiosity and wonder.", TimeStamp = DateTime.Parse("2023-08-01 14:20:00") }
+            },
+                Likes = new List<Author>() { a6, a9, a11 }
+            };
+            var c13 = new Cheep()
+            {
+                Id = 13,
+                AuthorId = a10.Id,
+                Author = a10,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "It struck cold to see you, Mr. White Mason, to our shores a number of young Alec.", TimeStamp = DateTime.Parse("2023-08-01 13:13:23") },
+                new CheepRevision() { Message = "Alec's arrival marked the beginning of unforeseen adventures.", TimeStamp = DateTime.Parse("2023-08-01 14:30:00") }
+            },
+                Likes = new List<Author>() { a1, a8 }
+            };
+            var c14 = new Cheep()
+            {
+                Id = 14,
+                AuthorId = a1.Id,
+                Author = a1,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "You are here for at all?", TimeStamp = DateTime.Parse("2023-08-01 13:13:18") },
+                new CheepRevision() { Message = "The question lingered in the air, unanswered and profound.", TimeStamp = DateTime.Parse("2023-08-01 14:40:00") }
+            },
+                Likes = new List<Author>() { a5, a10 }
+            };
+            var c15 = new Cheep()
+            {
+                Id = 15,
+                AuthorId = a5.Id,
+                Author = a5,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "My friend took the treasure-box to the window.", TimeStamp = DateTime.Parse("2023-08-01 13:15:17") },
+                new CheepRevision() { Message = "The treasure sparkled brilliantly under the sunlight.", TimeStamp = DateTime.Parse("2023-08-01 15:10:00") }
+            },
+                Likes = new List<Author>() { a6, a7, a12 }
+            };
+            var c16 = new Cheep()
+            {
+                Id = 16,
+                AuthorId = a1.Id,
+                Author = a1,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "But ere I could not find it a name that I come from.", TimeStamp = DateTime.Parse("2023-08-01 13:17:18") },
+                new CheepRevision() { Message = "Each step was a quest for identity and belonging.", TimeStamp = DateTime.Parse("2023-08-01 15:20:00") }
+            },
+                Likes = new List<Author>() { a4, a8, a10 }
+            };
+            var c17 = new Cheep()
+            {
+                Id = 17,
+                AuthorId = a10.Id,
+                Author = a10,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "Then Sherlock looked across at the window, candle in his wilful disobedience of the road.", TimeStamp = DateTime.Parse("2023-08-01 13:14:30") },
+                new CheepRevision() { Message = "The flickering candle illuminated hidden truths.", TimeStamp = DateTime.Parse("2023-08-01 15:30:00") }
+            },
+                Likes = new List<Author>() { a1, a2, a5, a7 }
+            };
+            var c18 = new Cheep()
+            {
+                Id = 18,
+                AuthorId = a5.Id,
+                Author = a5,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "The  Message was as well live in this way-- SHERLOCK HOLMES--his limits.", TimeStamp = DateTime.Parse("2023-08-01 13:13:40") },
+                new CheepRevision() { Message = "Limits were merely opportunities for greater achievements.", TimeStamp = DateTime.Parse("2023-08-01 16:20:00") }
+            },
+                Likes = new List<Author>() { a3, a4, a5, a6 }
+            };
+            var c19 = new Cheep()
+            {
+                Id = 19,
+                AuthorId = a10.Id,
+                Author = a10,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "I commend that fact very carefully in the afternoon.", TimeStamp = DateTime.Parse("2023-08-01 13:13:20") },
+                new CheepRevision() { Message = "The afternoon discussions sparked innovative ideas.", TimeStamp = DateTime.Parse("2023-08-01 16:30:00") }
+            },
+                Likes = new List<Author>() { a7, a9, a10 }
+            };
+            var c20 = new Cheep()
+            {
+                Id = 20,
+                AuthorId = a1.Id,
+                Author = a1,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "In the card-case is a wonderful old man!", TimeStamp = DateTime.Parse("2023-08-01 13:15:42") },
+                new CheepRevision() { Message = "The old man shared stories that bridged generations.", TimeStamp = DateTime.Parse("2023-08-01 16:40:00") }
+            },
+                Likes = new List<Author>() { a2, a5 }
+            };
             var c21 = new Cheep() { Id = 21, AuthorId = a10.Id, Author = a10, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "But this is his name! said Holmes, shaking his hand.", TimeStamp = DateTime.Parse("2023-08-01 13:13:21") } } };
             var c22 = new Cheep() { Id = 22, AuthorId = a10.Id, Author = a10, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "She had turned suddenly, and a lady who has satisfied himself that he has heard it.", TimeStamp = DateTime.Parse("2023-08-01 13:15:51") } } };
             var c23 = new Cheep() { Id = 23, AuthorId = a5.Id, Author = a5, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "You were dwelling upon the ground, the sky, the spray that he would be a man''s forefinger dipped in blood.", TimeStamp = DateTime.Parse("2023-08-01 13:13:55") } } };
@@ -695,8 +898,154 @@ public static class DbInitializer
             var c655 = new Cheep() { Id = 655, AuthorId = a9.Id, Author = a9, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "What do you think so meanly of him?", TimeStamp = DateTime.Parse("2023-08-01 13:13:56") } } };
             var c656 = new Cheep() { Id = 656, AuthorId = a11.Id, Author = a11, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "Hello, BDSA students!", TimeStamp = DateTime.Parse("2023-08-01 12:16:48") } } };
             var c657 = new Cheep() { Id = 657, AuthorId = a12.Id, Author = a12, Revisions = new List<CheepRevision>() { new CheepRevision() { Message = "Hej, velkommen til kurset.", TimeStamp = DateTime.Parse("2023-08-01 13:08:28") } } };
+            #endregion
+
+            #region Cheep Comments
+            // Comments for c1
+            var c1_comment1 = new Cheep()
+            {
+                Id = 1000,
+                AuthorId = a7.Id,
+                Author = a7,
+                CheepOwner = c1,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "What a vivid picture of the journey you shared!", TimeStamp = DateTime.Parse("2023-08-01 14:10:00") }
+            },
+                Likes = new List<Author>() { a5 }
+            };
+
+            var c1_comment2 = new Cheep()
+            {
+                Id = 1001,
+                AuthorId = a1.Id,
+                Author = a1,
+                CheepOwner = c1,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "Chicago sounds like the perfect setting for such a tale.", TimeStamp = DateTime.Parse("2023-08-01 14:15:00") }
+            },
+                Likes = new List<Author>() { a7, a10 }
+            };
+
+            // Comments for c2
+            var c2_comment1 = new Cheep()
+            {
+                Id = 1002,
+                AuthorId = a8.Id,
+                Author = a8,
+                CheepOwner = c2,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "So much emotion captured in these stories of the twenty-one.", TimeStamp = DateTime.Parse("2023-08-01 14:20:00") }
+            },
+                Likes = new List<Author>() { a3 }
+            };
+
+            // Comments for c3
+            var c3_comment1 = new Cheep()
+            {
+                Id = 1003,
+                AuthorId = a4.Id,
+                Author = a4,
+                CheepOwner = c3,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "I can almost feel the wonder in the air from your description.", TimeStamp = DateTime.Parse("2023-08-01 14:45:00") }
+            },
+                Likes = new List<Author>() { a2, a10 }
+            };
+
+            // Comments for c4
+            var c4_comment1 = new Cheep()
+            {
+                Id = 1004,
+                AuthorId = a9.Id,
+                Author = a9,
+                CheepOwner = c4,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "Determination is key! What an inspiring message.", TimeStamp = DateTime.Parse("2023-08-01 15:00:00") }
+            },
+                Likes = new List<Author>() { a1 }
+            };
+
+            // Comments for c5
+            var c5_comment1 = new Cheep()
+            {
+                Id = 1005,
+                AuthorId = a2.Id,
+                Author = a2,
+                CheepOwner = c5,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "Welcome back! There's nothing like the comfort of home.", TimeStamp = DateTime.Parse("2023-08-01 15:15:00") }
+            },
+                Likes = new List<Author>() { a5, a7 }
+            };
+
+            // Comments for c6
+            var c6_comment1 = new Cheep()
+            {
+                Id = 1006,
+                AuthorId = a4.Id,
+                Author = a4,
+                CheepOwner = c6,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "Challenges indeed shape us into stronger individuals.", TimeStamp = DateTime.Parse("2023-08-01 15:40:00") }
+            },
+                Likes = new List<Author>() { a3, a10 }
+            };
+
+            // Comments for c7
+            var c7_comment1 = new Cheep()
+            {
+                Id = 1007,
+                AuthorId = a12.Id,
+                Author = a12,
+                CheepOwner = c7,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "Freedom from burdens is such a powerful feeling.", TimeStamp = DateTime.Parse("2023-08-01 16:10:00") }
+            },
+                Likes = new List<Author>() { a6, a8 }
+            };
+
+            // Comments for c8
+            var c8_comment1 = new Cheep()
+            {
+                Id = 1008,
+                AuthorId = a3.Id,
+                Author = a3,
+                CheepOwner = c8,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "The imagery here is fascinating! Those blocks hold stories.", TimeStamp = DateTime.Parse("2023-08-01 16:30:00") }
+            },
+                Likes = new List<Author>() { a11 }
+            };
+
+            // Comments for c9
+            var c9_comment1 = new Cheep()
+            {
+                Id = 1009,
+                AuthorId = a9.Id,
+                Author = a9,
+                CheepOwner = c9,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "Trust truly builds communities that last.", TimeStamp = DateTime.Parse("2023-08-01 16:50:00") }
+            },
+                Likes = new List<Author>() { a10 }
+            };
+
+            // Comments for c10
+            var c10_comment1 = new Cheep()
+            {
+                Id = 1010,
+                AuthorId = a8.Id,
+                Author = a8,
+                CheepOwner = c10,
+                Revisions = new List<CheepRevision>() {
+                new CheepRevision() { Message = "November always feels like a season of transformation.", TimeStamp = DateTime.Parse("2023-08-01 17:10:00") }
+            },
+                Likes = new List<Author>() { a7 }
+            };
+            #endregion
 
             List<Cheep> cheeps = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29, c30, c31, c32, c33, c34, c35, c36, c37, c38, c39, c40, c41, c42, c43, c44, c45, c46, c47, c48, c49, c50, c51, c52, c53, c54, c55, c56, c57, c58, c59, c60, c61, c62, c63, c64, c65, c66, c67, c68, c69, c70, c71, c72, c73, c74, c75, c76, c77, c78, c79, c80, c81, c82, c83, c84, c85, c86, c87, c88, c89, c90, c91, c92, c93, c94, c95, c96, c97, c98, c99, c100, c101, c102, c103, c104, c105, c106, c107, c108, c109, c110, c111, c112, c113, c114, c115, c116, c117, c118, c119, c120, c121, c122, c123, c124, c125, c126, c127, c128, c129, c130, c131, c132, c133, c134, c135, c136, c137, c138, c139, c140, c141, c142, c143, c144, c145, c146, c147, c148, c149, c150, c151, c152, c153, c154, c155, c156, c157, c158, c159, c160, c161, c162, c163, c164, c165, c166, c167, c168, c169, c170, c171, c172, c173, c174, c175, c176, c177, c178, c179, c180, c181, c182, c183, c184, c185, c186, c187, c188, c189, c190, c191, c192, c193, c194, c195, c196, c197, c198, c199, c200, c201, c202, c203, c204, c205, c206, c207, c208, c209, c210, c211, c212, c213, c214, c215, c216, c217, c218, c219, c220, c221, c222, c223, c224, c225, c226, c227, c228, c229, c230, c231, c232, c233, c234, c235, c236, c237, c238, c239, c240, c241, c242, c243, c244, c245, c246, c247, c248, c249, c250, c251, c252, c253, c254, c255, c256, c257, c258, c259, c260, c261, c262, c263, c264, c265, c266, c267, c268, c269, c270, c271, c272, c273, c274, c275, c276, c277, c278, c279, c280, c281, c282, c283, c284, c285, c286, c287, c288, c289, c290, c291, c292, c293, c294, c295, c296, c297, c298, c299, c300, c301, c302, c303, c304, c305, c306, c307, c308, c309, c310, c311, c312, c313, c314, c315, c316, c317, c318, c319, c320, c321, c322, c323, c324, c325, c326, c327, c328, c329, c330, c331, c332, c333, c334, c335, c336, c337, c338, c339, c340, c341, c342, c343, c344, c345, c346, c347, c348, c349, c350, c351, c352, c353, c354, c355, c356, c357, c358, c359, c360, c361, c362, c363, c364, c365, c366, c367, c368, c369, c370, c371, c372, c373, c374, c375, c376, c377, c378, c379, c380, c381, c382, c383, c384, c385, c386, c387, c388, c389, c390, c391, c392, c393, c394, c395, c396, c397, c398, c399, c400, c401, c402, c403, c404, c405, c406, c407, c408, c409, c410, c411, c412, c413, c414, c415, c416, c417, c418, c419, c420, c421, c422, c423, c424, c425, c426, c427, c428, c429, c430, c431, c432, c433, c434, c435, c436, c437, c438, c439, c440, c441, c442, c443, c444, c445, c446, c447, c448, c449, c450, c451, c452, c453, c454, c455, c456, c457, c458, c459, c460, c461, c462, c463, c464, c465, c466, c467, c468, c469, c470, c471, c472, c473, c474, c475, c476, c477, c478, c479, c480, c481, c482, c483, c484, c485, c486, c487, c488, c489, c490, c491, c492, c493, c494, c495, c496, c497, c498, c499, c500, c501, c502, c503, c504, c505, c506, c507, c508, c509, c510, c511, c512, c513, c514, c515, c516, c517, c518, c519, c520, c521, c522, c523, c524, c525, c526, c527, c528, c529, c530, c531, c532, c533, c534, c535, c536, c537, c538, c539, c540, c541, c542, c543, c544, c545, c546, c547, c548, c549, c550, c551, c552, c553, c554, c555, c556, c557, c558, c559, c560, c561, c562, c563, c564, c565, c566, c567, c568, c569, c570, c571, c572, c573, c574, c575, c576, c577, c578, c579, c580, c581, c582, c583, c584, c585, c586, c587, c588, c589, c590, c591, c592, c593, c594, c595, c596, c597, c598, c599, c600, c601, c602, c603, c604, c605, c606, c607, c608, c609, c610, c611, c612, c613, c614, c615, c616, c617, c618, c619, c620, c621, c622, c623, c624, c625, c626, c627, c628, c629, c630, c631, c632, c633, c634, c635, c636, c637, c638, c639, c640, c641, c642, c643, c644, c645, c646, c647, c648, c649, c650, c651, c652, c653, c654, c655, c656, c657];
+            List<Cheep> cheepsComments = [c1_comment1, c1_comment2, c2_comment1, c3_comment1, c4_comment1, c5_comment1, c6_comment1, c7_comment1, c8_comment1, c9_comment1, c10_comment1];
             a10.Cheeps = [c1, c2, c3, c5, c7, c9, c10, c13, c17, c19, c21, c22, c26, c28, c30, c31, c33, c35, c36, c38, c41, c42, c43, c44, c45, c46, c47, c48, c49, c50, c60, c65, c67, c70, c71, c75, c77, c78, c79, c80, c82, c83, c84, c86, c88, c90, c93, c94, c95, c98, c101, c102, c103, c104, c105, c106, c109, c110, c112, c113, c115, c119, c120, c121, c123, c125, c126, c128, c129, c130, c132, c133, c135, c136, c138, c140, c142, c145, c146, c147, c150, c152, c153, c156, c159, c161, c162, c163, c170, c171, c172, c175, c176, c180, c181, c185, c187, c191, c192, c194, c195, c196, c197, c198, c199, c200, c202, c203, c205, c206, c207, c209, c214, c215, c217, c218, c219, c220, c221, c222, c223, c226, c227, c228, c229, c231, c232, c234, c236, c239, c241, c242, c243, c244, c245, c246, c248, c249, c250, c251, c252, c253, c254, c255, c257, c258, c260, c261, c264, c267, c268, c270, c271, c272, c273, c274, c278, c281, c282, c284, c285, c286, c288, c289, c290, c291, c294, c297, c300, c303, c304, c305, c306, c308, c311, c312, c313, c315, c316, c320, c325, c326, c329, c330, c333, c334, c336, c337, c338, c339, c340, c342, c343, c345, c346, c347, c350, c353, c354, c356, c358, c359, c361, c363, c364, c365, c367, c369, c370, c373, c376, c377, c378, c381, c382, c386, c388, c391, c392, c394, c395, c396, c398, c399, c402, c403, c404, c405, c406, c407, c408, c409, c410, c411, c414, c415, c416, c417, c419, c423, c424, c426, c427, c428, c429, c431, c432, c435, c437, c439, c444, c447, c453, c457, c459, c460, c461, c462, c464, c465, c467, c468, c471, c472, c473, c474, c475, c477, c479, c480, c482, c483, c484, c485, c486, c487, c493, c495, c498, c499, c501, c502, c504, c507, c509, c510, c512, c516, c517, c518, c520, c522, c523, c524, c526, c529, c530, c532, c535, c537, c538, c539, c541, c546, c551, c553, c555, c561, c563, c566, c567, c570, c571, c574, c575, c577, c579, c581, c582, c584, c585, c587, c589, c591, c594, c598, c600, c606, c607, c610, c612, c613, c615, c616, c618, c619, c622, c626, c627, c628, c629, c630, c632, c633, c635, c637, c638, c639, c640, c641, c642, c643, c644, c645, c646, c648, c650, c653, c654];
             a5.Cheeps = [c4, c12, c15, c18, c23, c25, c27, c51, c54, c63, c72, c76, c92, c99, c107, c108, c111, c116, c122, c131, c134, c143, c155, c158, c165, c178, c183, c188, c208, c224, c240, c262, c265, c275, c293, c298, c319, c341, c366, c368, c371, c380, c384, c390, c400, c420, c433, c445, c449, c452, c476, c488, c489, c491, c494, c497, c500, c505, c515, c525, c527, c531, c533, c534, c536, c547, c549, c559, c580, c593, c604, c609, c614, c623, c625, c634, c636, c649];
             a3.Cheeps = [c6, c32, c56, c61, c66, c69, c100, c149, c174, c179, c211, c212, c233, c283, c296, c307, c324, c327, c344, c351, c355, c357, c383, c413, c418, c441, c446, c450, c456, c481, c496, c511, c513, c521, c548, c552, c565, c568, c588, c592, c597, c601, c617];
@@ -711,6 +1060,7 @@ public static class DbInitializer
             a12.Cheeps = [c657];
 
             cheepDbContext.Cheeps.AddRange(cheeps);
+            cheepDbContext.Cheeps.AddRange(cheepsComments);
             cheepDbContext.SaveChanges();
         }
     }
