@@ -16,7 +16,7 @@
     <Using Include="Xunit" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CLI\CLI.csproj" />
-    <ProjectReference Include="..\SimpleDB\SimpleDB.csproj" />
+    <ProjectReference Include="..\..\src\CLI\CLI.csproj" />
+    <ProjectReference Include="..\..\src\SimpleDB\SimpleDB.csproj" />
   </ItemGroup>
 </Project>
