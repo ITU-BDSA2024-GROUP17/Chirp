@@ -44,7 +44,7 @@ public class CSVDatabase<T> : IDatabaseRepository<T>
         using var reader = new StreamReader(databasePath);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         var records = csv.GetRecords<T>();
-        return records.ToList();
+        return [.. records];
     }
 
     public void Store(T record)
