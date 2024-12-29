@@ -71,25 +71,6 @@ public class IntegrationCLI_Test
         ignoreAllWhiteSpace: true);
     }
 
-    /// <summary>
-    /// IMPORTANT: This test will fail if the cli in not running at the same time as the test
-    /// </summary>
-    [Fact]
-    public void TestReadCommand()
-    {
-        RunProgramWithArguments("cheep test");
-
-        var actual = RunProgramWithArguments("read");
-
-        // Regex for dates
-        string datePattern = @"(0[1-9]|[12][0-9]|3[01])(\/|-)(0[1-9]|1[1,2])(\/|-)(19|20)\d{2}";
-        Match match = Regex.Match(actual, datePattern);
-
-        // Assert
-        Assert.True(match.Success); // Check if date is present
-        Assert.Contains(Environment.MachineName, actual); // Check if machine name is present
-    }
-
     private static string RunProgramWithArguments(string arguments)
     {
         var startInfo = new ProcessStartInfo
