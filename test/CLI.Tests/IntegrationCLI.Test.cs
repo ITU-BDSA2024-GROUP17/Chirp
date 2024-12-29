@@ -21,7 +21,7 @@ public class IntegrationCLI_Test
     }
 
     [Fact]
-    public void getCheepsTest()
+    public void GetCheepsTest()
     {
         // Arrange
         var db = CSVDatabase<Cheep>.Instance;
@@ -94,7 +94,7 @@ public class IntegrationCLI_Test
         Assert.Contains(Environment.MachineName, actual); // Check if machine name is present
     }
 
-    private string RunProgramWithArguments(string arguments)
+    private static string RunProgramWithArguments(string arguments)
     {
         var startInfo = new ProcessStartInfo
         {
