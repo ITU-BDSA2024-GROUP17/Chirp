@@ -39,6 +39,8 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Run test server
+        run: dotnet run --project src/CSVDBService &
       - name: Test
         run: dotnet test
       - name: Finalizing
