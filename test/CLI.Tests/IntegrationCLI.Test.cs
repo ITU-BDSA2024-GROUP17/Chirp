@@ -71,19 +71,15 @@ public class IntegrationCLI_Test
         ignoreAllWhiteSpace: true);
     }
 
+    /// <summary>
+    /// IMPORTANT: This test will fail if the cli in not running at the same time as the test
+    /// </summary>
     [Fact]
     public void TestReadCommand()
     {
-        string command = "read";
+        RunProgramWithArguments("cheep test");
 
-        if (CSVDatabase<Cheep>.Instance.Read().Count() == 0)
-        {
-            // Arrange
-            var cheep = new Cheep("test", "Test", DateTimeOffset.Now.ToUnixTimeSeconds());
-            CSVDatabase<Cheep>.Instance.Store(cheep);
-        }
-
-        var actual = RunProgramWithArguments(command);
+        var actual = RunProgramWithArguments("read");
 
         // Regex for dates
         string datePattern = @"(0[1-9]|[12][0-9]|3[01])(\/|-)(0[1-9]|1[1,2])(\/|-)(19|20)\d{2}";
