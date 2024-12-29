@@ -42,7 +42,7 @@ jobs:
       - name: Run test server
         run: dotnet run --project src/CSVDBService &
       - name: Wait for test server to start
-        run: sleep 10s
+        run: sleep 20s
         shell: bash
       - name: Test
         run: dotnet test
