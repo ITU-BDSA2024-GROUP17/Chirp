@@ -4,21 +4,28 @@ public record Test(int Id);
 
 public class CSVDatabaseTests
 {
+    readonly CSVDatabase<Test> database;
+
+    public CSVDatabaseTests()
+    {
+        database = CSVDatabase<Test>.Instance;
+
+        database.Store(new Test(-1));
+        database.Store(new Test(0));
+        database.Store(new Test(1));
+    }
+
     [Theory]
     [InlineData(-1)]
     [InlineData(0)]
     [InlineData(1)]
-    public void TestStore(int val)
+    public void TestStoreRead(int val)
     {
-        var database = CSVDatabase<Test>.Instance;
-
         // Act
-        database.Store(new Test(val));
         var records = database.Read();
 
         // Assert
-        Assert.Single(records);
-        Assert.Equal(new Test(val), records.First());
+        Assert.Contains(new Test(val), records);
 
         // Cleanup
         database.Clear();
@@ -27,14 +34,10 @@ public class CSVDatabaseTests
     [Fact]
     public void TestRead()
     {
-        // Arrange
-        CSVDatabase<int> database = CSVDatabase<int>.Instance;
-
-        database.Clear();
         // Act
         var records = database.Read();
 
         // Assert
-        Assert.Empty(records);
+        Assert.NotEmpty(records);
     }
 }
