@@ -71,6 +71,9 @@ public class IntegrationCLI_Test
         ignoreAllWhiteSpace: true);
     }
 
+    /// <summary>
+    /// IMPORTANT: This test will fail if the cli in not running at the same time as the test
+    /// </summary>
     [Fact]
     public void TestReadCommand()
     {
